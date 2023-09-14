@@ -9,8 +9,8 @@ int main( int argc, char* args[] )
         "SDL2Test",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        640,
-        480,
+        SDL_WINDOW_FULLSCREEN_DESKTOP,
+        SDL_WINDOW_FULLSCREEN_DESKTOP,
         0
     );
 
