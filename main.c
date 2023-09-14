@@ -1,46 +1,28 @@
-#include "donnees.h"
-#include "commun.h"
-#include "ressources.h"
-
-void init_data(world_t * world){
-    world->gameover = 0;
-    
-}
+#include "SDL.h"
 
 
-/**
- * \brief fonction qui initialise le jeu: initialisation de la partie graphique (SDL), chargement des textures, initialisation des données
- * \param window la fenêtre du jeu
- * \param renderer le renderer
- * \param textures les textures
- * \param world le monde
- */
-void init(SDL_Window **window, SDL_Renderer ** renderer, ressources_t *ressources, world_t * world){
-    init_sdl(window,renderer,SCREEN_WIDTH, SCREEN_HEIGHT);
-    init_data(world);
-    init_ttf();
-    init_ressources(*renderer,ressources);
-}
-
-
-/**
- *  \brief programme principal qui implémente la boucle du jeu
- */
 int main( int argc, char* args[] )
 {
-    SDL_Event event;
-    world_t world;
-    ressources_t ressources;
-    SDL_Renderer *renderer;
-    SDL_Window *window;
+    SDL_Init(SDL_INIT_VIDEO);
 
-    //initialisation du jeu
-    init(&window,&renderer,&ressources,&world);
-    
-    
-    //nettoyage final
-    clean(window,renderer,&ressources,&world);
-    
-    
+    SDL_Window *window = SDL_CreateWindow(
+        "SDL2Test",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        640,
+        480,
+        0
+    );
+
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(3000);
+
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
     return 0;
 }
