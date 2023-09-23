@@ -23,6 +23,8 @@ int main( int argc, char* args[] )
 {
     SDL_Init(SDL_INIT_VIDEO);
 
+    TTF_Init();
+
     SDL_Window *window = SDL_CreateWindow(
         "SDL2Test",
         SDL_WINDOWPOS_UNDEFINED,
@@ -47,6 +49,7 @@ int main( int argc, char* args[] )
     }
 
     SDL_DestroyWindow(window);
+    TTF_Quit();
     SDL_Quit();
 
     return 0;
