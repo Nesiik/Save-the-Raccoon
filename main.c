@@ -29,9 +29,9 @@ int main( int argc, char* args[] )
         "SDL2Test",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOW_FULLSCREEN_DESKTOP,
-        SDL_WINDOW_FULLSCREEN_DESKTOP,
-        0
+        1280, 
+        720, 
+        SDL_WINDOW_SHOWN
     );
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
