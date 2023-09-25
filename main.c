@@ -39,13 +39,13 @@ int main( int argc, char* args[] )
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 
-    SDL_Delay(3000);
 
     SDL_Event event;
     world_t world;
 
     while(!is_game_over(&world)){
-        handle_events(&event,&world);   
+        handle_events(&event,&world);
+        SDL_Delay(10);
     }
 
     SDL_DestroyWindow(window);
