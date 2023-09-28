@@ -1,9 +1,12 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "world.h"
+#include "sdl.h"
 
-void init(world_t * world){
+void init(SDL_Window **window, SDL_Renderer ** renderer, ressources_t *textures, world_t * world){
+    init_sdl(window,renderer,1280, 720);
     init_data(world);
+    init_ressources(*renderer, textures);
 }
 
 void handle_events(SDL_Event *event,world_t *world){
@@ -42,7 +45,9 @@ int main( int argc, char* args[] )
 
     SDL_Event event;
     world_t world;
+    ressources_t ressources;
 
+    init(&window,&renderer,&ressources,&world);
     while(!is_game_over(&world)){
         handle_events(&event,&world);
         SDL_Delay(10);
