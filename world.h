@@ -23,5 +23,5 @@ struct world_s{
 typedef struct world_s world_t;
 
 void init_data(world_t * world);
-
+int fin(world_t* world);
 int is_game_over(world_t *world);

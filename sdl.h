@@ -2,6 +2,7 @@
 #define SDL_H
 
 #include <SDL2/SDL.h>
+#include "world.h"
 
 typedef struct {
     SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte*/
@@ -15,17 +16,17 @@ typedef struct {
     char selectedItem;
 } MenuItem;
 
-struct ressources_s{
+typedef struct ressources_s{
     MenuItem MenuItems;
-};
-typedef struct ressources_s ressources_t;
+}ressources_t;
 
 enum FullScreenState {
     None = 0
 };
 
-int init_sdl(SDL_Window **window, SDL_Renderer **renderer, int width, int height);
-
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);
+SDL_Window* create_window();
+SDL_Renderer* create_renderer(SDL_Window* window);
+void handle_events(SDL_Event *event,world_t *world);
 
 #endif
