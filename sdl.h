@@ -17,7 +17,7 @@ typedef struct {
 
 typedef struct {
     Item ItemList[MENU_ITEM_COUNT];
-    char selectedItem;
+    unsigned char selectedItem;
 } MenuItem;
 
 typedef struct ressources_s{
@@ -26,7 +26,9 @@ typedef struct ressources_s{
 }ressources_t;
 
 enum FullScreenState {
-    None = 0
+    None = 0,
+    RealFS = SDL_WINDOW_FULLSCREEN,
+    FakeFS = SDL_WINDOW_FULLSCREEN_DESKTOP
 };
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);
