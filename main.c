@@ -21,12 +21,13 @@ int main( int argc, char* args[] )
 
     SDL_Renderer *renderer = create_renderer(window);
 
-    Uint64 lastUp,end,delta;
-    double MSPerFrame,fps;
+    //Uint64 lastUp,end,delta;
+    //double MSPerFrame,fps;
 
     init(renderer,ressources,world);
 
     //lastUp = SDL_GetTicks64();
+    //set_vsync(renderer,SDL_FALSE);
 
     while(!fin(world)){
         SDL_RenderClear(renderer);
@@ -54,18 +55,18 @@ int main( int argc, char* args[] )
         */
         switch (world->gameover)
         {
-        case Menu:
-            render_main_menu(renderer,ressources);
-            get_window_options();
-            break;
-        default:
-            break;
+            case Menu:
+                render_main_menu(renderer,ressources);
+                //get_window_options();
+                break;
+            default:
+                break;
         }
         SDL_RenderPresent(renderer);
     }
-
-    SDL_DestroyWindow(window);
+    
     SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     free(event);
     free(world);
     free(ressources);
