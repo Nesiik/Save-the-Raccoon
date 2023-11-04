@@ -6,7 +6,7 @@
 #include "world.h"
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
-#define MENU_ITEM_COUNT 3
+#define MAIN_MENU_ITEM_COUNT 3
 
 
 typedef struct {
@@ -16,8 +16,8 @@ typedef struct {
 
 
 typedef struct {
-    Item ItemList[MENU_ITEM_COUNT];
-    char selectedItem;
+    Item ItemList[MAIN_MENU_ITEM_COUNT];
+    unsigned char selectedItem;
 } MenuItem;
 
 typedef struct ressources_s{
@@ -26,7 +26,9 @@ typedef struct ressources_s{
 }ressources_t;
 
 enum FullScreenState {
-    None = 0
+    None = 0,
+    RealFS = SDL_WINDOW_FULLSCREEN,
+    FakeFS = SDL_WINDOW_FULLSCREEN_DESKTOP
 };
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);

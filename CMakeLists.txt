@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 project(projet VERSION 0.1.0 LANGUAGES C)
 
-INCLUDE(FindPkgConfig)
+include(FindPkgConfig)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIR})
