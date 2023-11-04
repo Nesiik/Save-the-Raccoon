@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "sdl.h"
+#include "option.h"
 
 void init(SDL_Renderer * renderer, ressources_t *textures, world_t * world){
     init_data(world);
@@ -54,7 +55,8 @@ int main( int argc, char* args[] )
         switch (world->gameover)
         {
         case Menu:
-            render_menu(renderer,ressources);
+            render_main_menu(renderer,ressources);
+            get_window_options();
             break;
         default:
             break;

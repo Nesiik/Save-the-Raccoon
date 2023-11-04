@@ -36,6 +36,6 @@ SDL_Window* create_window();
 SDL_Renderer* create_renderer(SDL_Window* window);
 void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources);
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y );
-void render_menu(SDL_Renderer *renderer,ressources_t *ressources);
+void render_main_menu(SDL_Renderer *renderer,ressources_t *ressources);
 
 #endif
