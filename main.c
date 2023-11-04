@@ -51,7 +51,14 @@ int main( int argc, char* args[] )
         SDL_RenderPresent(renderer);
         lastUp = SDL_GetTicks64();
         */
-        render_menu(renderer,ressources);
+        switch (world->gameover)
+        {
+        case Menu:
+            render_menu(renderer,ressources);
+            break;
+        default:
+            break;
+        }
         SDL_RenderPresent(renderer);
     }
 
