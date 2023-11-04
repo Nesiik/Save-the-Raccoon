@@ -29,7 +29,7 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
                         switch (i) {
                             case 0: // Jouer
                                 //init_data(world);
-                                world->gameover = Alive;
+                                //world->gameover = Alive;
                                 //world->depart = SDL_GetTicks();
                                 break;
                             case 1: // Option
@@ -123,11 +123,11 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->font = TTF_OpenFont("../arial.ttf",28);
     
     ressources->MenuItems.ItemList[0].rect = (SDL_Rect){100,200,0,0};
-    ressources->MenuItems.ItemList[0].text = SDL_strdup("Jouer");
+    ressources->MenuItems.ItemList[0].text = "Jouer";
     ressources->MenuItems.ItemList[1].rect = (SDL_Rect){100,250,0,0};
-    ressources->MenuItems.ItemList[1].text = SDL_strdup("Option");
+    ressources->MenuItems.ItemList[1].text = "Option";
     ressources->MenuItems.ItemList[2].rect = (SDL_Rect){100,300,0,0};
-    ressources->MenuItems.ItemList[2].text = SDL_strdup("Quitter");
+    ressources->MenuItems.ItemList[2].text = "Quitter";
 
     ressources->MenuItems.selectedItem = -1;
 }
