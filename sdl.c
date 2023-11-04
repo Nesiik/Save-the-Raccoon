@@ -6,12 +6,11 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
             world->gameover = ForceQuit;
         }
 
-        if(event->type == SDL_KEYDOWN){
+        else if(event->type == SDL_KEYDOWN){
             if(event->key.keysym.sym == SDLK_ESCAPE){
                 world->gameover = ForceQuit;
             }
         }
-
 
         else if (event->type == SDL_MOUSEBUTTONDOWN) {
             if (event->button.button == SDL_BUTTON_LEFT) {
