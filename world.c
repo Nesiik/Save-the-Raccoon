@@ -12,7 +12,7 @@ int is_game_over(world_t *world){
 }
 
 int fin(world_t* world){
-    if(world->gameover  == ForceQuit)
+    if(world->gameover  == Quit)
         return 1;
     else
         return 0;

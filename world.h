@@ -3,7 +3,7 @@ enum GameState {
     Alive = 0, 
     Dead = 1,   
     Win = 2,    
-    ForceQuit = 3
+    Quit = 3
 };
 
 struct sprite_s{
@@ -18,7 +18,7 @@ typedef struct sprite_s sprite_t;
 struct world_s{
     sprite_t player;
     int level;
-    char gameover; /*!< -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = ForceQuit */
+    char gameover; /*!< -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
 };
 typedef struct world_s world_t;
 
