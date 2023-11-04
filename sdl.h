@@ -6,7 +6,7 @@
 #include "world.h"
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
-#define MENU_ITEM_COUNT 3
+#define MAIN_MENU_ITEM_COUNT 3
 
 
 typedef struct {
@@ -16,7 +16,7 @@ typedef struct {
 
 
 typedef struct {
-    Item ItemList[MENU_ITEM_COUNT];
+    Item ItemList[MAIN_MENU_ITEM_COUNT];
     char selectedItem;
 } MenuItem;
 
