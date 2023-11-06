@@ -120,7 +120,7 @@ SDL_Renderer* create_renderer(SDL_Window* window){
 
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
-    ressources->font = TTF_OpenFont("assets/arial.ttf",28);
+    ressources->font = TTF_OpenFont("../assets/arial.ttf",28);
     
     ressources->MenuItems.ItemList[0].rect = (SDL_Rect){100,200,0,0};
     ressources->MenuItems.ItemList[0].text = "Jouer";
