@@ -57,7 +57,7 @@ int main( int argc, char* args[] )
         {
             case Menu:
                 render_main_menu(renderer,ressources);
-                //get_window_options();
+                get_window_options();
                 break;
             default:
                 break;
