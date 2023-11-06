@@ -1,7 +1,7 @@
 #include "fonctions_fichiers.h"
 #include <stdio.h>
 
-int main(void)
+int test_modif_fichiers(void)
 {
     int nbLigne = 0;
     int nbCol = 0;
