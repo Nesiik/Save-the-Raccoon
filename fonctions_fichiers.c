@@ -10,7 +10,7 @@ char** allouer_tab_2D(int n,int m){
     }
     for (int i = 0; i <= n; i++)
     {
-        for (int j = 0; j <= m; j++)
+        for (int j = 0; j < m; j++)
         {
             tab[i][j] = ' ';
         }   
@@ -29,7 +29,7 @@ void desallouer_tab_2D(char** tab, int n){
 void afficher_tab_2D(char** tab, int n , int m){
     for (int i = 0; i <= n; i++)
     {
-        for (int j = 0; j <= m; j++)
+        for (int j = 0; j < m; j++)
         {
             printf("%c ",tab[i][j]);  
         }
@@ -40,30 +40,32 @@ void afficher_tab_2D(char** tab, int n , int m){
 void taille_fichier(const char* nomFichier,int* nbLig,int* nbCol){
     FILE* ptrFichier = fopen(nomFichier,"r");
     int strFichier;
-    int cCol = -1;
-    *nbLig = 0;
-    *nbCol = 0;
+    int cCol = 0;
+    int lig = 0;
+    int col = 0;
     do
     {
         strFichier = fgetc(ptrFichier);
-        if (strFichier == -1)
+        if (strFichier == EOF)
         {
+            break;
+        }
+        else if(strFichier == '\n' || strFichier == '\r'){
+            if (strFichier== '\r')
+            {
+                fgetc(ptrFichier);
+            }
+            lig +=1;
+            if(cCol > col){
+                col = cCol;
+            }
+            cCol = 0;
             continue;
         }
         cCol++;
-        if(strFichier == '\n' || strFichier == '\r'){
-            if (fgetc(ptrFichier) == '\r')
-            {
-                continue;
-            }
-            *nbLig = *nbLig + 1;
-            if(cCol > *nbCol){
-                *nbCol = cCol;
-            }
-            cCol = -1;
-        }
     } while (strFichier != EOF);
-
+    *nbCol = col;
+    *nbLig = lig;
     fclose(ptrFichier);
 }
 
@@ -78,12 +80,11 @@ char** lire_fichier(const char* nomFichier){
     do
     {
         c = fgetc(ptrFichier);
-        if (c == -1)
+        if (c == EOF)
         {
-            continue;
+            break;
         }
-        //printf("c:%d , cligne: %d , cCol: %d \n",c,cLigne,cCol);
-        if(c == '\n' || c == '\r'){
+        else if(c == '\n' || c == '\r'){
             if (c == '\r')
             {
                 fgetc(ptrFichier);
@@ -95,16 +96,16 @@ char** lire_fichier(const char* nomFichier){
         tab[cLigne][cCol] = c;
         cCol++;
     } while (c != EOF);
-
+        
+    fclose(ptrFichier);
     return tab;
 
-    fclose(ptrFichier);
 }
 
 char** modifier_caractere(char** tab, int n, int m, char ancien, char nouveau){
     for (int i = 0; i <= n; i++)
     {
-        for(int j = 0; j <= m; j++){
+        for(int j = 0; j < m; j++){
             if (tab[i][j] == ancien)
             {
                 tab[i][j] = nouveau;
@@ -117,18 +118,17 @@ char** modifier_caractere(char** tab, int n, int m, char ancien, char nouveau){
 
 void ecrire_fichier(const char* nomFichier, char** tab, int n, int m){
     FILE* fichier = NULL;
-    fichier = fopen(nomFichier,"w+");
+    fichier = fopen(nomFichier,"w");
 
     if(fichier != NULL){
         for (int i = 0; i <= n; i++)
         {
-            for (int j = 0; j <= m; j++)
+            for (int j = 0; j < m; j++)
             {
-                if(j != m){
-                    fputc(tab[i][j],fichier);
-                }
+                fputc(tab[i][j],fichier);
             }
-            if(i != n){
+            if (i != n)
+            {
                 fputc('\n',fichier);
             }
         }

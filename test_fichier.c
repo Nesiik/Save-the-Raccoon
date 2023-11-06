@@ -1,7 +1,7 @@
 #include "fonctions_fichiers.h"
 #include <stdio.h>
 
-int test_fichier(void)
+int main(void)
 {
     int nbLigne = 0;
     int nbCol = 0;
@@ -12,7 +12,18 @@ int test_fichier(void)
     printf("\n");
     modifier_caractere(tab,nbLigne,nbCol,'1','a');
     ecrire_fichier("tabChiffres.txt",tab,nbLigne,nbCol);
-    char** tab2 = lire_fichier("tabChiffres.txt");
-    afficher_tab_2D(tab2,nbLigne,nbCol);
+
+    taille_fichier("tabChiffres.txt",&nbLigne,&nbCol);
+    printf("taille du fichier : %d x %d \n",nbLigne,nbCol);
+    tab = lire_fichier("tabChiffres.txt");
+    afficher_tab_2D(tab,nbLigne,nbCol);
+    modifier_caractere(tab,nbLigne,nbCol,'a','1');
+    ecrire_fichier("tabChiffres.txt",tab,nbLigne,nbCol);
+    
+    printf("\n");
+    taille_fichier("tabChiffres.txt",&nbLigne,&nbCol);
+    printf("taille du fichier : %d x %d \n",nbLigne,nbCol);
+    tab = lire_fichier("tabChiffres.txt");
+    afficher_tab_2D(tab,nbLigne,nbCol);
     return 0;
 }
