@@ -125,7 +125,7 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->MenuItems.ItemList[0].rect = (SDL_Rect){100,200,0,0};
     ressources->MenuItems.ItemList[0].text = "Jouer";
     ressources->MenuItems.ItemList[1].rect = (SDL_Rect){100,250,0,0};
-    ressources->MenuItems.ItemList[1].text = "Option";
+    ressources->MenuItems.ItemList[1].text = "Options";
     ressources->MenuItems.ItemList[2].rect = (SDL_Rect){100,300,0,0};
     ressources->MenuItems.ItemList[2].text = "Quitter";
 

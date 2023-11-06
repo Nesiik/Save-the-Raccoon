@@ -1,0 +1,63 @@
+Stats :                     Initial:
+- int HP                            3
+- float Speed                       1.0
+- float Timer(seconds)              120.0
+- float Gravity                     1.0
+- float Obscurity                   1.0
+- Boolean Fall damage               False
+- float zoom                        1.0
+- int jump                          1
+- float fail jump                   0.0
+- boolean horizontal inverted       False (normal)
+- boolean vertical inverted         False (normal)  
+
+
+Bonus :
+    commun :
+        HP + 1
+        Speed + 0.1
+        Timer + 15
+        Gravity - 0.1
+        Obscurity - 0.1
+        zoom - 0.1
+    rare :
+        HP + 2
+        Speed + 0.15
+        Timer + 25
+        Gravity - 0.15
+        Obscurity - 0.15
+        zoom - 0.15
+    épique :
+        HP + 3
+        Speed + 0.2 
+        Timer + 35
+        Gravity - 0.2
+        Obscurity - 0.2
+        zoom - 0.2
+        jump + 1
+    légendaire :
+        Pied de biche : 
+        Casque doomslayer : HP + 6
+        Oeuf précurseur : Speed + 0.2, Gravity - 0.2, Obscurity - 0.2, Zoom - 0.2,  Jump + 1
+           
+
+Choix :
+    rare:
+        Speed + 0.1; Timer - 10
+        Speed + 0.2; Zoom + 0.1
+        Timer + 20; HP - 1
+        jump + 1; Fall dammage true
+        Zoom - 0.2; Speed - 0.1, Timer - 10
+    epique :
+        Speed + 0.4; Obscurity + 0.3, Gravity + 0.2
+        Timer + 50; HP-1, Speed - 0.2, Gravity + 0.1, zoom + 0.2
+        Gravity - 0.3; Fall dammage true
+        Gravity - 0.3; Fail dammage + 10.0
+        jump + 1; fail jump + 10.0
+        Jump + 1, Speed + 0.2, zoom -0.1; horizontal inverted True
+        Jump + 1, Timer + 25, Obscurity -0.2; vertical inverted True
+           
+
+
+
+
