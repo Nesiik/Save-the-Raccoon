@@ -109,7 +109,7 @@ SDL_Window* create_window(){
     SDL_WINDOW_SHOWN);
     if(window == NULL)
     {
-        printf("Erreur lors de la creation de l'image : %s", SDL_GetError());
+        SDL_Log("Erreur lors de la creation de l'image : %s", SDL_GetError());
     }
     return window;
 }
@@ -118,7 +118,7 @@ SDL_Renderer* create_renderer(SDL_Window* window){
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     if(renderer == NULL)
     {
-        printf("Erreur lors de la creation du renderer : %s", SDL_GetError());
+        SDL_Log("Erreur lors de la creation du renderer : %s", SDL_GetError());
     }
     return renderer;
 }

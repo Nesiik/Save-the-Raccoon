@@ -5,4 +5,10 @@
 
 void get_window_options();
 void set_vsync(SDL_Renderer* renderer, SDL_bool state);
+
+struct option
+{
+    /* data */
+};
+
 #endif
