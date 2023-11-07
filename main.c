@@ -36,8 +36,9 @@ int main( int argc, char* args[] )
                 }
                 break;
             case Alive:
+                unsigned int time_limit;
                 unsigned int timer = SDL_GetTicks();
-                printf("timer %u:", timer);
+                unsigned int countdown = time_limit - timer;
             default:
                 break;
         }

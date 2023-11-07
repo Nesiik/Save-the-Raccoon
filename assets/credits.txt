@@ -2,3 +2,4 @@ Credits :
 texture herbe/terre : bcsilva
 texture nuages/ciels : Justin Dalessandro(ColdOneK)
 platformer pack : https://socialside.itch.io
+pixelorama
