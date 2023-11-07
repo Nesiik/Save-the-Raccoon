@@ -8,6 +8,7 @@ void init(SDL_Renderer * renderer, ressources_t *textures, world_t * world){
     init_ressources(renderer, textures);
 }
 
+
 int main( int argc, char* args[] )
 {
     SDL_Event* event = malloc(sizeof(SDL_Event));
@@ -34,6 +35,9 @@ int main( int argc, char* args[] )
                     got_window_opt = SDL_TRUE;
                 }
                 break;
+            case Alive:
+                unsigned int timer = SDL_GetTicks();
+                printf("timer %u:", timer);
             default:
                 break;
         }
