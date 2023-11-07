@@ -35,10 +35,12 @@ int main( int argc, char* args[] )
                     got_window_opt = SDL_TRUE;
                 }
                 break;
-            case Alive:
-                unsigned int time_limit;
-                unsigned int timer = SDL_GetTicks();
-                unsigned int countdown = time_limit - timer;
+            /*case Alive:
+                unsigned int time_limit; // a deplacer dans alive plus tard
+                unsigned int timer = SDL_GetTicks();    
+                unsigned int countdown = (time_limit - timer)/1000; 
+                afficher_texte(renderer,"../assets/arial.ttf",countdown,900,600);   //a deplacer dans alive plus tard
+                break;*/
             default:
                 break;
         }
