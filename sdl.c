@@ -101,7 +101,7 @@ void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[],
 
 SDL_Window* create_window(){
     SDL_Window* window = SDL_CreateWindow(
-    "SDL2Test",
+    "Save the Raccoon",
     SDL_WINDOWPOS_UNDEFINED,
     SDL_WINDOWPOS_UNDEFINED,
     1280, 
