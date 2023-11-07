@@ -9,15 +9,6 @@ enum GameState {
     Quit = 3
 };
 
-struct sprite_s{
-    int x; /*!< Abs */
-    int y; /*!< Ord */
-    int h; /*!< Height */
-    int w; /*!< Width */
-};
-typedef struct sprite_s sprite_t;
-
-
 struct world_s{
     sprite_t player;
     int level;

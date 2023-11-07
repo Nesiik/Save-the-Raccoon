@@ -21,7 +21,7 @@ int main( int argc, char* args[] )
     SDL_Renderer *renderer = create_renderer(window);
 
     init(renderer,ressources,world);
-
+    SDL_bool got_window_opt = SDL_FALSE;
     while(!fin(world)){
         SDL_RenderClear(renderer);
         handle_events(event,world,ressources);
@@ -29,7 +29,10 @@ int main( int argc, char* args[] )
         {
             case Menu:
                 render_main_menu(renderer,ressources);
-                //get_window_options();
+                if(!got_window_opt){
+                    get_window_options();
+                    got_window_opt = SDL_TRUE;
+                }
                 break;
             default:
                 break;

@@ -1,5 +1,35 @@
 #include "sdl.h"
 
+void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t* ressources){
+    int mouseX = button.x;
+    int mouseY = button.y;
+
+    for (char i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
+        Item menuItem = ressources->MenuItems.ItemList[i];
+
+        if (mouseX >= menuItem.rect.x && mouseX <= menuItem.rect.x + menuItem.rect.w &&
+            mouseY >= menuItem.rect.y && mouseY <= menuItem.rect.y + menuItem.rect.h)
+        {
+            ressources->MenuItems.selectedItem = i;
+            switch (i) {
+                case 0: // Jouer
+                    //init_data(world);
+                    //world->gameover = Alive;
+                    //world->depart = SDL_GetTicks();
+                    break;
+                case 1: // Option
+                    break;
+                case 2: // Quitter
+                    world->gameover = Quit;
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+    }
+}
+
 void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
     while( SDL_PollEvent( event ) ) {
         switch (event->type){
@@ -15,34 +45,9 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
             switch (world->gameover)
             {
             case Menu:
-                if (event->button.button == SDL_BUTTON_LEFT) {
-                int mouseX = event->button.x;
-                int mouseY = event->button.y;
-
-                for (char i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
-                    Item menuItem = ressources->MenuItems.ItemList[i];
-
-                    if (mouseX >= menuItem.rect.x && mouseX <= menuItem.rect.x + menuItem.rect.w &&
-                        mouseY >= menuItem.rect.y && mouseY <= menuItem.rect.y + menuItem.rect.h)
-                    {
-                        ressources->MenuItems.selectedItem = i;
-                        switch (i) {
-                            case 0: // Jouer
-                                //init_data(world);
-                                //world->gameover = Alive;
-                                //world->depart = SDL_GetTicks();
-                                break;
-                            case 1: // Option
-                                break;
-                            case 2: // Quitter
-                                world->gameover = Quit;
-                                break;
-                            
-                            default:
-                                break;
-                            }
-                        }
-                    }
+                if (event->button.button == SDL_BUTTON_LEFT)
+                {
+                    mouse_menu_events(event->button,world,ressources);
                 }
                 break;
             default:
