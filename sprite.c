@@ -1,21 +1,31 @@
 #include "sprite.h"
 
-SDL_Texture* charger_image (const char* nomfichier, SDL_Renderer* renderer){
+sprite_t* charger_image (const char* nomfichier, SDL_Renderer* renderer){
+    sprite_t* sprite = malloc(sizeof(sprite_t));
     SDL_Surface* bmp = SDL_LoadBMP(nomfichier);
-    SDL_Texture* text = SDL_CreateTextureFromSurface(renderer, bmp);
-    if (text == NULL){
+    sprite->text = SDL_CreateTextureFromSurface(renderer, bmp);
+    if (sprite->text == NULL){
         printf("%s \n",SDL_GetError());
     }
-    return text;
+    SDL_QueryTexture(sprite->text,NULL,NULL,&sprite->src.w,&sprite->src.h);
+    sprite->dest.w = sprite->src.w;
+    sprite->dest.h = sprite->dest.h;
+    return sprite;
 }
 
-SDL_Texture* charger_image_transparante(const char* nomfichier, SDL_Renderer* renderer,Uint8 r, Uint8 g, Uint8 b){
+sprite_t* charger_image_transparante(const char* nomfichier, SDL_Renderer* renderer,Uint8 r, Uint8 g, Uint8 b){
+    sprite_t* sprite = malloc(sizeof(sprite_t));
     SDL_Surface* bmp = SDL_LoadBMP(nomfichier);
-    int res = SDL_SetColorKey(bmp,SDL_TRUE,SDL_MapRGB(bmp->format,r,g,b));
-    SDL_Texture* text = SDL_CreateTextureFromSurface(renderer, bmp);
-        if (text == NULL){
+    if(SDL_SetColorKey(bmp,SDL_TRUE,SDL_MapRGB(bmp->format,r,g,b))){
         printf("%s \n",SDL_GetError());
     }
-    return text;
+    sprite->text = SDL_CreateTextureFromSurface(renderer, bmp);
+        if (sprite->text == NULL){
+        printf("%s \n",SDL_GetError());
+    }
+    SDL_QueryTexture(sprite->text,NULL,NULL,&sprite->src.w,&sprite->src.h);
+    sprite->dest.w = sprite->src.w;
+    sprite->dest.h = sprite->dest.h;
+    return sprite;
 
 }
