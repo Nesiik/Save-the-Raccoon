@@ -1,6 +1,8 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include "sprite.h"
+
 enum GameState {
     Menu = -1, 
     Alive = 0, 
