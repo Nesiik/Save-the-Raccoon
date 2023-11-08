@@ -3,12 +3,18 @@
 
 #include <SDL.h>
 
-void get_window_options();
-void set_vsync(SDL_Renderer* renderer, SDL_bool state);
+enum FullScreenState {
+    None = 0,
+    RealFS = SDL_WINDOW_FULLSCREEN,
+    FakeFS = SDL_WINDOW_FULLSCREEN_DESKTOP
+};
 
 struct option
 {
     /* data */
 };
+
+void get_window_options();
+void set_vsync(SDL_Renderer* renderer, SDL_bool state);
 
 #endif

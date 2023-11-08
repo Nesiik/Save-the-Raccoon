@@ -8,7 +8,6 @@ void init(SDL_Renderer * renderer, ressources_t *textures, world_t * world){
     init_ressources(renderer, textures);
 }
 
-
 int main( int argc, char* args[] )
 {
     SDL_Event* event = malloc(sizeof(SDL_Event));

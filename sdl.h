@@ -25,12 +25,6 @@ typedef struct ressources_s{
     TTF_Font* font;
 }ressources_t;
 
-enum FullScreenState {
-    None = 0,
-    RealFS = SDL_WINDOW_FULLSCREEN,
-    FakeFS = SDL_WINDOW_FULLSCREEN_DESKTOP
-};
-
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);
 SDL_Window* create_window();
 SDL_Renderer* create_renderer(SDL_Window* window);

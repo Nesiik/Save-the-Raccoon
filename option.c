@@ -1,7 +1,15 @@
 #include "option.h"
 
-static int gcd (int a, int b) {
-    return (b == 0) ? a : gcd (b, a%b);
+static Uint16 gcd (Uint16 a, Uint16 b) {
+    //return (b == 0) ? a : gcd (b, a%b);
+    while (a != 0 && b != 0)
+    {
+        if (a > b)
+            a %= b;
+        else
+            b %= a;
+    }
+    return a | b;
 }
 
 SDL_bool val_in_array(int* arr,int val){
@@ -16,8 +24,8 @@ SDL_bool val_in_array(int* arr,int val){
 
 void get_window_options(){
     static int display_in_use = 0; /* Only using first display */
-    static int validW[2] = {16,4}; 
-    static int validH[2] = {3,9}; 
+    static int validW[] = {16}; 
+    static int validH[] = {9}; 
 
     int i, display_mode_count,r,res_count;
     SDL_DisplayMode mode;
@@ -26,7 +34,6 @@ void get_window_options(){
 
     if (display_mode_count < 1) {
         SDL_Log("SDL_GetNumDisplayModes failed: %s", SDL_GetError());
-        //return 1;
     }
 
     res_count = 0;
@@ -35,7 +42,6 @@ void get_window_options(){
     for (i = 0; i < display_mode_count; ++i) {
         if (SDL_GetDisplayMode(display_in_use, i, &mode) != 0) {
             SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
-            //return 1;
         }
         f = mode.format;
         r = gcd(mode.w,mode.h);
@@ -54,6 +60,11 @@ void get_window_options(){
 void set_vsync(SDL_Renderer* renderer, SDL_bool state){
     if(SDL_RenderSetVSync(renderer,state) != 0){
         SDL_Log("SDL_RenderSetVSync failed: %s", SDL_GetError());
-        //return 1;
+    }
+}
+
+void set_full_screen(SDL_Window* window, Uint32 flags){
+    if(SDL_SetWindowFullscreen(window,flags)){
+        SDL_Log("SDL_SetWindowFullscreen failes: %s",SDL_GetError());
     }
 }
