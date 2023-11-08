@@ -10,6 +10,7 @@ sprite_t* charger_image (const char* nomfichier, SDL_Renderer* renderer){
     SDL_QueryTexture(sprite->text,NULL,NULL,&sprite->src.w,&sprite->src.h);
     sprite->dest.w = sprite->src.w;
     sprite->dest.h = sprite->dest.h;
+    SDL_FreeSurface(bmp);
     return sprite;
 }
 
@@ -26,6 +27,7 @@ sprite_t* charger_image_transparante(const char* nomfichier, SDL_Renderer* rende
     SDL_QueryTexture(sprite->text,NULL,NULL,&sprite->src.w,&sprite->src.h);
     sprite->dest.w = sprite->src.w;
     sprite->dest.h = sprite->dest.h;
+    SDL_FreeSurface(bmp);
     return sprite;
 
 }
