@@ -16,5 +16,6 @@ struct option
 
 void get_window_options();
 void set_vsync(SDL_Renderer* renderer, SDL_bool state);
+void set_full_screen(SDL_Window* window, Uint32 flags);
 
 #endif
