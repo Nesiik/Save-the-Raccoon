@@ -1,14 +1,19 @@
 #include "fonctions_fichiers.h"
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 char** allouer_tab_2D(int n,int m){
-    
-    char** tab = malloc(sizeof(char*)*n); // lignes
-    for (int i = 0; i < n; i++)
-    {
-        tab[i] = malloc(sizeof(char)*m); // colonnes
+    //https://www.geeksforgeeks.org/dynamically-allocate-2d-array-c/
+    int len = sizeof(char *) * n + sizeof(char) * m * n;
+    char** tab = (char **)malloc(len);
+ 
+    // ptr is now pointing to the first element in of 2D array
+    char* ptr = (char *)(tab + n);
+    // for loop to point rows pointer to appropriate location in 2D array
+    for(int i = 0; i < n; i++){
+        tab[i] = (ptr + m * i);
     }
+
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
