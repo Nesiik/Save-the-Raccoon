@@ -9,10 +9,16 @@ enum FullScreenState {
     FakeFS = SDL_WINDOW_FULLSCREEN_DESKTOP
 };
 
-struct option
+typedef struct screen_state_s{
+    int refresh_rate;
+    int w;
+    int h;
+}screen_state;
+
+typedef struct option_s
 {
-    /* data */
-};
+    
+}option;
 
 void get_window_options();
 void set_vsync(SDL_Renderer* renderer, SDL_bool state);

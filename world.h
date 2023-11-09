@@ -12,7 +12,7 @@ enum GameState {
 };
 
 struct world_s{
-    sprite_t player;
+    sprite player;
     int level;
     char gameover; /*!< -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
 };
