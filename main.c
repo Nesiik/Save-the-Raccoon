@@ -4,6 +4,7 @@
 #include "option.h"
 
 void init(SDL_Renderer * renderer, ressources_t *textures, world_t * world){
+    get_window_options();
     init_data(world);
     init_ressources(renderer, textures);
 }
@@ -21,7 +22,6 @@ int main( int argc, char* args[] )
     SDL_Renderer *renderer = create_renderer(window);
 
     init(renderer,ressources,world);
-    SDL_bool got_window_opt = SDL_FALSE;
     while(!fin(world)){
         SDL_RenderClear(renderer);
         handle_events(event,world,ressources);
@@ -29,10 +29,6 @@ int main( int argc, char* args[] )
         {
             case Menu:
                 render_main_menu(renderer,ressources);
-                if(!got_window_opt){
-                    get_window_options();
-                    got_window_opt = SDL_TRUE;
-                }
                 break;
             /*case Alive:
                 unsigned int time_limit; // a deplacer dans alive plus tard
