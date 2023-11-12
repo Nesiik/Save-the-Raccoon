@@ -17,7 +17,7 @@ sprite* charger_image (const char* nomfichier, SDL_Renderer* renderer){
 sprite* charger_image_transparante(const char* nomfichier, SDL_Renderer* renderer,Uint8 r, Uint8 g, Uint8 b){
     sprite* sprite = malloc(sizeof(sprite));
     SDL_Surface* bmp = SDL_LoadBMP(nomfichier);
-    if(SDL_SetColorKey(bmp,SDL_TRUE,SDL_MapRGB(bmp->format,r,g,b))){
+    if(SDL_SetColorKey(bmp,SDL_TRUE,SDL_MapRGB(bmp->format,r,g,b)) < 0){
         printf("%s \n",SDL_GetError());
     }
     sprite->text = SDL_CreateTextureFromSurface(renderer, bmp);
