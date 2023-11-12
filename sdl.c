@@ -145,7 +145,6 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->MenuItems.ItemList[0].rect = (SDL_Rect){100,200,0,0};
     const char* jouer = "Jouer";
     ressources->MenuItems.ItemList[0].text = SDL_strdup(jouer);
-    //ressources->MenuItems.ItemList[0].text = "Jouer";
     ressources->MenuItems.ItemList[1].rect = (SDL_Rect){100,250,0,0};
     const char* options = "Options";
     ressources->MenuItems.ItemList[1].text = SDL_strdup(options);
