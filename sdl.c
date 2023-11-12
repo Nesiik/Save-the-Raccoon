@@ -128,11 +128,23 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->font = TTF_OpenFont("../assets/arial.ttf",28);
     
     ressources->MenuItems.ItemList[0].rect = (SDL_Rect){100,200,0,0};
-    ressources->MenuItems.ItemList[0].text = "Jouer";
+    const char* jouer = "Jouer";
+    ressources->MenuItems.ItemList[0].text = SDL_strdup(jouer);
+    //ressources->MenuItems.ItemList[0].text = "Jouer";
     ressources->MenuItems.ItemList[1].rect = (SDL_Rect){100,250,0,0};
-    ressources->MenuItems.ItemList[1].text = "Options";
+    const char* options = "Options";
+    ressources->MenuItems.ItemList[1].text = SDL_strdup(options);
     ressources->MenuItems.ItemList[2].rect = (SDL_Rect){100,300,0,0};
-    ressources->MenuItems.ItemList[2].text = "Quitter";
+    const char* quitter = "Quitter";
+    ressources->MenuItems.ItemList[2].text = SDL_strdup(quitter);
 
     ressources->MenuItems.selectedItem = -1;
+}
+
+void free_ressources(ressources_t* ressources){
+    for (size_t i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
+    {
+        free(ressources->MenuItems.ItemList[i].text);
+    }
+    
 }

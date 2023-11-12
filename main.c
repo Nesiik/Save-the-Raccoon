@@ -4,7 +4,7 @@
 #include "option.h"
 
 void init(SDL_Renderer * renderer, ressources_t *textures, world_t * world){
-    get_window_options();
+    //get_window_options();
     init_data(world);
     init_ressources(renderer, textures);
 }
@@ -42,10 +42,12 @@ int main( int argc, char* args[] )
         SDL_RenderPresent(renderer);
     }
     
+    TTF_CloseFont(ressources->font);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     free(event);
     free(world);
+    free_ressources(ressources);
     free(ressources);
     TTF_Quit();
     SDL_Quit();
