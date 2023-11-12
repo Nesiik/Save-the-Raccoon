@@ -1,4 +1,5 @@
 #include "sdl.h"
+#include "fonctions_fichiers.h"
 
 void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t* ressources){
     int mouseX = button.x;
@@ -86,6 +87,20 @@ void render_main_menu(SDL_Renderer *renderer,ressources_t *ressources){
     }
 }
 
+void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources){
+    char** tab = lire_fichier("../menu_background.txt");
+    int ligne_tab,col_tab;
+    taille_fichier("../menu_background.txt",&ligne_tab,&col_tab);
+    for (unsigned int i = 0; i < ligne_tab; i++)
+    {
+        for (unsigned int j = 0; j < col_tab; j++)
+        {
+            /* code */
+        }
+        
+    }
+    
+}
 
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y ) {
 	SDL_Color fg = { 255, 255, 255 };
