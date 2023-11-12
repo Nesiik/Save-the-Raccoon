@@ -17,6 +17,7 @@ int main( int argc, char* args[] )
     
     SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
     TTF_Init();
+    IMG_Init(IMG_INIT_PNG);
 
     SDL_Window* window = create_window();
     SDL_Renderer *renderer = create_renderer(window);
@@ -43,12 +44,13 @@ int main( int argc, char* args[] )
     }
     
     TTF_CloseFont(ressources->font);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
     free(event);
     free(world);
     free_ressources(ressources);
     free(ressources);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    IMG_Quit();
     TTF_Quit();
     SDL_Quit();
 

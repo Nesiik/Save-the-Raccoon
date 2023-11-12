@@ -23,7 +23,7 @@ typedef struct {
 typedef struct ressources_s{
     MenuItem MenuItems;
     TTF_Font* font;
-    sprite* player;
+    //sprite* player;
     sprite* background;
 }ressources_t;
 

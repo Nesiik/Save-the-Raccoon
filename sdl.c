@@ -155,7 +155,7 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
 
     ressources->MenuItems.selectedItem = -1;
 
-    ressources->background = charger_image("../assets/dirt_sprite.png",renderer);
+    ressources->background = charger_image_png("../assets/dirt_sprite.png",renderer);
 }
 
 void free_ressources(ressources_t* ressources){
@@ -163,5 +163,6 @@ void free_ressources(ressources_t* ressources){
     {
         free(ressources->MenuItems.ItemList[i].text);
     }
-    
+    SDL_DestroyTexture(ressources->background->text);
+    free(ressources->background);
 }
