@@ -9,4 +9,7 @@ typedef struct sprite_s{
     SDL_Texture* text;
 }sprite;
 
+
+sprite* charger_image (const char* nomfichier, SDL_Renderer* renderer);
+sprite* charger_image_transparante(const char* nomfichier, SDL_Renderer* renderer,Uint8 r, Uint8 g, Uint8 b);
 #endif
