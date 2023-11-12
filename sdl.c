@@ -1,4 +1,5 @@
 #include "sdl.h"
+#include "sprite.h"
 #include "fonctions_fichiers.h"
 
 void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t* ressources){
@@ -153,6 +154,8 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->MenuItems.ItemList[2].text = SDL_strdup(quitter);
 
     ressources->MenuItems.selectedItem = -1;
+
+    ressources->background = charger_image("../assets/dirt_sprite.png",renderer);
 }
 
 void free_ressources(ressources_t* ressources){

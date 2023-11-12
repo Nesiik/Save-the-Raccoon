@@ -23,8 +23,8 @@ typedef struct {
 typedef struct ressources_s{
     MenuItem MenuItems;
     TTF_Font* font;
-    sprite player;
-    sprite background;
+    sprite* player;
+    sprite* background;
 }ressources_t;
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);
