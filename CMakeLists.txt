@@ -4,11 +4,12 @@ project(projet VERSION 0.1.0 LANGUAGES C)
 include(FindPkgConfig)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
-include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIR})
+pkg_check_modules(SDL2_image REQUIRED SDL2_image)
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIRS})
 
 file(GLOB SOURCES
 "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
 )
 
 add_executable(projet ${SOURCES})
-target_link_libraries(projet SDL2main SDL2 SDL2_ttf)
+target_link_libraries(projet SDL2main SDL2 SDL2_ttf SDL2_image)
