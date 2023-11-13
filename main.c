@@ -15,16 +15,24 @@ int main( int argc, char* args[] )
     world_t* world = malloc(sizeof(world_t));
     ressources_t* ressources = malloc(sizeof(ressources_t));
     
-    SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
-    TTF_Init();
-    IMG_Init(IMG_INIT_PNG);
+    if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) < 0){
+        printf("%s",SDL_GetError());
+    }
+    if(TTF_Init() < 0){
+        printf("%s",SDL_GetError());
+    }
+    if(IMG_Init(IMG_INIT_PNG) == 0){
+        printf("%s",SDL_GetError());
+    }
 
     SDL_Window* window = create_window();
     SDL_Renderer *renderer = create_renderer(window);
 
     init(renderer,ressources,world);
     while(!fin(world)){
-        SDL_RenderClear(renderer);
+        if(SDL_RenderClear(renderer) < 0){
+            printf("%s",SDL_GetError());
+        }
         handle_events(event,world,ressources);
         switch (world->gameover)
         {

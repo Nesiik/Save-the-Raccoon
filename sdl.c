@@ -75,13 +75,23 @@ void render_main_menu(SDL_Renderer *renderer,ressources_t *ressources){
         }
 
         SDL_Surface* surface = TTF_RenderText_Solid(ressources->font, ressources->MenuItems.ItemList[i].text,  color);
+        if(surface == NULL){
+            printf("%s",SDL_GetError());
+        }
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-        if(ressources->MenuItems.ItemList[i].rect.w == 0 || ressources->MenuItems.ItemList[i].rect.h == 0){
-            SDL_QueryTexture(texture, NULL, NULL, &ressources->MenuItems.ItemList[i].rect.w, &ressources->MenuItems.ItemList[i].rect.h);
+        if(texture == NULL){
+            printf("%s",SDL_GetError());
         }
 
-        SDL_RenderCopy(renderer, texture, NULL, &ressources->MenuItems.ItemList[i].rect);
+        if(ressources->MenuItems.ItemList[i].rect.w == 0 || ressources->MenuItems.ItemList[i].rect.h == 0){
+            if(SDL_QueryTexture(texture, NULL, NULL, &ressources->MenuItems.ItemList[i].rect.w, &ressources->MenuItems.ItemList[i].rect.h) < 0){
+                printf("%s",SDL_GetError());
+            }
+        }
+
+        if(SDL_RenderCopy(renderer, texture, NULL, &ressources->MenuItems.ItemList[i].rect) < 0){
+            printf("%s",SDL_GetError());
+        }
 
         SDL_FreeSurface(surface);
         SDL_DestroyTexture(texture);
@@ -106,9 +116,14 @@ void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y ) {
 	SDL_Color fg = { 255, 255, 255 };
 	SDL_Surface* surf = TTF_RenderText_Solid(police,text, fg);
-
+        if(surf == NULL){
+        printf("%s",SDL_GetError());
+    }
     SDL_Rect dest = {x,y,surf->w,surf->h};
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
+    if(text == NULL){
+        printf("%s",SDL_GetError());
+    }
 
 	SDL_RenderCopy(renderer, tex, NULL, &dest);
 	SDL_DestroyTexture(tex);
@@ -142,7 +157,10 @@ SDL_Renderer* create_renderer(SDL_Window* window){
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->font = TTF_OpenFont("../assets/arial.ttf",28);
-    
+    if(ressources->font == NULL){
+        printf("%s",SDL_GetError());
+    }
+
     ressources->MenuItems.ItemList[0].rect = (SDL_Rect){100,200,0,0};
     const char* jouer = "Jouer";
     ressources->MenuItems.ItemList[0].text = SDL_strdup(jouer);
