@@ -2,6 +2,7 @@
 #include "sprite.h"
 #include "fonctions_fichiers.h"
 
+
 void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t* ressources){
     int mouseX = button.x;
     int mouseY = button.y;
@@ -32,17 +33,22 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
     }
 }
 
-void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
+void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, player_t * player){
     while( SDL_PollEvent( event ) ) {
         switch (event->type){
         case SDL_QUIT:
             world->gameover = Quit;
-            break;
+        break;
         case SDL_KEYDOWN:
-            if(event->key.keysym.sym == SDLK_ESCAPE){
-                world->gameover = Quit;
+            if(world->gameover == Menu){
+                if(event->key.keysym.sym == SDLK_ESCAPE){
+                    world->gameover = Quit;
+                }
             }
-            break;
+            if(world->gameover == Alive){
+                deplacement(player, event->key.keysym.sym);
+            }
+        break;
         case SDL_MOUSEBUTTONDOWN:
             switch (world->gameover)
             {
@@ -125,6 +131,10 @@ void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources
         }
     }
 }
+
+/*void render_player(SDL_Renderer* renderer, ressources_t * ressources, player_t* player){
+
+}*/
 
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y ) {
 	SDL_Color fg = { 255, 255, 255 };
