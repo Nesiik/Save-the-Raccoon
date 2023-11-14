@@ -164,6 +164,7 @@ SDL_Renderer* create_renderer(SDL_Window* window){
     {
         SDL_Log("Erreur lors de la creation du renderer : %s", SDL_GetError());
     }
+    SDL_RenderSetLogicalSize(renderer,1280,720);
     return renderer;
 }
 
