@@ -84,9 +84,8 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
         }
 
         if(ressources->MenuItems.ItemList[i].rect.w == 0 || ressources->MenuItems.ItemList[i].rect.h == 0){
-            if(SDL_QueryTexture(texture, NULL, NULL, &ressources->MenuItems.ItemList[i].rect.w, &ressources->MenuItems.ItemList[i].rect.h) < 0){
-                printf("%s",SDL_GetError());
-            }
+            ressources->MenuItems.ItemList[i].rect.w = surface->w;
+            ressources->MenuItems.ItemList[i].rect.h = surface->h;
         }
 
         if(SDL_RenderCopy(renderer, texture, NULL, &ressources->MenuItems.ItemList[i].rect) < 0){
@@ -110,7 +109,6 @@ void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources
     int spriteH = ressources->background->src.h;
     ressources->background->dest.w = ressources->background->src.w;
     ressources->background->dest.h = ressources->background->src.h;
-    //SDL_Log("%d,%d",spriteW,spriteH);
     for (unsigned int i = 0; i < ligne_tab; i++)
     {
         for (unsigned int j = 0; j < col_tab; j++)
