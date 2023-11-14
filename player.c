@@ -1,8 +1,8 @@
 #include "player.h"
 
 void init_player(player_t * player){
-    player->x = 100;
-    player->y = 100;
+    player->x = 640;
+    player->y = 360;
     player->w = 32;
     player->h = 32;
 }

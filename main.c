@@ -61,6 +61,7 @@ int main( int argc, char* args[] )
     free(world);
     free_ressources(ressources);
     free(ressources);
+    free(player);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
