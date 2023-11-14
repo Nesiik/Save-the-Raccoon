@@ -100,13 +100,19 @@ void render_main_menu(SDL_Renderer *renderer,ressources_t *ressources){
 
 void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources){
     char** tab = lire_fichier("../menu_background.txt");
-    int ligne_tab,col_tab;
+    int ligne_tab,col_tab,dest_x,dest_y;
     taille_fichier("../menu_background.txt",&ligne_tab,&col_tab);
+    int spriteW = (ressources->background->src.w/6)-1;
+    int spriteH = (ressources->background->src.h/5)-1;
+    ressources->background->src.w = spriteW;
+    ressources->background->src.h = spriteH;
+    ressources->background->dest.w = spriteW;
+    ressources->background->dest.h = spriteH;
     for (unsigned int i = 0; i < ligne_tab; i++)
     {
         for (unsigned int j = 0; j < col_tab; j++)
         {
-            /* code */
+            
         }
         
     }
