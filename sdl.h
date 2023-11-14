@@ -25,6 +25,9 @@ typedef struct ressources_s{
     TTF_Font* font;
     //sprite* player;
     sprite* background;
+    char** back_info;
+    int back_ligne;
+    int back_col;
 }ressources_t;
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);
