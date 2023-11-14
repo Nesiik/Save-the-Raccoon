@@ -63,7 +63,7 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
 }
 
 
-void render_main_menu(SDL_Renderer *renderer,ressources_t *ressources){
+void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
     for (int i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
         SDL_Color color;
 

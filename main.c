@@ -37,7 +37,7 @@ int main( int argc, char* args[] )
         switch (world->gameover)
         {
             case Menu:
-                render_main_menu(renderer,ressources);
+                render_main_menu_text(renderer,ressources);
                 break;
             /*case Alive:
                 unsigned int time_limit; // a deplacer dans alive plus tard
