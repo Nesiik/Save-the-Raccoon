@@ -29,11 +29,9 @@ sprite* charger_image_png(const char* nomfichier, SDL_Renderer* renderer){
     if (sprite->text == NULL){
         printf("%s \n",SDL_GetError());
     }
-    if(SDL_QueryTexture(sprite->text,NULL,NULL,&sprite->src.w,&sprite->src.h) < 0){
-        printf("%s \n",SDL_GetError());
-    }
-    sprite->dest.w = sprite->src.w;
-    sprite->dest.h = sprite->src.h;
+    sprite->src.w = png->w;
+    sprite->src.h = png->h;
+    //SDL_Log("%d x %d",sprite->src.w,sprite->src.h);
     SDL_FreeSurface(png);
     return sprite;
 }
