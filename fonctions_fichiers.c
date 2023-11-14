@@ -13,7 +13,7 @@ char** allouer_tab_2D(int n,int m){
     for(int i = 0; i < n; i++){
         tab[i] = (ptr + m * i);
     }
-    
+
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
@@ -25,10 +25,6 @@ char** allouer_tab_2D(int n,int m){
 }
 
 void desallouer_tab_2D(char** tab, int n){
-    for (int i = 0; i < n; i++)
-    {
-        free(tab[n]);
-    }
     free(tab);
 }
 
