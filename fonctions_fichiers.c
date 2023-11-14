@@ -13,7 +13,7 @@ char** allouer_tab_2D(int n,int m){
     for(int i = 0; i < n; i++){
         tab[i] = (ptr + m * i);
     }
-
+    
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
@@ -45,6 +45,10 @@ void afficher_tab_2D(char** tab, int n , int m){
 
 void taille_fichier(const char* nomFichier,int* nbLig,int* nbCol){
     FILE* ptrFichier = fopen(nomFichier,"r");
+    if(ptrFichier == NULL){
+        printf("Erreur ouverture fichier");
+        return;
+    }
     char strFichier;
     int cCol = 0;
     int lig = 0;
@@ -79,8 +83,12 @@ void taille_fichier(const char* nomFichier,int* nbLig,int* nbCol){
 char** lire_fichier(const char* nomFichier){
     int nbLigne,nbCol;
     taille_fichier(nomFichier,&nbLigne,&nbCol);
-    char** tab = allouer_tab_2D(nbLigne,nbCol);
     FILE* ptrFichier = fopen(nomFichier,"r");
+    if(ptrFichier == NULL){
+        printf("Erreur ouverture fichier");
+        return NULL;
+    }
+    char** tab = allouer_tab_2D(nbLigne,nbCol);
     char c;
     int cLigne = 0;
     int cCol = 0;
