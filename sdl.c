@@ -201,6 +201,8 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->background->src.w = (ressources->background->src.w/6)-1;
     ressources->background->src.h = (ressources->background->src.h/5)-1;
     ressources->back_info = NULL;
+
+    ressources->player = charger_image_png("../assets/raccoon/static1.png", renderer);
 }
 
 void free_ressources(ressources_t* ressources){
