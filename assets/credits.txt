@@ -1,6 +1,6 @@
 Credits : 
-texture herbe/terre : bcsilva
+texture herbe/terre : bcsilva (From OpenGameArt.org)
 texture nuages/ciels : Justin Dalessandro(ColdOneK)
-platformer pack : https://socialside.itch.io
-campfire : Zabin and Jetrel
-pixelorama
+platformer pack : https://socialside.itch.io (From OpenGameArt.org)
+campfire : Zabin and Jetrel (From OpenGameArt.org)
+razz the racoon : doudoulolita (From OpenGameArt.org)

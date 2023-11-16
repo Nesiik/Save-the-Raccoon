@@ -133,7 +133,7 @@ void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources
 }
 
 /*void render_player(SDL_Renderer* renderer, ressources_t * ressources, player_t* player){
-
+    ressources->player = 
 }*/
 
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y ) {
