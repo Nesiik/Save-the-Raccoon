@@ -26,9 +26,6 @@ typedef struct ressources_s{
     TTF_Font* font;
     sprite* player;
     sprite* background;
-    char** back_info;
-    int back_ligne;
-    int back_col;
 }ressources_t;
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);
@@ -38,7 +35,7 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
 //void render_player(SDL_Renderer* renderer, ressources_t * ressources, player_t* player);
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y );
 void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources);
-void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources);
+void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources,world_t* world);
 void free_ressources(ressources_t* ressources);
 
 #endif

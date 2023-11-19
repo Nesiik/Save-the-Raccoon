@@ -40,7 +40,7 @@ int main( int argc, char* args[] )
         switch (world->gameover)
         {
             case Menu:
-                render_main_menu_background(renderer,ressources);
+                render_main_menu_background(renderer,ressources,world);
                 render_main_menu_text(renderer,ressources);
                 break;
             case Alive:
@@ -58,6 +58,7 @@ int main( int argc, char* args[] )
     
     TTF_CloseFont(ressources->font);
     free(event);
+    free_levels(world);
     free(world);
     free_ressources(ressources);
     free(ressources);

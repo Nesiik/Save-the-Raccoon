@@ -103,24 +103,24 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
     }
 }
 
-void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources){
-    if(ressources->back_info == NULL){
-        ressources->back_info = lire_fichier("../menu_background.txt");
-        if(ressources->back_info == NULL){
-            SDL_Log("Erreur lecture fichier \n");
+void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
+    if(world->levels[0].level_tab == NULL){
+        world->levels[0].level_tab = lire_fichier("../menu_background.txt");
+        if(world->levels[0].level_tab == NULL){
+            SDL_Log("Erreur lecture fichier ../menu_background.txt \n");
             return;
         }
-        taille_fichier("../menu_background.txt",&ressources->back_ligne,&ressources->back_col);
+        taille_fichier("../menu_background.txt",&world->levels[0].nb_ligne_level_tab,&world->levels[0].nb_col_level_tab);
     }
     int spriteW = ressources->background->src.w;
     int spriteH = ressources->background->src.h;
     ressources->background->dest.w = ressources->background->src.w;
     ressources->background->dest.h = ressources->background->src.h;
-    for (unsigned int i = 0; i < ressources->back_ligne; i++)
+    for (unsigned int i = 0; i < world->levels[0].nb_ligne_level_tab; i++)
     {
-        for (unsigned int j = 0; j < ressources->back_col; j++)
+        for (unsigned int j = 0; j < world->levels[0].nb_col_level_tab; j++)
         {
-            int tabij = ressources->back_info[i][j] - '0'; // conversion ascii -> int
+            int tabij = world->levels[0].level_tab[i][j] - '0'; // conversion ascii -> int
             ressources->background->src.x = tabij*spriteW + (tabij+1);
             ressources->background->src.y = 0;
             ressources->background->dest.x = j*spriteW;
@@ -202,9 +202,9 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->background = charger_image_png("../assets/dirt_sprite.png",renderer);
     ressources->background->src.w = (ressources->background->src.w/6)-1;
     ressources->background->src.h = (ressources->background->src.h/5)-1;
-    ressources->back_info = NULL;
+    //ressources->back_info = NULL;
 
-    ressources->player = charger_image_png("../assets/raccoon/static1.png", renderer);
+    //ressources->player = charger_image_png("../assets/raccoon/static1.png", renderer);
 }
 
 void free_ressources(ressources_t* ressources){
@@ -214,5 +214,4 @@ void free_ressources(ressources_t* ressources){
     }
     SDL_DestroyTexture(ressources->background->text);
     free(ressources->background);
-    desallouer_tab_2D(ressources->back_info,ressources->back_ligne);
 }
