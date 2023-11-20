@@ -195,7 +195,7 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
         printf("%s",SDL_GetError());
     }
 
-    int x=25,y=200;
+    int x=30,y=300;
     const char* str = "Jouer";
     for (char i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
     {
