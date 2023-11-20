@@ -136,6 +136,7 @@ void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources
     ressources->player = 
 }*/
 
+//Fait pour afficher du texte qui change beaucoup
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y ) {
 	SDL_Color fg = { 255, 255, 255 };
 	SDL_Surface* surf = TTF_RenderText_Solid(police,text, fg);
@@ -182,18 +183,18 @@ SDL_Renderer* create_renderer(SDL_Window* window){
 
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
-    ressources->font = TTF_OpenFont("../assets/arial.ttf",28);
+    ressources->font = TTF_OpenFont("../assets/arial.ttf",36);
     if(ressources->font == NULL){
         printf("%s",SDL_GetError());
     }
 
-    ressources->MenuItems.ItemList[0].rect = (SDL_Rect){100,200,0,0};
+    ressources->MenuItems.ItemList[0].rect = (SDL_Rect){25,200,0,0};
     const char* str = "Jouer";
     ressources->MenuItems.ItemList[0].text = SDL_strdup(str);
-    ressources->MenuItems.ItemList[1].rect = (SDL_Rect){100,250,0,0};
+    ressources->MenuItems.ItemList[1].rect = (SDL_Rect){25,250,0,0};
     str = "Options";
     ressources->MenuItems.ItemList[1].text = SDL_strdup(str);
-    ressources->MenuItems.ItemList[2].rect = (SDL_Rect){100,300,0,0};
+    ressources->MenuItems.ItemList[2].rect = (SDL_Rect){25,300,0,0};
     str = "Quitter";
     ressources->MenuItems.ItemList[2].text = SDL_strdup(str);
 
@@ -202,7 +203,6 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->background = charger_image_png("../assets/dirt_sprite.png",renderer);
     ressources->background->src.w = (ressources->background->src.w/6)-1;
     ressources->background->src.h = (ressources->background->src.h/5)-1;
-    //ressources->back_info = NULL;
 
     //ressources->player = charger_image_png("../assets/raccoon/static1.png", renderer);
 }

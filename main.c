@@ -32,6 +32,8 @@ int main( int argc, char* args[] )
     SDL_Renderer *renderer = create_renderer(window);
 
     init(renderer,ressources,world,player);
+    //set_full_screen(window,FakeFS);
+    SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "1");
     while(!fin(world)){
         if(SDL_RenderClear(renderer) < 0){
             printf("%s",SDL_GetError());
