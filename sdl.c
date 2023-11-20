@@ -76,10 +76,12 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
             if (ressources->MenuItems.curselectedItem != ressources->MenuItems.lastselectedItem){
                 SDL_Color color = (SDL_Color){ 180, 180, 180 };
                 //Bouton sélectionné
+                SDL_DestroyTexture(ressources->MenuItems.ItemList[i].texture);
                 ressources->MenuItems.ItemList[i].texture = creer_texte_texture(renderer,ressources->font,&color,ressources->MenuItems.ItemList[i].text,ressources->MenuItems.ItemList[i].rect.x,ressources->MenuItems.ItemList[i].rect.y,&ressources->MenuItems.ItemList[i].rect);
                 if(ressources->MenuItems.lastselectedItem != -1){ // si il y a eu une sélection avant cette sélection
                     color = (SDL_Color){ 100, 100, 100 };
                     char lastItem = ressources->MenuItems.lastselectedItem;
+                    SDL_DestroyTexture(ressources->MenuItems.ItemList[lastItem].texture);
                     ressources->MenuItems.ItemList[lastItem].texture = creer_texte_texture(renderer,ressources->font,&color,ressources->MenuItems.ItemList[lastItem].text,ressources->MenuItems.ItemList[lastItem].rect.x,ressources->MenuItems.ItemList[lastItem].rect.y,&ressources->MenuItems.ItemList[lastItem].rect);
                     ressources->MenuItems.lastselectedItem = ressources->MenuItems.curselectedItem;
                 }
