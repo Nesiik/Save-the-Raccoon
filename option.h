@@ -3,21 +3,27 @@
 
 #include <SDL.h>
 
-enum FullScreenState {
+enum FullScreenFlags {
     None = 0,
     RealFS = SDL_WINDOW_FULLSCREEN,
     FakeFS = SDL_WINDOW_FULLSCREEN_DESKTOP
 };
 
-typedef struct screen_state_s{
+typedef struct resolution_s{
     int refresh_rate;
     int w;
     int h;
+}resolution;
+
+typedef struct screen_state_s{
+    int fullscreen;
+    resolution* cur_reso;
+    resolution* all_reso[];
 }screen_state;
 
 typedef struct option_s
 {
-    
+
 }option;
 
 void get_window_options();

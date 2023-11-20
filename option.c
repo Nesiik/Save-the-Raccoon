@@ -68,3 +68,13 @@ void set_full_screen(SDL_Window* window, Uint32 flags){ //FullScreenState flags
         SDL_Log("SDL_SetWindowFullscreen failed: %s",SDL_GetError());
     }
 }
+
+void set_resolution(screen_state* screen,int w, int h){
+    if(screen->fullscreen > 0){ //fullscreen
+        //SDL_SetWindowDisplayMode();
+    }
+    else{
+        //SDL_SetWindowSize();
+    }
+    
+}
