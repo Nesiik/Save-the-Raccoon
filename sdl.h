@@ -5,8 +5,8 @@
 #include <SDL_ttf.h>
 #include "world.h"
 #include "player.h"
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 #define MAIN_MENU_ITEM_COUNT 3
 
 

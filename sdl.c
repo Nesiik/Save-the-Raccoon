@@ -159,8 +159,8 @@ SDL_Window* create_window(){
     "Save the Raccoon",
     SDL_WINDOWPOS_UNDEFINED,
     SDL_WINDOWPOS_UNDEFINED,
-    1280, 
-    720, 
+    WINDOW_WIDTH, 
+    WINDOW_HEIGHT, 
     SDL_WINDOW_SHOWN);
     if(window == NULL)
     {
@@ -175,7 +175,7 @@ SDL_Renderer* create_renderer(SDL_Window* window){
     {
         SDL_Log("Erreur lors de la creation du renderer : %s", SDL_GetError());
     }
-    if(SDL_RenderSetLogicalSize(renderer,SCREEN_WIDTH,SCREEN_HEIGHT) < 0){
+    if(SDL_RenderSetLogicalSize(renderer,WINDOW_WIDTH,WINDOW_HEIGHT) < 0){
         SDL_Log("%s",SDL_GetError());
     }
     return renderer;
