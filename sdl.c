@@ -18,7 +18,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
             switch (i) {
                 case 0: // Jouer
                     //init_data(world);
-                    //world->gameover = Alive;
+                    world->gameover = Alive;
                     //world->depart = SDL_GetTicks();
                     break;
                 case 1: // Option
@@ -47,7 +47,11 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
                 }
             }
             if(world->gameover == Alive){
-                deplacement(player, event->key.keysym.sym);
+                if(event->key.keysym.sym == SDLK_ESCAPE){
+                    world->gameover = Menu;
+                }else{
+                    deplacement(player, event->key.keysym.sym);
+                }
             }
         break;
         case SDL_MOUSEBUTTONDOWN:
