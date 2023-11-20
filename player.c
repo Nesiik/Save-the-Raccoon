@@ -1,20 +1,18 @@
 #include "player.h"
 
 void init_player(player_t * player){
-    player->x = 640;
-    player->y = 360;
-    player->w = 32;
-    player->h = 32;
+    player->pos.x = 640;
+    player->pos.y = 360;
 }
 
 void deplacement(player_t * player, SDL_Keycode code){
     if(code == SDLK_q){
-        player->x -=5;
+        player->pos.x -=5;
     }
     if(code== SDLK_d){
-        player->x +=5;
+        player->pos.x +=5;
     }
     if(code == SDLK_SPACE){
-        player->y+=5;
+        player->pos.y+=5;
     }
 }

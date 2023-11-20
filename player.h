@@ -4,10 +4,7 @@
 #include <SDL.h>
 
 typedef struct player_s{
-    int x;
-    int y;
-    int w;
-    int h;
+    SDL_Rect pos;
 }player_t;
 
 void init_player(player_t * player);
