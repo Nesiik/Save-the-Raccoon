@@ -102,38 +102,6 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
     }
 }
 
-/*
-void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
-    if(world->levels[0].level_tab == NULL){
-        world->levels[0].level_tab = lire_fichier("../levels/level_0.txt");
-        if(world->levels[0].level_tab == NULL){
-            SDL_Log("Erreur lecture fichier ../levels/level_0.txt \n");
-            return;
-        }
-        taille_fichier("../levels/level_0.txt",&world->levels[0].nb_ligne_level_tab,&world->levels[0].nb_col_level_tab);
-    }
-    int spriteW = ressources->background->src.w;
-    int spriteH = ressources->background->src.h;
-    ressources->background->dest.w = ressources->background->src.w;
-    ressources->background->dest.h = ressources->background->src.h;
-    for (unsigned int i = 0; i < world->levels[0].nb_ligne_level_tab; i++)
-    {
-        for (unsigned int j = 0; j < world->levels[0].nb_col_level_tab; j++)
-        {
-            int tabij = world->levels[0].level_tab[i][j] - '0'; // conversion ascii -> int
-            ressources->background->src.x = tabij*spriteW + (tabij+1);
-            ressources->background->src.y = 0;
-            ressources->background->dest.x = j*spriteW;
-            ressources->background->dest.y = i*spriteH;
-            if(SDL_RenderCopy(renderer,ressources->background->text,&ressources->background->src,&ressources->background->dest)<0){
-                SDL_Log("Erreur : %s",SDL_GetError());
-            }
-        }
-    }
-}
-*/
-
-
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
     int level = world->cur_level;
     int spriteW = ressources->background->src.w;

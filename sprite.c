@@ -31,7 +31,6 @@ sprite* charger_image_png(const char* nomfichier, SDL_Renderer* renderer){
     }
     sprite->src.w = png->w;
     sprite->src.h = png->h;
-    //SDL_Log("%d x %d",sprite->src.w,sprite->src.h);
     SDL_FreeSurface(png);
     return sprite;
 }

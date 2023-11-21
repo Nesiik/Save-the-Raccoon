@@ -43,7 +43,6 @@ int main( int argc, char* args[] )
         switch (world->gameover)
         {
             case Menu:
-                //render_main_menu_background(renderer,ressources,world);
                 render_main_menu_text(renderer,ressources);
                 break;
             case Alive:
