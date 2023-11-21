@@ -4,7 +4,7 @@
 void init_data(world_t * world){
     world->gameover = Menu;
     world->cur_level = 0;
-    int taille = sizeof("../levels/level_ii.txt");
+    int taille = sizeof("../levels/level_ii.txt")+3;
     char str[taille];
     for (char i = 0; i < NB_LEVELS; i++)
     {
