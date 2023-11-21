@@ -113,7 +113,11 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
         for (unsigned int j = 0; j < world->levels[level].nb_col_level_tab; j++)
         {
             char cur_char = world->levels[level].level_tab[i][j];
-            if(cur_char > 64 && cur_char < 91){ //dirt
+            if (cur_char == 39)
+            {
+                continue;
+            }
+            else if(cur_char > 64 && cur_char < 91){ //dirt
                 int tabij = cur_char - 'A'; // conversion ascii -> int
                 ressources->background->src.x = tabij*spriteW + (tabij+1);
                 ressources->background->src.y = 1;
