@@ -8,7 +8,7 @@ void init(SDL_Renderer * renderer, ressources_t *textures, world_t * world, play
     //get_window_options();
     init_data(world);
     init_ressources(renderer, textures);
-    init_player(player);
+    init_player(renderer,player);
 }
 
 int main( int argc, char* args[] )
@@ -46,7 +46,7 @@ int main( int argc, char* args[] )
                 render_main_menu_text(renderer,ressources);
                 break;
             case Alive:
-
+                render_player(renderer,player);
                 /*unsigned int time_limit; // a deplacer dans alive plus tard
                 unsigned int timer = SDL_GetTicks();    
                 unsigned int countdown = (time_limit - timer)/1000; 
@@ -64,6 +64,7 @@ int main( int argc, char* args[] )
     free(world);
     free_ressources(ressources);
     free(ressources);
+    free_player(player);
     free(player);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

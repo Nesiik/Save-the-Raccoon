@@ -1,8 +1,18 @@
 #include "player.h"
+#include "sprite.h"
 
-void init_player(player_t * player){
+void init_player(SDL_Renderer *renderer,player_t* player){
+    player->player = charger_image_png("../assets/raccoon/static1.png", renderer);
+    player->pos.w = player->player->src.w;
+    player->pos.h = player->player->src.h;
     player->pos.x = 640;
     player->pos.y = 360;
+}
+
+void render_player(SDL_Renderer* renderer,player_t* player){
+    if(SDL_RenderCopy(renderer,player->player->text,NULL,&player->pos)<0){
+        SDL_Log("Erreur : %s",SDL_GetError());
+    }
 }
 
 void deplacement(player_t * player, SDL_Keycode code){
@@ -13,6 +23,11 @@ void deplacement(player_t * player, SDL_Keycode code){
         player->pos.x +=5;
     }
     if(code == SDLK_SPACE){
-        player->pos.y+=5;
+        player->pos.y-=5;
     }
+}
+
+void free_player(player_t * player){
+    SDL_DestroyTexture(player->player->text);
+    free(player->player);
 }

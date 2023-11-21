@@ -128,10 +128,6 @@ void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources
     }
 }
 
-/*void render_player(SDL_Renderer* renderer, ressources_t * ressources, player_t* player){
-    ressources->player = 
-}*/
-
 //Fait pour afficher du texte qui change beaucoup
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y ) {
     SDL_Rect dest;
@@ -229,8 +225,6 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->background = charger_image_png("../assets/dirt_sprite.png",renderer);
     ressources->background->src.w = (ressources->background->src.w/6)-1;
     ressources->background->src.h = (ressources->background->src.h/5)-1;
-
-    //ressources->player = charger_image_png("../assets/raccoon/static1.png", renderer);
 }
 
 void free_ressources(ressources_t* ressources){
