@@ -4,12 +4,19 @@
 void init_data(world_t * world){
     world->gameover = Menu;
     world->cur_level = 0;
-    world->levels[0].level_tab = lire_fichier("../menu_background.txt");
-    if(world->levels[0].level_tab == NULL){
-        SDL_Log("Erreur lecture fichier ../menu_background.txt \n");
-        return;
+    int taille = sizeof("../levels/level_ii.txt");
+    char str[taille];
+    for (char i = 0; i < NB_LEVELS; i++)
+    {
+        sprintf(str, "%s%d%s", "../levels/level_", i ,".txt");
+        //printf("%s \n",str);
+        world->levels[i].level_tab = lire_fichier(str);
+        if(world->levels[i].level_tab == NULL){
+            SDL_Log("Erreur lecture fichier %s \n",str);
+            return;
+        }
+        taille_fichier(str,&world->levels[i].nb_ligne_level_tab,&world->levels[i].nb_col_level_tab);
     }
-    taille_fichier("../menu_background.txt",&world->levels[0].nb_ligne_level_tab,&world->levels[0].nb_col_level_tab);
 }
 
 void free_levels(world_t* world){
