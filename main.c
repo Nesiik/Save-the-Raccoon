@@ -39,10 +39,11 @@ int main( int argc, char* args[] )
             printf("%s",SDL_GetError());
         }
         handle_events(event,world,ressources,player);
+        render_worlds(renderer,ressources,world);
         switch (world->gameover)
         {
             case Menu:
-                render_main_menu_background(renderer,ressources,world);
+                //render_main_menu_background(renderer,ressources,world);
                 render_main_menu_text(renderer,ressources);
                 break;
             case Alive:
@@ -51,7 +52,8 @@ int main( int argc, char* args[] )
                 unsigned int timer = SDL_GetTicks();    
                 unsigned int countdown = (time_limit - timer)/1000; 
                 afficher_texte(renderer,"../assets/arial.ttf",countdown,900,600);   //a deplacer dans alive plus tard
-                break;*/
+                */
+                break;
             default:
                 break;
         }

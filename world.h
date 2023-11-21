@@ -2,7 +2,7 @@
 #define WORLD_H
 
 #include "sprite.h"
-#define NB_LEVELS 1
+#define NB_LEVELS 2
 
 enum GameState {
     Menu = -1, 

@@ -38,6 +38,7 @@ void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[],
 SDL_Texture* creer_texte_texture(SDL_Renderer* renderer, TTF_Font* police,SDL_Color* color, const char text[],int x, int y, SDL_Rect* info);
 void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources);
 void render_main_menu_background(SDL_Renderer* renderer,ressources_t* ressources,world_t* world);
+void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world);
 void free_ressources(ressources_t* ressources);
 
 #endif

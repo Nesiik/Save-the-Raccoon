@@ -22,6 +22,9 @@ void deplacement(player_t * player, SDL_Keycode code){
     if(code== SDLK_d){
         player->pos.x +=5;
     }
+    if(code == SDLK_s){
+        player->pos.y+=5;
+    }
     if(code == SDLK_SPACE){
         player->pos.y-=5;
     }
