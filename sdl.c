@@ -119,8 +119,10 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
             }
             else if(cur_char > 64 && cur_char < 91){ //dirt
                 int tabij = cur_char - 'A'; // conversion ascii -> int
-                ressources->background->src.x = tabij*spriteW + (tabij+1);
-                ressources->background->src.y = 1;
+                int dirt_y = tabij/6;
+                int dirt_x = tabij - dirt_y*6;
+                ressources->background->src.x = dirt_x*spriteW + (dirt_x+1);
+                ressources->background->src.y = dirt_y*spriteW + (dirt_y+1);
                 ressources->background->dest.x = j*spriteW;
                 ressources->background->dest.y = i*spriteH;
                 if(SDL_RenderCopy(renderer,ressources->background->text,&ressources->background->src,&ressources->background->dest)<0){
