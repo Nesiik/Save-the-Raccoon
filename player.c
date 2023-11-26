@@ -4,7 +4,8 @@
 void init_player(SDL_Renderer *renderer,player_t* player){
     player->player = charger_image_png("../assets/raccoon/static1.png", renderer);
     player->pos.w = player->player->src.w;
-    player->pos.h = player->player->src.h;
+    //player->pos.h = player->player->src.h;
+    player->pos.h = 64;
     player->pos.x = 640;
     player->pos.y = 360;
 }

@@ -27,7 +27,8 @@ typedef struct {
 typedef struct ressources_s{
     MenuItem MenuItems;
     TTF_Font* font;
-    sprite* background;
+    sprite* dirt;
+    sprite* spike;
 }ressources_t;
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);

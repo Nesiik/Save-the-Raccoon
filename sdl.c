@@ -53,7 +53,8 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
                     world->gameover = Menu;
                     world->cur_level = 0;
                 }else{
-                    deplacement(player, event->key.keysym.sym);
+                    if(event->key.keysym.sym == SDLK_q || event->key.keysym.sym == SDLK_d || event->key.keysym.sym == SDLK_s || event->key.keysym.sym == SDLK_SPACE )
+                        deplacement(player, event->key.keysym.sym);
                 }
             }
         break;
@@ -104,10 +105,6 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
     int level = world->cur_level;
-    int spriteW = ressources->background->src.w;
-    int spriteH = ressources->background->src.h;
-    ressources->background->dest.w = ressources->background->src.w;
-    ressources->background->dest.h = ressources->background->src.h;
     for (unsigned int i = 0; i < world->levels[level].nb_ligne_level_tab; i++)
     {
         for (unsigned int j = 0; j < world->levels[level].nb_col_level_tab; j++)
@@ -121,14 +118,29 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
                 int tabij = cur_char - 'A'; // conversion ascii -> int
                 int dirt_y = tabij/6;
                 int dirt_x = tabij - dirt_y*6;
-                ressources->background->src.x = dirt_x*spriteW + (dirt_x+1);
-                ressources->background->src.y = dirt_y*spriteW + (dirt_y+1);
-                ressources->background->dest.x = j*spriteW;
-                ressources->background->dest.y = i*spriteH;
-                if(SDL_RenderCopy(renderer,ressources->background->text,&ressources->background->src,&ressources->background->dest)<0){
+                int spriteW = ressources->dirt->src.w;
+                int spriteH = ressources->dirt->src.h;
+                ressources->dirt->src.x = dirt_x*spriteW + (dirt_x+1);
+                ressources->dirt->src.y = dirt_y*spriteW + (dirt_y+1);
+                ressources->dirt->dest.x = j*spriteW;
+                ressources->dirt->dest.y = i*spriteH;
+                ressources->dirt->dest.w = ressources->dirt->src.w;
+                ressources->dirt->dest.h = ressources->dirt->src.h;
+                if(SDL_RenderCopy(renderer,ressources->dirt->text,&ressources->dirt->src,&ressources->dirt->dest)<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }
+            else if(cur_char > 59 && cur_char < 64){
+                int tabij = cur_char - '<'; // conversion ascii -> int
+                ressources->spike->dest.x = j*ressources->spike->src.w;
+                ressources->spike->dest.y = i*ressources->spike->src.h;
+                ressources->spike->dest.w = ressources->spike->src.w;
+                ressources->spike->dest.h = ressources->spike->src.h;
+                if(SDL_RenderCopyEx(renderer, ressources->spike->text, NULL, &ressources->spike->dest, tabij*90, NULL, SDL_FLIP_NONE )<0){
+                    SDL_Log("Erreur : %s",SDL_GetError());
+                }
+            }
+            
         }
     }
 }
@@ -227,9 +239,11 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->MenuItems.curselectedItem = -1;
     ressources->MenuItems.lastselectedItem = -1;
 
-    ressources->background = charger_image_png("../assets/dirt_sprite.png",renderer);
-    ressources->background->src.w = (ressources->background->src.w/6)-1;
-    ressources->background->src.h = (ressources->background->src.h/5)-1;
+    ressources->dirt = charger_image_png("../assets/dirt_sprite.png",renderer);
+    ressources->dirt->src.w = (ressources->dirt->src.w/6)-1;
+    ressources->dirt->src.h = (ressources->dirt->src.h/5)-1;
+
+    ressources->spike = charger_image_png("../assets/spikeV4.png",renderer);
 }
 
 void free_ressources(ressources_t* ressources){
@@ -238,6 +252,9 @@ void free_ressources(ressources_t* ressources){
         free(ressources->MenuItems.ItemList[i].text);
         SDL_DestroyTexture(ressources->MenuItems.ItemList[i].texture);
     }
-    SDL_DestroyTexture(ressources->background->text);
-    free(ressources->background);
+    SDL_DestroyTexture(ressources->dirt->text);
+    free(ressources->dirt);
+
+     SDL_DestroyTexture(ressources->spike->text);
+    free(ressources->spike);
 }
