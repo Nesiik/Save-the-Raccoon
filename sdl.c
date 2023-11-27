@@ -85,12 +85,12 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
                 SDL_Color color = (SDL_Color){ 180, 180, 180 };
                 //Bouton sélectionné
                 SDL_DestroyTexture(ressources->MenuItems.ItemList[i].texture);
-                ressources->MenuItems.ItemList[i].texture = creer_texte_texture(renderer,ressources->font,&color,ressources->MenuItems.ItemList[i].text,ressources->MenuItems.ItemList[i].rect.x,ressources->MenuItems.ItemList[i].rect.y,&ressources->MenuItems.ItemList[i].rect);
+                ressources->MenuItems.ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems.ItemList[i].text,ressources->MenuItems.ItemList[i].rect.x,ressources->MenuItems.ItemList[i].rect.y,&ressources->MenuItems.ItemList[i].rect);
                 if(ressources->MenuItems.lastselectedItem != -1){ // si il y a eu une sélection avant cette sélection
                     color = (SDL_Color){ 100, 100, 100 };
                     char lastItem = ressources->MenuItems.lastselectedItem;
                     SDL_DestroyTexture(ressources->MenuItems.ItemList[lastItem].texture);
-                    ressources->MenuItems.ItemList[lastItem].texture = creer_texte_texture(renderer,ressources->font,&color,ressources->MenuItems.ItemList[lastItem].text,ressources->MenuItems.ItemList[lastItem].rect.x,ressources->MenuItems.ItemList[lastItem].rect.y,&ressources->MenuItems.ItemList[lastItem].rect);
+                    ressources->MenuItems.ItemList[lastItem].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems.ItemList[lastItem].text,ressources->MenuItems.ItemList[lastItem].rect.x,ressources->MenuItems.ItemList[lastItem].rect.y,&ressources->MenuItems.ItemList[lastItem].rect);
                     ressources->MenuItems.lastselectedItem = ressources->MenuItems.curselectedItem;
                 }
                 ressources->MenuItems.lastselectedItem = ressources->MenuItems.curselectedItem;
@@ -148,33 +148,48 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
 //Fait pour afficher du texte qui change beaucoup
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y ) {
     SDL_Rect dest;
-    SDL_Texture* tex = creer_texte_texture(renderer,police,NULL,text,x,y,&dest);
+    SDL_Texture* tex = creer_texte_texture(renderer,police,0,NULL,text,x,y,&dest);
    	SDL_RenderCopy(renderer, tex, NULL, &dest);
 	SDL_DestroyTexture(tex);
 }
 
-//creer texture texte et rempli un SDL_rect (si non null)
-SDL_Texture* creer_texte_texture(SDL_Renderer* renderer, TTF_Font* police,SDL_Color* color, const char text[],int x, int y, SDL_Rect* info){
+//renvoie la surface pour du texte
+SDL_Surface* texte_surface(SDL_Renderer* renderer, TTF_Font* police,const char text[],char type,SDL_Color* color){
     SDL_Surface* surf;
     if(color == NULL){
-        surf = TTF_RenderText_Solid(police,text, (SDL_Color){ 100, 100, 100 });
-    }else{
+        color = &(SDL_Color){ 100, 100, 100 };
+    }
+    switch (type) //https://www.libsdl.org/projects/old/SDL_ttf/docs/SDL_ttf.html#SEC42
+    {
+    case 0: //rapide
         surf = TTF_RenderText_Solid(police,text, *color);
+        break;
+    case 2: //lent +beau 
+        surf = TTF_RenderText_Blended(police,text,*color);
+        break;
+    default:
+        break;
     }
-    if(surf == NULL){
-        printf("%s",SDL_GetError());
-        return NULL;
+    if (!surf)
+    {
+        printf("%s \n",TTF_GetError());
     }
+    return surf;
+}
+
+//creer texture texte et rempli un SDL_rect (si non null)
+SDL_Texture* creer_texte_texture(SDL_Renderer* renderer, TTF_Font* police,char type,SDL_Color* color, const char text[],int x, int y, SDL_Rect* info){
+    SDL_Surface* surf = texte_surface(renderer,police,text,type,color);
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
     if(text == NULL){
-        printf("%s",SDL_GetError());
+        printf("%s \n",SDL_GetError());
         return NULL;
     }
     if(info != NULL){
         info->x = x;
         info->y = y;
-        info->w = surf->w;
-        info->h = surf->h;
+        info->w = surf->w/2;
+        info->h = surf->h/2;
     }
     SDL_FreeSurface(surf);
     return tex;
@@ -209,7 +224,7 @@ SDL_Renderer* create_renderer(SDL_Window* window){
 
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
-    ressources->font = TTF_OpenFont("../assets/arial.ttf",36);
+    ressources->font = TTF_OpenFont("../assets/arial.ttf",42*2);
     if(ressources->font == NULL){
         printf("%s",SDL_GetError());
     }
@@ -231,7 +246,7 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
         }
         ressources->MenuItems.ItemList[i].rect = (SDL_Rect){x,y,0,0};
         ressources->MenuItems.ItemList[i].text = SDL_strdup(str);
-        ressources->MenuItems.ItemList[i].texture = creer_texte_texture(renderer,ressources->font,NULL,str, ressources->MenuItems.ItemList[i].rect.x, ressources->MenuItems.ItemList[i].rect.y,&ressources->MenuItems.ItemList[i].rect);
+        ressources->MenuItems.ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,NULL,str, ressources->MenuItems.ItemList[i].rect.x, ressources->MenuItems.ItemList[i].rect.y,&ressources->MenuItems.ItemList[i].rect);
         y+=50;
     }
     
@@ -255,6 +270,6 @@ void free_ressources(ressources_t* ressources){
     SDL_DestroyTexture(ressources->dirt->text);
     free(ressources->dirt);
 
-     SDL_DestroyTexture(ressources->spike->text);
+    SDL_DestroyTexture(ressources->spike->text);
     free(ressources->spike);
 }
