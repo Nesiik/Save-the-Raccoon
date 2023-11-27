@@ -10,7 +10,6 @@
 #define WINDOW_HEIGHT 720
 #define MAIN_MENU_ITEM_COUNT 3
 
-
 typedef struct {
     SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte*/
     char* text; /*!<Le texte du menu*/

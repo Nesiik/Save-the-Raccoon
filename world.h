@@ -3,6 +3,7 @@
 
 #include "sprite.h"
 #define NB_LEVELS 2
+#define DIRT_SIZE 32
 
 enum GameState {
     Menu = -1, 
@@ -23,7 +24,7 @@ typedef struct level_s
 struct world_s{
     int cur_level;
     char gameover; /*!< -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
-    level levels[NB_LEVELS]; /* 0 = Menu */
+    level** levels; /* 0 = Menu , 1 = niveau 1 , etc... */
 };
 typedef struct world_s world_t;
 

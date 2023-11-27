@@ -105,11 +105,11 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
     int level = world->cur_level;
-    for (unsigned int i = 0; i < world->levels[level].nb_ligne_level_tab; i++)
+    for (unsigned int i = 0; i < world->levels[level]->nb_ligne_level_tab; i++)
     {
-        for (unsigned int j = 0; j < world->levels[level].nb_col_level_tab; j++)
+        for (unsigned int j = 0; j < world->levels[level]->nb_col_level_tab; j++)
         {
-            char cur_char = world->levels[level].level_tab[i][j];
+            char cur_char = world->levels[level]->level_tab[i][j];
             if (cur_char == 39) //un trou
             {
                 continue;
@@ -162,7 +162,7 @@ SDL_Surface* texte_surface(SDL_Renderer* renderer, TTF_Font* police,const char t
     switch (type) //https://www.libsdl.org/projects/old/SDL_ttf/docs/SDL_ttf.html#SEC42
     {
     case 0: //rapide
-        surf = TTF_RenderText_Solid(police,text, *color);
+        surf = TTF_RenderText_Solid(police,text,*color);
         break;
     case 2: //lent +beau 
         surf = TTF_RenderText_Blended(police,text,*color);
