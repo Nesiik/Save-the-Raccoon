@@ -103,6 +103,16 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
     }
 }
 
+void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
+    ressources->sky->dest.x = ressources->sky->src.w;
+    ressources->sky->dest.y = ressources->sky->src.h;
+    ressources->sky->dest.w = ressources->sky->src.w;
+    ressources->sky->dest.h = ressources->sky->src.h;
+    if(SDL_RenderCopy(renderer, ressources->sky->text, NULL, &ressources->sky->dest) < 0){
+        printf("%s",SDL_GetError());
+    }
+}
+
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
     int level = world->cur_level;
     for (unsigned int i = 0; i < world->levels[level]->nb_ligne_level_tab; i++)
@@ -135,8 +145,7 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
                 if(SDL_RenderCopyEx(renderer, ressources->spike->text, NULL, &ressources->spike->dest, tabij*90, NULL, SDL_FLIP_NONE )<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
-            }
-            
+            }          
         }
     }
 }
@@ -270,4 +279,7 @@ void free_ressources(ressources_t* ressources){
 
     SDL_DestroyTexture(ressources->spike->text);
     free(ressources->spike);
+
+    SDL_DestroyTexture(ressources->sky->text);
+    free(ressources->sky);
 }

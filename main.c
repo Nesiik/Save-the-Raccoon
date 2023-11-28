@@ -40,6 +40,7 @@ int main( int argc, char* args[] )
             printf("%s",SDL_GetError());
         }
         handle_events(event,world,ressources,player);
+        render_sky(renderer,ressources,world);
         render_worlds(renderer,ressources,world);
         switch (world->gameover)
         {
