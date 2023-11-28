@@ -57,6 +57,31 @@ char world_collision(world_t* world,SDL_Rect* pos){
     return 0;
 }
 
+int* get_dirt_level(world_t* world,SDL_Rect* pos){
+    int tabx = pos->x/DIRT_SIZE;
+    int maxtabx = (pos->x + pos->w)/DIRT_SIZE;
+    if (tabx > world->levels[world->cur_level]->nb_col_level_tab
+    ){
+        return NULL;
+    }
+    int* dirtxy = malloc(2 * sizeof(int)); // x,y
+    dirtxy[0] = 0;
+    dirtxy[1] = 0;
+    for (int i = 0; i < world->levels[world->cur_level]->nb_ligne_level_tab; i++)
+    {
+        for (int j = tabx; j <= maxtabx; j++)
+        {
+            char tabij = world->levels[world->cur_level]->level_tab[i][j];
+            if (tabij > 64 && tabij < 91)
+            {
+                dirtxy[0] = j;
+                dirtxy[1] = i; 
+                return dirtxy;
+            }
+        }
+    }
+    return dirtxy;
+}
 
 void free_levels(world_t* world){
     for (size_t i = 0; i < NB_LEVELS; i++)

@@ -34,6 +34,7 @@ int main( int argc, char* args[] )
     init(renderer,ressources,world,player);
     set_full_screen(window,FakeFS);
     SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "0");
+    int* r;
     while(!fin(world)){
         if(SDL_RenderClear(renderer) < 0){
             printf("%s",SDL_GetError());
@@ -52,7 +53,13 @@ int main( int argc, char* args[] )
                 unsigned int countdown = (time_limit - timer)/1000; 
                 afficher_texte(renderer,"../assets/arial.ttf",countdown,900,600);   //a deplacer dans alive plus tard
                 */
-                printf("resultat collision : %d \n",world_collision(world,&player->pos)); //%d \n
+                //printf("resultat collision : %d \n",world_collision(world,&player->pos)); //%d \n
+                r = get_dirt_level(world,&player->pos);
+                if(r== NULL ){
+                    break;
+                }
+                printf("x dirt : %d , y dirt : %d \n",r[0],r[1]);
+                free(r);
                 //world_collision(world,&player->pos);
                 break;
             default:

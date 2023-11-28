@@ -1,5 +1,6 @@
 #include "player.h"
 #include "sprite.h"
+#include "world.h"
 
 void init_player(SDL_Renderer *renderer,player_t* player){
     player->player = charger_image_png("../assets/raccoon/staticv2.png", renderer);

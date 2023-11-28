@@ -13,6 +13,6 @@
 '
 '
 '
-'
-'         <       =
-CCCC    CCCCCCC CCCC
+'                         CC
+'         <       =      CCCCCC
+CCCC    CCCCCCC CCCCCCCCCCCCCCCCCC
