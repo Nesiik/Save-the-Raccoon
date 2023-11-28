@@ -2,7 +2,8 @@
 #include "sprite.h"
 #include "world.h"
 
-void init_player(SDL_Renderer *renderer,player_t* player){
+player_t* init_player(SDL_Renderer *renderer){
+    player_t* player = malloc(sizeof(player_t));
     player->player = charger_image_png("../assets/raccoon/staticv2.png", renderer);
     player->pos.w = 64;
     //player->pos.w = player->player->src.w;
@@ -10,6 +11,7 @@ void init_player(SDL_Renderer *renderer,player_t* player){
     player->pos.h = 64;
     player->pos.x = 300;
     player->pos.y = 360;
+    return player;
 }
 
 void render_player(SDL_Renderer* renderer,player_t* player){

@@ -9,7 +9,7 @@ typedef struct player_s{
     sprite* player;
 }player_t;
 
-void init_player(SDL_Renderer *renderer,player_t* player);
+player_t* init_player(SDL_Renderer *renderer);
 void render_player(SDL_Renderer* renderer, player_t* player);
 void deplacement(player_t * player, SDL_Keycode code);
 void free_player(player_t * player);

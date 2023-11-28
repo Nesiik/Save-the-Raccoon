@@ -28,7 +28,7 @@ struct world_s{
 };
 typedef struct world_s world_t;
 
-void init_data(world_t * world);
+world_t* init_world();
 char world_collision(world_t* world,SDL_Rect* pos);
 int* get_dirt_level(world_t* world,SDL_Rect* pos);
 void free_levels(world_t* world);

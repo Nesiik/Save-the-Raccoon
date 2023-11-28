@@ -4,20 +4,8 @@
 #include "option.h"
 #include "player.h"
 
-void init(SDL_Renderer * renderer, ressources_t *textures, world_t * world, player_t * player){
-    //get_window_options();
-    init_data(world);
-    init_ressources(renderer, textures);
-    init_player(renderer,player);
-}
-
 int main( int argc, char* args[] )
-{
-    SDL_Event* event = malloc(sizeof(SDL_Event));
-    world_t* world = malloc(sizeof(world_t));
-    ressources_t* ressources = malloc(sizeof(ressources_t));
-    player_t* player = malloc(sizeof(player_t));
-    
+{    
     if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) < 0){
         printf("%s",SDL_GetError());
     }
@@ -30,17 +18,22 @@ int main( int argc, char* args[] )
 
     SDL_Window* window = create_window();
     SDL_Renderer *renderer = create_renderer(window);
+    SDL_Event* event = malloc(sizeof(SDL_Event));
 
-    init(renderer,ressources,world,player);
-    set_full_screen(window,FakeFS);
+    world_t* world = init_world();
+    ressources_t* ressources = init_ressources(renderer);
+    player_t* player = init_player(renderer);
+
+    //set_full_screen(window,FakeFS);
     SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "0");
     int* r;
+
     while(!fin(world)){
         if(SDL_RenderClear(renderer) < 0){
             printf("%s",SDL_GetError());
         }
         handle_events(event,world,ressources,player);
-        render_sky(renderer,ressources,world);
+        render_sky(renderer,ressources);
         render_worlds(renderer,ressources,world);
         switch (world->gameover)
         {
@@ -83,5 +76,5 @@ int main( int argc, char* args[] )
     TTF_Quit();
     SDL_Quit();
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -8,13 +8,13 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
     int mouseY = button.y;
 
     for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
-        Item menuItem = ressources->MenuItems.ItemList[i];
+        Item menuItem = ressources->MenuItems->ItemList[i];
 
         if (mouseX >= menuItem.rect.x && mouseX <= menuItem.rect.x + menuItem.rect.w &&
             mouseY >= menuItem.rect.y && mouseY <= menuItem.rect.y + menuItem.rect.h)
         {
-            ressources->MenuItems.lastselectedItem = ressources->MenuItems.curselectedItem;
-            ressources->MenuItems.curselectedItem = i;
+            ressources->MenuItems->lastselectedItem = ressources->MenuItems->curselectedItem;
+            ressources->MenuItems->curselectedItem = i;
             switch (i) {
                 case 0: // Jouer
                     //init_data(world);
@@ -80,34 +80,34 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
 
 void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
     for (int i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
-        if(i == ressources->MenuItems.curselectedItem){
-            if (ressources->MenuItems.curselectedItem != ressources->MenuItems.lastselectedItem){
+        if(i == ressources->MenuItems->curselectedItem){
+            if (ressources->MenuItems->curselectedItem != ressources->MenuItems->lastselectedItem){
                 SDL_Color color = (SDL_Color){ 180, 180, 180 };
                 //Bouton sélectionné
-                SDL_DestroyTexture(ressources->MenuItems.ItemList[i].texture);
-                ressources->MenuItems.ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems.ItemList[i].text,ressources->MenuItems.ItemList[i].rect.x,ressources->MenuItems.ItemList[i].rect.y,&ressources->MenuItems.ItemList[i].rect);
-                if(ressources->MenuItems.lastselectedItem != -1){ // si il y a eu une sélection avant cette sélection
+                SDL_DestroyTexture(ressources->MenuItems->ItemList[i].texture);
+                ressources->MenuItems->ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems->ItemList[i].text,ressources->MenuItems->ItemList[i].rect.x,ressources->MenuItems->ItemList[i].rect.y,&ressources->MenuItems->ItemList[i].rect);
+                if(ressources->MenuItems->lastselectedItem != -1){ // si il y a eu une sélection avant cette sélection
                     color = (SDL_Color){ 100, 100, 100 };
-                    char lastItem = ressources->MenuItems.lastselectedItem;
-                    SDL_DestroyTexture(ressources->MenuItems.ItemList[lastItem].texture);
-                    ressources->MenuItems.ItemList[lastItem].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems.ItemList[lastItem].text,ressources->MenuItems.ItemList[lastItem].rect.x,ressources->MenuItems.ItemList[lastItem].rect.y,&ressources->MenuItems.ItemList[lastItem].rect);
-                    ressources->MenuItems.lastselectedItem = ressources->MenuItems.curselectedItem;
+                    char lastItem = ressources->MenuItems->lastselectedItem;
+                    SDL_DestroyTexture(ressources->MenuItems->ItemList[lastItem].texture);
+                    ressources->MenuItems->ItemList[lastItem].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems->ItemList[lastItem].text,ressources->MenuItems->ItemList[lastItem].rect.x,ressources->MenuItems->ItemList[lastItem].rect.y,&ressources->MenuItems->ItemList[lastItem].rect);
+                    ressources->MenuItems->lastselectedItem = ressources->MenuItems->curselectedItem;
                 }
-                ressources->MenuItems.lastselectedItem = ressources->MenuItems.curselectedItem;
+                ressources->MenuItems->lastselectedItem = ressources->MenuItems->curselectedItem;
             }
             
         }
-        if(SDL_RenderCopy(renderer, ressources->MenuItems.ItemList[i].texture, NULL, &ressources->MenuItems.ItemList[i].rect) < 0){
+        if(SDL_RenderCopy(renderer, ressources->MenuItems->ItemList[i].texture, NULL, &ressources->MenuItems->ItemList[i].rect) < 0){
             printf("%s",SDL_GetError());
         }
     }
 }
 
 void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
-    ressources->sky->dest.x = ressources->sky->src.w;
-    ressources->sky->dest.y = ressources->sky->src.h;
-    ressources->sky->dest.w = ressources->sky->src.w;
-    ressources->sky->dest.h = ressources->sky->src.h;
+    ressources->sky->dest.x = 0;
+    ressources->sky->dest.y = 0;
+    ressources->sky->dest.w = WINDOW_WIDTH;
+    ressources->sky->dest.h = WINDOW_HEIGHT;
     if(SDL_RenderCopy(renderer, ressources->sky->text, NULL, &ressources->sky->dest) < 0){
         printf("%s",SDL_GetError());
     }
@@ -228,12 +228,14 @@ SDL_Renderer* create_renderer(SDL_Window* window){
 }
 
 
-void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
+ressources_t* init_ressources(SDL_Renderer *renderer){
+    ressources_t* ressources = malloc(sizeof(ressources_t));
     ressources->font = TTF_OpenFont("../assets/arial.ttf",42*2);
     if(ressources->font == NULL){
         printf("%s",SDL_GetError());
     }
 
+    ressources->MenuItems = malloc(sizeof(MenuItem_t));
     int x=550,y=280;
     const char* str = "Jouer";
     for (char i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
@@ -249,15 +251,15 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
             default:
                 break;
         }
-        ressources->MenuItems.ItemList[i].rect = (SDL_Rect){x,y,0,0};
-        ressources->MenuItems.ItemList[i].text = SDL_strdup(str);
-        ressources->MenuItems.ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,NULL,str, ressources->MenuItems.ItemList[i].rect.x, ressources->MenuItems.ItemList[i].rect.y,&ressources->MenuItems.ItemList[i].rect);
+        ressources->MenuItems->ItemList[i].rect = (SDL_Rect){x,y,0,0};
+        ressources->MenuItems->ItemList[i].text = SDL_strdup(str);
+        ressources->MenuItems->ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,NULL,str, ressources->MenuItems->ItemList[i].rect.x, ressources->MenuItems->ItemList[i].rect.y,&ressources->MenuItems->ItemList[i].rect);
         y+=50;
     }
     
 
-    ressources->MenuItems.curselectedItem = -1;
-    ressources->MenuItems.lastselectedItem = -1;
+    ressources->MenuItems->curselectedItem = -1;
+    ressources->MenuItems->lastselectedItem = -1;
 
     ressources->dirt = charger_image_png("../assets/dirt_sprite.png",renderer);
     ressources->dirt->src.w = (ressources->dirt->src.w/6)-1;
@@ -266,13 +268,14 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->spike = charger_image_png("../assets/spikeV4.png",renderer);
     ressources->sky = charger_image_png("../assets/clouds2.1Large(1).png",renderer);
 
+    return ressources;
 }
 
 void free_ressources(ressources_t* ressources){
     for (size_t i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
     {
-        free(ressources->MenuItems.ItemList[i].text);
-        SDL_DestroyTexture(ressources->MenuItems.ItemList[i].texture);
+        free(ressources->MenuItems->ItemList[i].text);
+        SDL_DestroyTexture(ressources->MenuItems->ItemList[i].texture);
     }
     SDL_DestroyTexture(ressources->dirt->text);
     free(ressources->dirt);

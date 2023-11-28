@@ -1,7 +1,8 @@
 #include "world.h"
 #include "fonctions_fichiers.h"
 
-void init_data(world_t * world){
+world_t* init_world(){
+    world_t* world = malloc(sizeof(world_t));
     world->gameover = Menu;
     world->cur_level = 0;
     world->levels = malloc(NB_LEVELS*sizeof(level*));
@@ -15,10 +16,10 @@ void init_data(world_t * world){
         world->levels[i]->level_tab = lire_fichier(str);
         if(world->levels[i]->level_tab == NULL){
             SDL_Log("Erreur lecture fichier %s \n",str);
-            return;
         }
         taille_fichier(str,&world->levels[i]->nb_ligne_level_tab,&world->levels[i]->nb_col_level_tab);
     }
+    return world;
 }
 
 
