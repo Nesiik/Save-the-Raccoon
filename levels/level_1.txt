@@ -14,5 +14,5 @@
 '
 '
 '
-'         <  =
-CCCCCCCCCCCCCCCCCCCC
+'         <       =
+CCCC    CCCCCCC CCCC
