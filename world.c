@@ -38,19 +38,20 @@ char world_collision(world_t* world,SDL_Rect* pos){
     if(maxtaby > world->levels[world->cur_level]->nb_ligne_level_tab){
         maxtaby = world->levels[world->cur_level]->nb_ligne_level_tab;
     }
-    printf("x : %d, max x : %d, y : %d, max y : %d \n",tabx,maxtabx,taby,maxtaby);
+    //printf("x : %d, max x : %d, y : %d, max y : %d \n",tabx,maxtabx,taby,maxtaby);
     for (int i = taby; i <= maxtaby; i++)
     {
         for (int j = tabx; j <= maxtabx; j++)
         {
             char tabij = world->levels[world->cur_level]->level_tab[i][j];
-            if(tabij > 64 && tabij < 91){
-                return 1;
-            }
-            else if (tabij > 59 && tabij < 64)
+            if (tabij > 59 && tabij < 64)
             {
+                return 2;
+            }
+            else if(tabij > 64 && tabij < 91){
                 return 1;
             }
+
         }
     }
     return 0;
