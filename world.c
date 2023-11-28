@@ -27,14 +27,18 @@ char world_collision(world_t* world,SDL_Rect* pos){
     int maxtabx = (pos->x + pos->w)/DIRT_SIZE;
     int taby = pos->y/DIRT_SIZE;
     int maxtaby = (pos->y + pos->h)/DIRT_SIZE;
-    //printf("x : %d, max x : %d, y : %d, max y : %d \n",tabx,maxtabx,taby,maxtaby);
     if (tabx > world->levels[world->cur_level]->nb_col_level_tab ||
-        maxtabx > world->levels[world->cur_level]->nb_col_level_tab ||
-        taby > world->levels[world->cur_level]->nb_ligne_level_tab ||
-        maxtaby > world->levels[world->cur_level]->nb_ligne_level_tab
+        taby > world->levels[world->cur_level]->nb_ligne_level_tab
     ){
         return 0;
     }
+    if(maxtabx > world->levels[world->cur_level]->nb_col_level_tab){
+        maxtabx = world->levels[world->cur_level]->nb_col_level_tab;
+    }
+    if(maxtaby > world->levels[world->cur_level]->nb_ligne_level_tab){
+        maxtaby = world->levels[world->cur_level]->nb_ligne_level_tab;
+    }
+    printf("x : %d, max x : %d, y : %d, max y : %d \n",tabx,maxtabx,taby,maxtaby);
     for (int i = taby; i <= maxtaby; i++)
     {
         for (int j = tabx; j <= maxtabx; j++)

@@ -44,7 +44,7 @@ void deplacement(player_t * player, SDL_Keycode code){
         player->pos.y +=5;
     }
     if(code == SDLK_SPACE){
-        if (player->pos.y - 5 <= 0)
+        if (player->pos.y + player->pos.h - 5 <= 0)
         {
             player->pos.y = 0;
             return;
