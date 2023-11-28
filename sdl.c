@@ -225,7 +225,7 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
         printf("%s",SDL_GetError());
     }
 
-    int x=30,y=300;
+    int x=550,y=280;
     const char* str = "Jouer";
     for (char i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
     {
@@ -255,6 +255,8 @@ void init_ressources(SDL_Renderer *renderer, ressources_t* ressources){
     ressources->dirt->src.h = (ressources->dirt->src.h/5)-1;
 
     ressources->spike = charger_image_png("../assets/spikeV4.png",renderer);
+    ressources->sky = charger_image_png("../assets/clouds2.1Large(1).png",renderer);
+
 }
 
 void free_ressources(ressources_t* ressources){

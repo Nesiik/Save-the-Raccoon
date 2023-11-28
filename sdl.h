@@ -28,6 +28,7 @@ typedef struct ressources_s{
     TTF_Font* font;
     sprite* dirt;
     sprite* spike;
+    sprite* sky;
 }ressources_t;
 
 void init_ressources(SDL_Renderer *renderer, ressources_t* ressources);
