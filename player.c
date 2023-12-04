@@ -29,6 +29,12 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             player->x = 0;
             return;
         }
+        if(!is_empty(world,(player->x - 5 )/DIRT_SIZE ,(player->y + player->sprite->sprite_h )/DIRT_SIZE)){
+            int snap = round(player->x/DIRT_SIZE) * DIRT_SIZE;
+            //printf("snap : %d , x : %lf \n",snap,player->x);
+            player->x = snap + (snap > player->x ? 1 : -1);
+            return;
+        }
         player->x -=5;
     }
     if(code== SDLK_d){
@@ -40,7 +46,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
         if(!is_empty(world,(player->x + player->sprite->sprite_w + 5 )/DIRT_SIZE ,(player->y + player->sprite->sprite_h )/DIRT_SIZE)){
             int snap = round(player->x/DIRT_SIZE) * DIRT_SIZE;
             //printf("snap : %d , x : %lf \n",snap,player->x);
-            player->x = snap;
+            player->x = snap + (snap > player->x ? 1 : -1);
             return;
         }
         player->x +=5;
@@ -51,12 +57,24 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             player->y = 720 - player->sprite->sprite_h;
             return;
         }
+        if(!is_empty(world,(player->x)/DIRT_SIZE ,(player->y + player->sprite->sprite_h + 5 )/DIRT_SIZE)){
+            int snap = round(player->y/DIRT_SIZE) * DIRT_SIZE;
+            //printf("snap : %d , y : %lf \n",snap,player->y);
+            player->y = snap + (snap > player->y ? 1 : -1);
+            return;
+        }
         player->y +=5;
     }
     if(code == SDLK_SPACE){
         if (player->y + player->sprite->sprite_h - 5 <= 0)
         {
             player->y = 0;
+            return;
+        }
+        if(!is_empty(world,(player->x)/DIRT_SIZE ,(player->y - 5 )/DIRT_SIZE)){
+            int snap = round(player->y/DIRT_SIZE) * DIRT_SIZE;
+            //printf("snap : %d , y : %lf \n",snap,player->y);
+            player->y = snap + (snap > player->y ? 1 : -1);
             return;
         }
         player->y -=5;
