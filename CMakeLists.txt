@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27)
-project(projet VERSION 0.1.0 LANGUAGES C)
+project(projet)
 
 include(FindPkgConfig)
 pkg_check_modules(SDL2 REQUIRED sdl2)
@@ -12,4 +12,4 @@ file(GLOB SOURCES
 )
 
 add_executable(projet ${SOURCES})
-target_link_libraries(projet SDL2main SDL2 SDL2_ttf SDL2_image)
+target_link_libraries(projet m SDL2main SDL2 SDL2_ttf SDL2_image)
