@@ -9,6 +9,8 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 #define MAIN_MENU_ITEM_COUNT 3
+#define N_WIDTH_DIRT_SPRITE 6
+#define N_HEIGHT_DIRT_SPRITE 5
 
 typedef struct Item_s{
     SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte*/

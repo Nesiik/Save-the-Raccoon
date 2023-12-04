@@ -18,7 +18,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
             switch (i) {
                 case 0: // Jouer
                     //init_data(world);
-                    world->gameover = Alive;
+                    world->game_state = Alive;
                     if(world->cur_level == 0)
                         world->cur_level = 1;
                     //world->depart = SDL_GetTicks();
@@ -26,7 +26,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
                 case 1: // Option
                     break;
                 case 2: // Quitter
-                    world->gameover = Quit;
+                    world->game_state = Quit;
                     break;
                 
                 default:
@@ -40,26 +40,26 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
     while( SDL_PollEvent( event ) ) {
         switch (event->type){
         case SDL_QUIT:
-            world->gameover = Quit;
+            world->game_state = Quit;
         break;
         case SDL_KEYDOWN:
-            if(world->gameover == Menu){
+            if(world->game_state == Menu){
                 if(event->key.keysym.sym == SDLK_ESCAPE){
-                    world->gameover = Quit;
+                    world->game_state = Quit;
                 }
             }
-            if(world->gameover == Alive){
+            if(world->game_state == Alive){
                 if(event->key.keysym.sym == SDLK_ESCAPE){
-                    world->gameover = Menu;
+                    world->game_state = Menu;
                     world->cur_level = 0;
                 }else{
                     if(event->key.keysym.sym == SDLK_q || event->key.keysym.sym == SDLK_d || event->key.keysym.sym == SDLK_s || event->key.keysym.sym == SDLK_SPACE )
-                        deplacement(player, event->key.keysym.sym);
+                        deplacement(player, world,event->key.keysym.sym);
                 }
             }
         break;
         case SDL_MOUSEBUTTONDOWN:
-            switch (world->gameover)
+            switch (world->game_state)
             {
             case Menu:
                 if (event->button.button == SDL_BUTTON_LEFT)
@@ -104,45 +104,37 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
 }
 
 void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
-    ressources->sky->dest.x = 0;
-    ressources->sky->dest.y = 0;
-    ressources->sky->dest.w = WINDOW_WIDTH;
-    ressources->sky->dest.h = WINDOW_HEIGHT;
-    if(SDL_RenderCopy(renderer, ressources->sky->text, NULL, &ressources->sky->dest) < 0){
+    SDL_Rect rect = {0,0,WINDOW_WIDTH,WINDOW_HEIGHT};
+    if(SDL_RenderCopy(renderer, ressources->sky->text, NULL, &rect) < 0){
         printf("%s",SDL_GetError());
     }
 }
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
     int level = world->cur_level;
+    char cur_char;
+    int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
     for (unsigned int i = 0; i < world->levels[level]->nb_ligne_level_tab; i++)
     {
         for (unsigned int j = 0; j < world->levels[level]->nb_col_level_tab; j++)
         {
-            char cur_char = world->levels[level]->level_tab[i][j]; // ' / 39 = trou
+            cur_char = world->levels[level]->level_tab[i][j]; // ' / 39 = trou
             if(cur_char > 64 && cur_char < 91){ //dirt
-                int tabij = cur_char - 'A'; // conversion ascii -> int
-                int dirt_y = tabij/6;
-                int dirt_x = tabij - dirt_y*6;
-                int spriteW = ressources->dirt->src.w;
-                int spriteH = ressources->dirt->src.h;
-                ressources->dirt->src.x = dirt_x*spriteW + (dirt_x+1);
-                ressources->dirt->src.y = dirt_y*spriteW + (dirt_y+1);
-                ressources->dirt->dest.x = j*spriteW;
-                ressources->dirt->dest.y = i*spriteH;
-                ressources->dirt->dest.w = ressources->dirt->src.w;
-                ressources->dirt->dest.h = ressources->dirt->src.h;
-                if(SDL_RenderCopy(renderer,ressources->dirt->text,&ressources->dirt->src,&ressources->dirt->dest)<0){
+                tabij = cur_char - 'A'; // conversion ascii -> int
+                dirt_y = tabij/6;
+                dirt_x = tabij - dirt_y*6;
+                one_sprite_w = (ressources->dirt->sprite_w/N_WIDTH_DIRT_SPRITE)-1;
+                one_sprite_h = (ressources->dirt->sprite_h/N_HEIGHT_DIRT_SPRITE)-1;
+                SDL_Rect src = {dirt_x*one_sprite_w + (dirt_x+1),dirt_y*one_sprite_w + (dirt_y+1),one_sprite_w,one_sprite_h};
+                SDL_Rect dest = {j*one_sprite_w,i*one_sprite_h , one_sprite_w , one_sprite_h};
+                if(SDL_RenderCopy(renderer,ressources->dirt->text,&src,&dest)<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }
             else if(cur_char > 59 && cur_char < 64){
-                int tabij = cur_char - '<'; // conversion ascii -> int
-                ressources->spike->dest.x = j*ressources->spike->src.w;
-                ressources->spike->dest.y = i*ressources->spike->src.h;
-                ressources->spike->dest.w = ressources->spike->src.w;
-                ressources->spike->dest.h = ressources->spike->src.h;
-                if(SDL_RenderCopyEx(renderer, ressources->spike->text, NULL, &ressources->spike->dest, tabij*90, NULL, SDL_FLIP_NONE )<0){
+                tabij = cur_char - '<'; // conversion ascii -> int
+                SDL_Rect dest = {j*ressources->spike->sprite_w,i*ressources->spike->sprite_h , ressources->spike->sprite_w , ressources->spike->sprite_h};
+                if(SDL_RenderCopyEx(renderer, ressources->spike->text, NULL, &dest, tabij*90, NULL, SDL_FLIP_NONE )<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }          
@@ -216,7 +208,7 @@ SDL_Window* create_window(){
 }
 
 SDL_Renderer* create_renderer(SDL_Window* window){
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     if(renderer == NULL)
     {
         SDL_Log("Erreur lors de la creation du renderer : %s", SDL_GetError());
@@ -236,6 +228,7 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
     }
 
     ressources->MenuItems = malloc(sizeof(MenuItem_t));
+
     int x=550,y=280;
     const char* str = "Jouer";
     for (char i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
@@ -262,8 +255,6 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
     ressources->MenuItems->lastselectedItem = -1;
 
     ressources->dirt = charger_image_png("../assets/dirt_sprite.png",renderer);
-    ressources->dirt->src.w = (ressources->dirt->src.w/6)-1;
-    ressources->dirt->src.h = (ressources->dirt->src.h/5)-1;
 
     ressources->spike = charger_image_png("../assets/spikeV4.png",renderer);
     ressources->sky = charger_image_png("../assets/clouds2.1Large(1).png",renderer);
@@ -277,6 +268,8 @@ void free_ressources(ressources_t* ressources){
         free(ressources->MenuItems->ItemList[i].text);
         SDL_DestroyTexture(ressources->MenuItems->ItemList[i].texture);
     }
+    free(ressources->MenuItems);
+
     SDL_DestroyTexture(ressources->dirt->text);
     free(ressources->dirt);
 
@@ -285,4 +278,6 @@ void free_ressources(ressources_t* ressources){
 
     SDL_DestroyTexture(ressources->sky->text);
     free(ressources->sky);
+
+    TTF_CloseFont(ressources->font);
 }

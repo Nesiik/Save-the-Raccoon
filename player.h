@@ -3,15 +3,22 @@
 
 #include <SDL.h>
 #include "sprite.h"
+#include "world.h"
+
+#define PLAYER_SPRITE_SIZE 64
+
+enum States { REST=0, TAKEOFF=1, FLIGHT=2, LANDING=3, WALK=4, FALL=5 };
 
 typedef struct player_s{
-    SDL_Rect pos;
-    sprite* player;
+    double x,y;
+    Uint64 time;
+    int state;
+    sprite* sprite;
 }player_t;
 
 player_t* init_player(SDL_Renderer *renderer);
 void render_player(SDL_Renderer* renderer, player_t* player);
-void deplacement(player_t * player, SDL_Keycode code);
-void free_player(player_t * player);
+void deplacement(player_t* player,world_t* world, SDL_Keycode code);
+void free_player(player_t* player);
 
 #endif

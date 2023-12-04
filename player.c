@@ -1,62 +1,69 @@
 #include "player.h"
 #include "sprite.h"
 #include "world.h"
+#include <math.h>
 
-player_t* init_player(SDL_Renderer *renderer){
+player_t* init_player(SDL_Renderer* renderer){
     player_t* player = malloc(sizeof(player_t));
-    player->player = charger_image_png("../assets/raccoon/staticv2.png", renderer);
-    player->pos.w = 64;
-    //player->pos.w = player->player->src.w;
-    //player->pos.h = player->player->src.h;
-    player->pos.h = 64;
-    player->pos.x = 300;
-    player->pos.y = 360;
+    player->sprite = charger_image_png("../assets/raccoon/staticv2.png", renderer);
+    player->sprite->sprite_w = PLAYER_SPRITE_SIZE;
+    player->sprite->sprite_h = PLAYER_SPRITE_SIZE;
+    player->state = REST;
+    player->x = 300;
+    player->y = 360;
     return player;
 }
 
 void render_player(SDL_Renderer* renderer,player_t* player){
-    if(SDL_RenderCopy(renderer,player->player->text,NULL,&player->pos)<0){
+    SDL_Rect dest = {player->x,player->y,player->sprite->sprite_w,player->sprite->sprite_h};
+    if(SDL_RenderCopy(renderer,player->sprite->text,NULL,&dest)<0){
         SDL_Log("Erreur : %s",SDL_GetError());
     }
 }
 
-void deplacement(player_t * player, SDL_Keycode code){
-    printf("x : %d , y : %d \n",player->pos.x,player->pos.y);
+void deplacement(player_t* player,world_t* world, SDL_Keycode code){
+    //printf("x : %d , y : %d \n",player->x,player->y);
     if(code == SDLK_q){
-        if (player->pos.x - 5 <= 0)
+        if (player->x - 5 <= 0)
         {
-            player->pos.x = 0;
+            player->x = 0;
             return;
         }
-        player->pos.x -=5;
+        player->x -=5;
     }
     if(code== SDLK_d){
-        if (player->pos.x + player->pos.w + 5 >= 1280)
+        if (player->x + player->sprite->sprite_w + 5 >= 1280)
         {
-            player->pos.x = 1280 - player->pos.w;
+            player->x = 1280 - player->sprite->sprite_w;
             return;
         }
-        player->pos.x +=5;
+        if(!is_empty(world,(player->x + player->sprite->sprite_w + 5 )/DIRT_SIZE ,(player->y + player->sprite->sprite_h )/DIRT_SIZE)){
+            int snap = round(player->x/DIRT_SIZE) * DIRT_SIZE;
+            //printf("snap : %d , x : %lf \n",snap,player->x);
+            player->x = snap;
+            return;
+        }
+        player->x +=5;
     }
     if(code == SDLK_s){
-        if (player->pos.y + player->pos.h + 5 >= 720)
+        if (player->y + player->sprite->sprite_h + 5 >= 720)
         {
-            player->pos.y = 720 - player->pos.h;
+            player->y = 720 - player->sprite->sprite_h;
             return;
         }
-        player->pos.y +=5;
+        player->y +=5;
     }
     if(code == SDLK_SPACE){
-        if (player->pos.y + player->pos.h - 5 <= 0)
+        if (player->y + player->sprite->sprite_h - 5 <= 0)
         {
-            player->pos.y = 0;
+            player->y = 0;
             return;
         }
-        player->pos.y -=5;
+        player->y -=5;
     }
 }
 
-void free_player(player_t * player){
-    SDL_DestroyTexture(player->player->text);
-    free(player->player);
+void free_player(player_t* player){
+    SDL_DestroyTexture(player->sprite->text);
+    free(player->sprite);
 }

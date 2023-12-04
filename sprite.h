@@ -5,8 +5,7 @@
 #include <SDL_image.h>
 
 typedef struct sprite_s{
-    SDL_Rect src;
-    SDL_Rect dest;
+    int sprite_w,sprite_h;
     SDL_Texture* text;
 }sprite;
 

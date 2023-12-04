@@ -10,28 +10,25 @@ sprite* charger_image (const char* nomfichier, SDL_Renderer* renderer){
     if (sprite->text == NULL){
         printf("%s \n",SDL_GetError());
     }
-    if(SDL_QueryTexture(sprite->text,NULL,NULL,&sprite->src.w,&sprite->src.h) < 0){
-        printf("%s",SDL_GetError());
-    }
-    sprite->dest.w = sprite->src.w;
-    sprite->dest.h = sprite->src.h;
+    sprite->sprite_w = bmp->w;
+    sprite->sprite_h = bmp->h;
     SDL_FreeSurface(bmp);
     return sprite;
 }
 
 sprite* charger_image_png(const char* nomfichier, SDL_Renderer* renderer){
     sprite* sprite = malloc(sizeof(*sprite));
-    SDL_Surface* png = IMG_Load(nomfichier);
-    if(png == NULL){
+    SDL_Surface* surf = IMG_Load(nomfichier);
+    if(surf == NULL){
         printf("%s",SDL_GetError());
     }
-    sprite->text = SDL_CreateTextureFromSurface(renderer,png);
+    sprite->text = SDL_CreateTextureFromSurface(renderer,surf);
     if (sprite->text == NULL){
         printf("%s \n",SDL_GetError());
     }
-    sprite->src.w = png->w;
-    sprite->src.h = png->h;
-    SDL_FreeSurface(png);
+    sprite->sprite_w = surf->w;
+    sprite->sprite_h = surf->h;
+    SDL_FreeSurface(surf);
     return sprite;
 }
 
@@ -48,11 +45,8 @@ sprite* charger_image_transparante(const char* nomfichier, SDL_Renderer* rendere
         if (sprite->text == NULL){
         printf("%s \n",SDL_GetError());
     }
-    if(SDL_QueryTexture(sprite->text,NULL,NULL,&sprite->src.w,&sprite->src.h) < 0){
-        printf("%s",SDL_GetError());
-    }
-    sprite->dest.w = sprite->src.w;
-    sprite->dest.h = sprite->src.h;
+    sprite->sprite_w = bmp->w;
+    sprite->sprite_h = bmp->h;
     SDL_FreeSurface(bmp);
     return sprite;
 

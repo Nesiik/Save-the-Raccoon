@@ -6,7 +6,7 @@
 
 int main( int argc, char* args[] )
 {    
-    if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) < 0){
+    if(SDL_Init(SDL_INIT_VIDEO) < 0){
         printf("%s",SDL_GetError());
     }
     if(TTF_Init() < 0){
@@ -26,43 +26,37 @@ int main( int argc, char* args[] )
 
     //set_full_screen(window,FakeFS);
     SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "0");
-    int* r;
 
+    Uint64 time = SDL_GetTicks64(),dt;
     while(!fin(world)){
+        handle_events(event,world,ressources,player);
         if(SDL_RenderClear(renderer) < 0){
             printf("%s",SDL_GetError());
         }
-        handle_events(event,world,ressources,player);
+        dt = SDL_GetTicks64() - time;
         render_sky(renderer,ressources);
         render_worlds(renderer,ressources,world);
-        switch (world->gameover)
+        switch (world->game_state)
         {
             case Menu:
                 render_main_menu_text(renderer,ressources);
                 break;
             case Alive:
                 render_player(renderer,player);
+                //printf("%lu \n",dt);
                 /*unsigned int time_limit; // a deplacer dans alive plus tard
                 unsigned int timer = SDL_GetTicks();    
                 unsigned int countdown = (time_limit - timer)/1000; 
                 afficher_texte(renderer,"../assets/arial.ttf",countdown,900,600);   //a deplacer dans alive plus tard
                 */
-                //printf("resultat collision : %d \n",world_collision(world,&player->pos)); //%d \n
-                r = get_dirt_level(world,&player->pos);
-                if(r== NULL ){
-                    break;
-                }
-                printf("x dirt : %d , y dirt : %d \n",r[0],r[1]);
-                free(r);
-                //world_collision(world,&player->pos);
                 break;
             default:
                 break;
         }
+        time = SDL_GetTicks64();
         SDL_RenderPresent(renderer);
     }
-    
-    TTF_CloseFont(ressources->font);
+
     free(event);
     free_levels(world);
     free(world);
