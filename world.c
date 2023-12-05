@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h>
 #include "world.h"
 #include "fonctions_fichiers.h"
 

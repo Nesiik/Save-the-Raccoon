@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <stdio.h>
 #include "sdl.h"
 #include "option.h"
 #include "player.h"
