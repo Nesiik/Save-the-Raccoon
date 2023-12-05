@@ -65,7 +65,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
         }
         player->y +=5;
     }
-    if(code == SDLK_SPACE){
+    if(code == SDLK_z){
         if (player->y + player->sprite->sprite_h - 5 <= 0)
         {
             player->y = 0;
