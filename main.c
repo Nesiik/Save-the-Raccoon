@@ -11,7 +11,7 @@ int main( int argc, char* args[] )
         printf("%s",SDL_GetError());
     }
     if(TTF_Init() < 0){
-        printf("%s",SDL_GetError());
+        printf("%s",TTF_GetError());
     }
     if(IMG_Init(IMG_INIT_PNG) == 0){
         printf("%s",SDL_GetError());
