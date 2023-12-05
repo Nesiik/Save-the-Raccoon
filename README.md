@@ -1,4 +1,4 @@
-##Compilation
+# Compilation
 git clone --recurse-submodules https://github.com/Nesiik/Save-the-Raccoon &&
 cd Save-the-Raccoon &&
 mkdir build &&
