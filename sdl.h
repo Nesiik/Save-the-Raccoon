@@ -31,6 +31,7 @@ typedef struct ressources_s{
     sprite* dirt;
     sprite* spike;
     sprite* sky;
+    sprite* tree;
 }ressources_t;
 
 ressources_t* init_ressources(SDL_Renderer *renderer);

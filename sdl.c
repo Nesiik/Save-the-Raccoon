@@ -135,7 +135,7 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
         for (int j = 0; j < world->levels[level]->nb_col_level_tab; j++)
         {
             cur_char = world->levels[level]->level_tab[i][j]; // ' / 39 = trou
-            if(cur_char > 64 && cur_char < 91){ //dirt
+            if(cur_char > 64 && cur_char < 89){ //dirt
                 tabij = cur_char - 'A'; // conversion ascii -> int
                 dirt_y = tabij/6;
                 dirt_x = tabij - dirt_y*6;
@@ -147,13 +147,20 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }
-            else if(cur_char > 59 && cur_char < 64){
+            else if(cur_char > 59 && cur_char < 64){ //spike
                 tabij = cur_char - '<'; // conversion ascii -> int
                 SDL_Rect dest = {j*ressources->spike->sprite_w,i*ressources->spike->sprite_h , ressources->spike->sprite_w , ressources->spike->sprite_h};
                 if(SDL_RenderCopyEx(renderer, ressources->spike->text, NULL, &dest, tabij*90, NULL, SDL_FLIP_NONE )<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
-            }          
+            }    
+            else if(cur_char == 116){ //tree
+                tabij = cur_char; // conversion ascii -> int
+                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE - (96 - DIRT_SIZE) , 96 , 96};
+                if(SDL_RenderCopy(renderer, ressources->tree->text, NULL, &dest)<0){
+                    SDL_Log("Erreur : %s",SDL_GetError());
+                }
+            }         
         }
     }
 }
@@ -272,8 +279,11 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
 
     ressources->dirt = charger_image_png("../assets/dirt_sprite.png",renderer);
 
-    ressources->spike = charger_image_png("../assets/spikeV4.png",renderer);
     ressources->sky = charger_image_png("../assets/clouds2.1Large(1).png",renderer);
+
+    ressources->spike = charger_image_png("../assets/spikeV4.png",renderer);
+    
+    ressources->tree = charger_image_png("../assets/treeV2.png", renderer);
 
     return ressources;
 }
@@ -294,6 +304,9 @@ void free_ressources(ressources_t* ressources){
 
     SDL_DestroyTexture(ressources->sky->text);
     free(ressources->sky);
+
+    SDL_DestroyTexture(ressources->tree->text);
+    free(ressources->tree);
 
     TTF_CloseFont(ressources->font);
 }

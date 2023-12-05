@@ -25,7 +25,7 @@ int main( int argc, char* args[] )
     ressources_t* ressources = init_ressources(renderer);
     player_t* player = init_player(renderer);
 
-    //set_full_screen(window,FakeFS);
+    set_full_screen(window,FakeFS);
     SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
     Uint64 time = SDL_GetTicks64(),dt;
