@@ -57,7 +57,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             player->y = 720 - player->sprite->sprite_h;
             return;
         }
-        if(!is_empty(world,(player->x)/DIRT_SIZE ,(player->y + player->sprite->sprite_h + 5 )/DIRT_SIZE)){
+        if(!is_empty(world,(player->x + (player->sprite->sprite_w)/2 )/DIRT_SIZE ,(player->y + player->sprite->sprite_h + 5 )/DIRT_SIZE)){
             int snap = round(player->y/DIRT_SIZE) * DIRT_SIZE;
             //printf("snap : %d , y : %lf \n",snap,player->y);
             player->y = snap + (snap > player->y ? 1 : -1);
@@ -71,7 +71,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             player->y = 0;
             return;
         }
-        if(!is_empty(world,(player->x)/DIRT_SIZE ,(player->y - 5 )/DIRT_SIZE)){
+        if(!is_empty(world,(player->x + (player->sprite->sprite_w)/2)/DIRT_SIZE ,(player->y - 5 )/DIRT_SIZE)){
             int snap = round(player->y/DIRT_SIZE) * DIRT_SIZE;
             //printf("snap : %d , y : %lf \n",snap,player->y);
             player->y = snap + (snap > player->y ? 1 : -1);
