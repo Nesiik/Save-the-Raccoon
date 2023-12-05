@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <sys/queue.h>
 #include "world.h"
 #include "fonctions_fichiers.h"
 

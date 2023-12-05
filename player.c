@@ -21,8 +21,18 @@ void render_player(SDL_Renderer* renderer,player_t* player){
     }
 }
 
-void set_state(player_t* player,unsigned char state){
+void set_state(player_t* player,unsigned char state,unsigned char back){
+    player->time = SDL_GetTicks64();
     player->state = state;
+    player->backward = back;
+    if (state != FLIGHT && state != WALK)
+    {
+        player->vx = 0;
+    }
+    else if (state == WALK)
+    {
+        player->vx = back ? -150 : 150;
+    }
 }
 
 void deplacement(player_t* player,world_t* world, SDL_Keycode code){

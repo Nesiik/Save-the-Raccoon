@@ -38,7 +38,7 @@ SDL_Window* create_window();
 SDL_Renderer* create_renderer(SDL_Window* window);
 void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, player_t* player);
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y );
-SDL_Surface* texte_surface(SDL_Renderer* renderer, TTF_Font* police,const char text[],char type,SDL_Color* color);
+SDL_Surface* texte_surface(TTF_Font* police,const char text[],char type,SDL_Color* color);
 SDL_Texture* creer_texte_texture(SDL_Renderer* renderer, TTF_Font* police,char type,SDL_Color* color, const char text[],int x, int y, SDL_Rect* info);
 void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources);
 void render_sky(SDL_Renderer* renderer, ressources_t* ressources);

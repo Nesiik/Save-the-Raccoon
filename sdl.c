@@ -54,11 +54,25 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
                     world->cur_level = 0;
                 }else{
                     if(event->key.keysym.sym == SDLK_q || event->key.keysym.sym == SDLK_d || event->key.keysym.sym == SDLK_s || event->key.keysym.sym == SDLK_z ){
-                        //set
+                        switch (event->key.keysym.sym)
+                        {
+                        case SDLK_q:
+                            set_state(player,WALK,1);
+                            break;
+                        case SDLK_d:
+                            set_state(player,WALK,0);
+                            break;
+                        case SDLK_z:
+                            set_state(player,FALL,0);
+                        default:
+                            break;
+                        }
                         deplacement(player, world,event->key.keysym.sym);
                     }
                 }
             }
+        break;
+        case SDL_KEYUP:
         break;
         case SDL_MOUSEBUTTONDOWN:
             switch (world->game_state)
@@ -84,12 +98,12 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
     for (int i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
         if(i == ressources->MenuItems->curselectedItem){
             if (ressources->MenuItems->curselectedItem != ressources->MenuItems->lastselectedItem){
-                SDL_Color color = (SDL_Color){ 180, 180, 180 };
+                SDL_Color color = (SDL_Color){ 180, 180, 180, 255 };
                 //Bouton sélectionné
                 SDL_DestroyTexture(ressources->MenuItems->ItemList[i].texture);
                 ressources->MenuItems->ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems->ItemList[i].text,ressources->MenuItems->ItemList[i].rect.x,ressources->MenuItems->ItemList[i].rect.y,&ressources->MenuItems->ItemList[i].rect);
                 if(ressources->MenuItems->lastselectedItem != -1){ // si il y a eu une sélection avant cette sélection
-                    color = (SDL_Color){ 100, 100, 100 };
+                    color = (SDL_Color){ 100, 100, 100, 255 };
                     char lastItem = ressources->MenuItems->lastselectedItem;
                     SDL_DestroyTexture(ressources->MenuItems->ItemList[lastItem].texture);
                     ressources->MenuItems->ItemList[lastItem].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems->ItemList[lastItem].text,ressources->MenuItems->ItemList[lastItem].rect.x,ressources->MenuItems->ItemList[lastItem].rect.y,&ressources->MenuItems->ItemList[lastItem].rect);
@@ -116,9 +130,9 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
     int level = world->cur_level;
     char cur_char;
     int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
-    for (unsigned int i = 0; i < world->levels[level]->nb_ligne_level_tab; i++)
+    for (int i = 0; i < world->levels[level]->nb_ligne_level_tab; i++)
     {
-        for (unsigned int j = 0; j < world->levels[level]->nb_col_level_tab; j++)
+        for (int j = 0; j < world->levels[level]->nb_col_level_tab; j++)
         {
             cur_char = world->levels[level]->level_tab[i][j]; // ' / 39 = trou
             if(cur_char > 64 && cur_char < 91){ //dirt
@@ -153,10 +167,10 @@ void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[],
 }
 
 //renvoie la surface pour du texte
-SDL_Surface* texte_surface(SDL_Renderer* renderer, TTF_Font* police,const char text[],char type,SDL_Color* color){
+SDL_Surface* texte_surface(TTF_Font* police,const char text[],char type,SDL_Color* color){
     SDL_Surface* surf;
     if(color == NULL){
-        color = &(SDL_Color){ 100, 100, 100 };
+        color = &(SDL_Color){ 100, 100, 100, 255 };
     }
     switch (type) //https://www.libsdl.org/projects/old/SDL_ttf/docs/SDL_ttf.html#SEC42
     {
@@ -178,7 +192,7 @@ SDL_Surface* texte_surface(SDL_Renderer* renderer, TTF_Font* police,const char t
 
 //creer texture texte et rempli un SDL_rect (si non null)
 SDL_Texture* creer_texte_texture(SDL_Renderer* renderer, TTF_Font* police,char type,SDL_Color* color, const char text[],int x, int y, SDL_Rect* info){
-    SDL_Surface* surf = texte_surface(renderer,police,text,type,color);
+    SDL_Surface* surf = texte_surface(police,text,type,color);
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
     if(text == NULL){
         printf("%s \n",SDL_GetError());
