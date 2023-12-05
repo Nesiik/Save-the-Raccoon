@@ -12,14 +12,14 @@ static Uint16 gcd (Uint16 a, Uint16 b) {
     return a | b;
 }
 
-SDL_bool val_in_array(int* arr,int val){
-    for (size_t i = 0; i < sizeof(arr) / sizeof(int); i++)
+char val_in_array(int* arr,int arr_size,int val){
+    for (int i = 0; i < arr_size; i++)
     {
         if(val == arr[i]){
-            return SDL_TRUE;
+            return 1;
         }
     }
-    return SDL_FALSE;
+    return 0;
 }
 
 void get_window_options(){
@@ -45,7 +45,7 @@ void get_window_options(){
         }
         f = mode.format;
         r = gcd(mode.w,mode.h);
-        if(!val_in_array(validW,mode.w/r) || !val_in_array(validH,mode.h/r)){
+        if(!val_in_array(validW,1,mode.w/r) || !val_in_array(validH,1,mode.h/r)){
             continue;
         }
         res_count++;

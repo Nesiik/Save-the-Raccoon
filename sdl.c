@@ -95,7 +95,7 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
 
 
 void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
-    for (int i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
+    for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
         if(i == ressources->MenuItems->curselectedItem){
             if (ressources->MenuItems->curselectedItem != ressources->MenuItems->lastselectedItem){
                 SDL_Color color = (SDL_Color){ 180, 180, 180, 255 };
@@ -104,7 +104,7 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
                 ressources->MenuItems->ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems->ItemList[i].text,ressources->MenuItems->ItemList[i].rect.x,ressources->MenuItems->ItemList[i].rect.y,&ressources->MenuItems->ItemList[i].rect);
                 if(ressources->MenuItems->lastselectedItem != -1){ // si il y a eu une sélection avant cette sélection
                     color = (SDL_Color){ 100, 100, 100, 255 };
-                    char lastItem = ressources->MenuItems->lastselectedItem;
+                    signed char lastItem = ressources->MenuItems->lastselectedItem;
                     SDL_DestroyTexture(ressources->MenuItems->ItemList[lastItem].texture);
                     ressources->MenuItems->ItemList[lastItem].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems->ItemList[lastItem].text,ressources->MenuItems->ItemList[lastItem].rect.x,ressources->MenuItems->ItemList[lastItem].rect.y,&ressources->MenuItems->ItemList[lastItem].rect);
                     ressources->MenuItems->lastselectedItem = ressources->MenuItems->curselectedItem;
@@ -254,7 +254,7 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
 
     int x=550,y=280;
     const char* str = "Jouer";
-    for (char i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
+    for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
     {
         switch (i)
         {

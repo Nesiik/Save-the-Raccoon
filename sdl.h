@@ -21,8 +21,8 @@ typedef struct Item_s{
 
 typedef struct MenuItem_s{
     Item ItemList[MAIN_MENU_ITEM_COUNT];
-    char curselectedItem;
-    char lastselectedItem;
+    signed char curselectedItem;
+    signed char lastselectedItem;
 } MenuItem_t;
 
 typedef struct ressources_s{

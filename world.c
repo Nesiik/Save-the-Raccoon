@@ -11,7 +11,7 @@ world_t* init_world(){
     world->levels = malloc(NB_LEVELS*sizeof(level*));
     int taille = sizeof("../levels/level_ii.txt")+3;
     char str[taille];
-    for (char i = 0; i < NB_LEVELS; i++)
+    for (unsigned char i = 0; i < NB_LEVELS; i++)
     {
         sprintf(str, "%s%d%s", "../levels/level_", i ,".txt");
         //printf("%s \n",str);
