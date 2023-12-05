@@ -21,6 +21,10 @@ void render_player(SDL_Renderer* renderer,player_t* player){
     }
 }
 
+void set_state(player_t* player,unsigned char state){
+    player->state = state;
+}
+
 void deplacement(player_t* player,world_t* world, SDL_Keycode code){
     //printf("x : %d , y : %d \n",player->x,player->y);
     if(code == SDLK_q){
@@ -30,10 +34,10 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             return;
         }
         if(!is_empty(world,(player->x - 5 )/DIRT_SIZE ,(player->y + player->sprite->sprite_h )/DIRT_SIZE)){
+            return;
             int snap = round(player->x/DIRT_SIZE) * DIRT_SIZE;
             //printf("snap : %d , x : %lf \n",snap,player->x);
             player->x = snap + (snap > player->x ? 1 : -1);
-            return;
         }
         player->x -=5;
     }
@@ -44,6 +48,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             return;
         }
         if(!is_empty(world,(player->x + player->sprite->sprite_w + 5 )/DIRT_SIZE ,(player->y + player->sprite->sprite_h )/DIRT_SIZE)){
+            return;
             int snap = round(player->x/DIRT_SIZE) * DIRT_SIZE;
             //printf("snap : %d , x : %lf \n",snap,player->x);
             player->x = snap + (snap > player->x ? 1 : -1);
@@ -58,6 +63,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             return;
         }
         if(!is_empty(world,(player->x + (player->sprite->sprite_w)/2 )/DIRT_SIZE ,(player->y + player->sprite->sprite_h + 5 )/DIRT_SIZE)){
+            return;
             int snap = round(player->y/DIRT_SIZE) * DIRT_SIZE;
             //printf("snap : %d , y : %lf \n",snap,player->y);
             player->y = snap + (snap > player->y ? 1 : -1);
@@ -72,6 +78,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             return;
         }
         if(!is_empty(world,(player->x + (player->sprite->sprite_w)/2)/DIRT_SIZE ,(player->y - 5 )/DIRT_SIZE)){
+            return;
             int snap = round(player->y/DIRT_SIZE) * DIRT_SIZE;
             //printf("snap : %d , y : %lf \n",snap,player->y);
             player->y = snap + (snap > player->y ? 1 : -1);

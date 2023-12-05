@@ -14,6 +14,7 @@ typedef struct player_s{
     Uint64 time;
     int state;
     sprite* sprite;
+    char backward;
 }player_t;
 
 player_t* init_player(SDL_Renderer *renderer);

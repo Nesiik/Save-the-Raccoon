@@ -53,8 +53,10 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
                     world->game_state = Menu;
                     world->cur_level = 0;
                 }else{
-                    if(event->key.keysym.sym == SDLK_q || event->key.keysym.sym == SDLK_d || event->key.keysym.sym == SDLK_s || event->key.keysym.sym == SDLK_z )
+                    if(event->key.keysym.sym == SDLK_q || event->key.keysym.sym == SDLK_d || event->key.keysym.sym == SDLK_s || event->key.keysym.sym == SDLK_z ){
+                        //set
                         deplacement(player, world,event->key.keysym.sym);
+                    }
                 }
             }
         break;
