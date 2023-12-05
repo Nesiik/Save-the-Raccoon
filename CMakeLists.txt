@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.7.0)
 project(projet)
 
 include(FindPkgConfig)
