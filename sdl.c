@@ -157,22 +157,19 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
                 }
             }    
             else if(cur_char == 't'){ //tree ascii : 116
-                tabij = cur_char; // conversion ascii -> int
-                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE - (96 - DIRT_SIZE) , 96 , 96};
+                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE - (TREE_SIZE - DIRT_SIZE) , TREE_SIZE , TREE_SIZE};
                 if(SDL_RenderCopy(renderer, ressources->tree->text, NULL, &dest)<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }
             else if(cur_char == 'f'){ //flag ascii : 102
-                tabij = cur_char; // conversion ascii -> int
-                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE , 22 , 32};
+                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE , ressources->flag->sprite_w , ressources->flag->sprite_h};
                 if(SDL_RenderCopy(renderer, ressources->flag->text, NULL, &dest)<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }
             else if(cur_char == 'c'){ //coin ascii : 99
-                tabij = cur_char; // conversion ascii -> int
-                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE, 32 , 32};
+                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE, DIRT_SIZE , DIRT_SIZE};
                 if(SDL_RenderCopy(renderer, ressources->coin->text, NULL, &dest)<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }

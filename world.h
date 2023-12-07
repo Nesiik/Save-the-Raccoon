@@ -4,6 +4,7 @@
 #include "sprite.h"
 #define NB_LEVELS 2
 #define DIRT_SIZE 32
+#define TREE_SIZE 96
 
 enum GameState {
     Menu = -1, 
