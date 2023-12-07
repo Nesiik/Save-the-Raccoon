@@ -13,8 +13,9 @@
 '
 '
 '
-          <     <
-          GLt  GL
+'
+
+          GLt  GL                     f
 t         MNKHKNR                 tt  GL
 GL        MNOPQOR  G              GHKHOR
 MNL       MNOPQNR  MHKL           MOPQOR
