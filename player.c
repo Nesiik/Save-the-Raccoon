@@ -9,7 +9,7 @@ player_t* init_player(SDL_Renderer* renderer){
     player->sprite->sprite_w = PLAYER_SPRITE_SIZE;
     player->sprite->sprite_h = PLAYER_SPRITE_SIZE;
     player->state = REST;
-    player->x = 35;
+    player->x = 90;
     player->y = 600;
     return player;
 }
