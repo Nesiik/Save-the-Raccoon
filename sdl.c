@@ -54,6 +54,7 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
                     world->cur_level = 0;
                 }else{
                     if(event->key.keysym.sym == SDLK_q || event->key.keysym.sym == SDLK_d || event->key.keysym.sym == SDLK_s || event->key.keysym.sym == SDLK_z ){
+                        /*
                         switch (event->key.keysym.sym)
                         {
                         case SDLK_q:
@@ -67,6 +68,7 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
                         default:
                             break;
                         }
+                        */
                         deplacement(player, world,event->key.keysym.sym);
                     }
                 }
@@ -134,8 +136,8 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
     {
         for (int j = 0; j < world->levels[level]->nb_col_level_tab; j++)
         {
-            cur_char = world->levels[level]->level_tab[i][j]; // ' / 39 = trou
-            if(cur_char > 64 && cur_char < 89){ //dirt
+            cur_char = world->levels[level]->level_tab[i][j];
+            if(cur_char >= 'A' && cur_char <= 'X'){ //dirt ascii : 65-88
                 tabij = cur_char - 'A'; // conversion ascii -> int
                 dirt_y = tabij/6;
                 dirt_x = tabij - dirt_y*6;
@@ -147,28 +149,28 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }
-            else if(cur_char > 59 && cur_char < 64){ //spike
+            else if(cur_char >= '<' && cur_char <= '?'){ //spike ascii : 60-63
                 tabij = cur_char - '<'; // conversion ascii -> int
                 SDL_Rect dest = {j*ressources->spike->sprite_w,i*ressources->spike->sprite_h , ressources->spike->sprite_w , ressources->spike->sprite_h};
                 if(SDL_RenderCopyEx(renderer, ressources->spike->text, NULL, &dest, tabij*90, NULL, SDL_FLIP_NONE )<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }    
-            else if(cur_char == 116){ //tree
+            else if(cur_char == 't'){ //tree ascii : 116
                 tabij = cur_char; // conversion ascii -> int
                 SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE - (96 - DIRT_SIZE) , 96 , 96};
                 if(SDL_RenderCopy(renderer, ressources->tree->text, NULL, &dest)<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }
-            else if(cur_char == 102){ //flag
+            else if(cur_char == 'f'){ //flag ascii : 102
                 tabij = cur_char; // conversion ascii -> int
                 SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE , 22 , 32};
                 if(SDL_RenderCopy(renderer, ressources->flag->text, NULL, &dest)<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
             }
-            else if(cur_char == 99){ //coin
+            else if(cur_char == 'c'){ //coin ascii : 99
                 tabij = cur_char; // conversion ascii -> int
                 SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE, 32 , 32};
                 if(SDL_RenderCopy(renderer, ressources->coin->text, NULL, &dest)<0){
