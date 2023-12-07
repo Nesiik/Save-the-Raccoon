@@ -163,11 +163,18 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
             }
             else if(cur_char == 102){ //flag
                 tabij = cur_char; // conversion ascii -> int
-                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE - (96 - DIRT_SIZE) , 96 , 96};
+                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE , 22 , 32};
                 if(SDL_RenderCopy(renderer, ressources->flag->text, NULL, &dest)<0){
                     SDL_Log("Erreur : %s",SDL_GetError());
                 }
-            }         
+            }
+            else if(cur_char == 99){ //coin
+                tabij = cur_char; // conversion ascii -> int
+                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE, 32 , 32};
+                if(SDL_RenderCopy(renderer, ressources->coin->text, NULL, &dest)<0){
+                    SDL_Log("Erreur : %s",SDL_GetError());
+                }
+            }           
         }
     }
 }
@@ -288,7 +295,8 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
     ressources->sky = charger_image_png("../assets/clouds2.1Large(1).png",renderer);
     ressources->spike = charger_image_png("../assets/spikeV4.png",renderer);
     ressources->tree = charger_image_png("../assets/treeV2.png", renderer);
-    ressources->flag = charger_image_png("../assets/flagV3.png", renderer);
+    ressources->flag = charger_image_png("../assets/flagV4.png", renderer);
+    ressources->coin = charger_image_png("../assets/coinV2.png", renderer);
 
     return ressources;
 }
@@ -314,7 +322,10 @@ void free_ressources(ressources_t* ressources){
     free(ressources->tree);
 
     SDL_DestroyTexture(ressources->flag->text);
-    free(ressources->flag);   
+    free(ressources->flag);
+
+    SDL_DestroyTexture(ressources->coin->text);
+    free(ressources->coin);   
 
     TTF_CloseFont(ressources->font);
 }

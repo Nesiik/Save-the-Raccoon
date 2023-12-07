@@ -9,8 +9,8 @@ player_t* init_player(SDL_Renderer* renderer){
     player->sprite->sprite_w = PLAYER_SPRITE_SIZE;
     player->sprite->sprite_h = PLAYER_SPRITE_SIZE;
     player->state = REST;
-    player->x = 300;
-    player->y = 360;
+    player->x = 35;
+    player->y = 600;
     return player;
 }
 
@@ -49,7 +49,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             //printf("snap : %d , x : %lf \n",snap,player->x);
             player->x = snap + (snap > player->x ? 1 : -1);
         }
-        player->x -=5;
+        player->x -=SPEED;
     }
     if(code== SDLK_d){
         if (player->x + player->sprite->sprite_w + 5 >= 1280)
@@ -64,7 +64,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             player->x = snap + (snap > player->x ? 1 : -1);
             return;
         }
-        player->x +=5;
+        player->x +=SPEED;
     }
     if(code == SDLK_s){
         if (player->y + player->sprite->sprite_h + 5 >= 720)
@@ -79,7 +79,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             player->y = snap + (snap > player->y ? 1 : -1);
             return;
         }
-        player->y +=5;
+        player->y +=10;
     }
     if(code == SDLK_z){
         if (player->y + player->sprite->sprite_h - 5 <= 0)
@@ -94,7 +94,7 @@ void deplacement(player_t* player,world_t* world, SDL_Keycode code){
             player->y = snap + (snap > player->y ? 1 : -1);
             return;
         }
-        player->y -=5;
+        player->y -=10;
     }
 }
 

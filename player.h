@@ -6,6 +6,7 @@
 #include "world.h"
 
 #define PLAYER_SPRITE_SIZE 64
+#define SPEED 10
 
 enum States { REST=0, TAKEOFF=1, FLIGHT=2, LANDING=3, WALK=4, FALL=5 };
 
