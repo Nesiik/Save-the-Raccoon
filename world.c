@@ -38,7 +38,7 @@ char is_empty(world_t* world,const int i, const int j) {
 void free_levels(world_t* world){
     for (size_t i = 0; i < NB_LEVELS; i++)
     {
-        desallouer_tab_2D(world->levels[i]->level_tab,world->levels[i]->nb_ligne_level_tab);
+        desallouer_tab_2D(world->levels[i]->level_tab);
         free(world->levels[i]);
     }
     free(world->levels);
