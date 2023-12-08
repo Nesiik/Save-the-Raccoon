@@ -9,23 +9,41 @@ player_t* init_player(SDL_Renderer* renderer){
     player->sprite->sprite_w = PLAYER_SPRITE_SIZE;
     player->sprite->sprite_h = PLAYER_SPRITE_SIZE;
     player->state = REST;
-    player->x = 90;
-    player->y = 600;
+    player->backward = 0;
+    player->x = 90.;
+    player->y = 600.;
+    player->vx = 0.;
+    player->vy = 0.;
     return player;
 }
 
 void render_player(SDL_Renderer* renderer,player_t* player){
     SDL_Rect dest = {player->x,player->y,player->sprite->sprite_w,player->sprite->sprite_h};
-    if(SDL_RenderCopy(renderer,player->sprite->text,NULL,&dest)<0){
+    if(SDL_RenderCopyEx(renderer, player->sprite->text, NULL, &dest, 0, NULL, player->backward ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE )<0){
         SDL_Log("Erreur : %s",SDL_GetError());
     }
 }
 
+
+void depla(player_t* player,world_t* world,Uint64 dt){
+    double x = player->x,y = player->y;
+    x += player->vx * dt;
+    char empty = is_empty(world,(player->backward? (int)x/DIRT_SIZE : (x + player->sprite->sprite_w)/DIRT_SIZE), y/DIRT_SIZE);
+    if (!empty)
+    {
+        player->vx = 0;
+        return;
+    }
+    y += player->vy * dt;
+    
+}
+
+/*
 void set_state(player_t* player,unsigned char state,unsigned char back){
     player->time = SDL_GetTicks64();
     player->state = state;
     player->backward = back;
-    if (state != FLIGHT && state != WALK)
+    if (state == REST)
     {
         player->vx = 0;
     }
@@ -34,6 +52,7 @@ void set_state(player_t* player,unsigned char state,unsigned char back){
         player->vx = back ? -150 : 150;
     }
 }
+*/
 
 void deplacement(player_t* player,world_t* world, SDL_Keycode code){
     //printf("x : %d , y : %d \n",player->x,player->y);

@@ -20,7 +20,7 @@ typedef struct player_s{
 }player_t;
 
 player_t* init_player(SDL_Renderer *renderer);
-void set_state(player_t* player,unsigned char state,unsigned char back);
+//void set_state(player_t* player,unsigned char state,unsigned char back);
 void render_player(SDL_Renderer* renderer, player_t* player);
 void deplacement(player_t* player,world_t* world, SDL_Keycode code);
 void free_player(player_t* player);
