@@ -25,6 +25,6 @@ int test_modif_fichiers(void)
     printf("taille du fichier : %d x %d \n",nbLigne,nbCol);
     tab = lire_fichier("tabChiffres.txt");
     afficher_tab_2D(tab,nbLigne,nbCol);
-    desallouer_tab_2D(tab,nbLigne);
+    desallouer_tab_2D(tab);
     return 0;
 }
