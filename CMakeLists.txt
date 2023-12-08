@@ -5,7 +5,11 @@ file(GLOB SOURCES
 "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
 )
 
-add_compile_options(-Wall -Wextra)
+if(MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra)
+endif()
 
 include(FindPkgConfig)
 pkg_check_modules(SDL2 REQUIRED sdl2)
