@@ -24,7 +24,7 @@ char** allouer_tab_2D(int n,int m){
     return tab;
 }
 
-void desallouer_tab_2D(char** tab, int n){
+void desallouer_tab_2D(char** tab /*, int n*/ ){
     free(tab);
 }
 
