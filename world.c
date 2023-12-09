@@ -10,9 +10,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
     for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
         Item menuItem = ressources->MenuItems->ItemList[i];
 
-        if (mouseX >= menuItem.rect.x && mouseX <= menuItem.rect.x + menuItem.rect.w &&
-            mouseY >= menuItem.rect.y && mouseY <= menuItem.rect.y + menuItem.rect.h)
-        {
+        if(SDL_PointInRect(&(SDL_Point){mouseX,mouseY},&menuItem.rect ) ) {
             ressources->MenuItems->lastselectedItem = ressources->MenuItems->curselectedItem;
             ressources->MenuItems->curselectedItem = i;
             switch (i) {
