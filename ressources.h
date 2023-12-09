@@ -8,8 +8,8 @@
 #define MAIN_MENU_ITEM_COUNT 3
 
 typedef struct Item_s{
-    SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte*/
-    char* text; /*!<Le texte du menu*/
+    SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte */
+    char* text; /*!<Le texte du menu */
     SDL_Texture* texture; 
 } Item;
 
