@@ -1,3 +1,4 @@
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <stdio.h>
@@ -75,8 +76,8 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
 }
 
 
-int main()
-{    
+int main(int argc, char* argv[]) {    
+    SDL_SetMainReady();
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
         printf("%s",SDL_GetError());
     }
@@ -106,7 +107,7 @@ int main()
 
         current_time = SDL_GetTicks64();
         dt = (current_time - last_time) / 1000.0;
-        /**
+        /*
         if( dt < 16){
             #ifdef WIN32
                 Sleep(1);
