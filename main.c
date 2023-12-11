@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
 
         last_time = current_time;
         if(world->game_state == Alive){
-            printf("x : %f , y : %f , vx: %f, vy : %f \n",player->x,player->y,player->vx,player->vy);
+            //printf("x : %f , y : %f , vx: %f, vy : %f \n",player->x,player->y,player->vx,player->vy);
             move_player(player,world,dt);
         }
 
@@ -142,6 +142,7 @@ int main(int argc, char* argv[]) {
                 render_main_menu_text(renderer,ressources);
                 break;
             case Alive:
+                print_state(player);
                 render_player(renderer,player);
                 //printf("%f \n",dt);
                 /*unsigned int time_limit; // a deplacer dans alive plus tard

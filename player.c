@@ -24,78 +24,122 @@ void render_player(SDL_Renderer* renderer, const player_t* player){
     }
 }
 
-/*
-void set_state(player_t* player,unsigned char state,unsigned char back){
-    player->state = state;
-    player->backward = back;
+void print_state(player_t* player){
+    switch (player->state)
+    {
+    case REST:
+        printf("REST \n");
+        break;
+    case WALK:
+        printf("WALK \n");
+        break;
+    case TAKEOFF:
+        printf("TAKEOFF \n");
+        break;
+    case FLIGHT:
+        printf("FLIGHT \n");
+        break;
+    case FALL:
+        printf("FALL \n");
+        break;
+    case LANDING:
+        printf("LANDING \n");
+        break;
+    default:
+        break;
+    }
 }
-*/
 
 void move_player(player_t* player,world_t* world,double dt){
+    if(player->state == TAKEOFF)
+        player->state = FLIGHT;
     double x = player->x,y = player->y;
+    //char empty_under = is_empty(world,(int)x/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1);
+    char empty_under = is_empty(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1);
+    //printf("%d \n",empty_under);
+    if(player->state != FLIGHT && empty_under){
+        player->vy = 100;
+        player->state = FALL;
+    }
+
+    printf("x : %f , y : %f , vx: %f, vy : %f \n",player->x,player->y,player->vx,player->vy);
     x += player->vx * dt;
     //printf("x : %d");
-    char empty = is_empty(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE);
-    printf("%d \n",empty);
-    if (!empty)
+    //char empty = is_empty(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE);
+    char empty_horizon_high = is_empty(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE);
+    char empty_horizon_low = is_empty(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
+    printf("horizontal collision high : %d,horizontal collision low : %d \n",empty_horizon_high,empty_horizon_low);
+    if (!empty_horizon_high || !empty_horizon_low)
     {
+        int snap = round(player->x/DIRT_SIZE) * DIRT_SIZE;
+        //printf("snap : %d , x : %lf \n",snap,player->x);
+        x = snap + (snap > player->x ? 1 : -1);
         player->vx = 0;
         //return;
     }
     player->x = x; /* update player x */
 
-    y += player->vy * dt;
-    player->vy += dt * 300; /* gravity */
-    if(player->state == TAKEOFF)
-        player->state = FLIGHT;
-    empty = is_empty(world,(int)x/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
-    printf("%d \n",empty);
-    if (!empty)
+    if (player->vy != 0)
     {
-        printf("pas vide \n");
-        player->vy = 0;
-        //return;
+        y += player->vy * dt;
+        player->vy += dt * 300; /* gravity */
+        char empty_left = is_empty(world,(int)x/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
+        char empty_right = is_empty(world,(int)x/DIRT_SIZE+1, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
+        //printf("%d \n",empty);
+        if (!empty_left || !empty_right)
+        {
+            printf("pas vide \n");
+            int snap = round(player->y/DIRT_SIZE) * DIRT_SIZE;
+            y = snap + (snap > player->y ? 1 : -1);
+            player->vy = 0;
+            if (player->state == FALL || player->state == FLIGHT)   
+                player->state = LANDING;
+            //return;
+        }
+        player->y = y; /* update player y */
     }
-    player->y = y; /* update player y */
 }
 
 
 
 void handle_key_down2(player_t* player){
-    int numkey;
-    const Uint8 *kbstate = SDL_GetKeyboardState(&numkey);
-    printf("%d , q state : %d ,d state : %d \n",numkey,kbstate[SDL_SCANCODE_Q],kbstate[SDL_SCANCODE_D]);
+    //int numkey;
+    const Uint8 *kbstate = SDL_GetKeyboardState(NULL);
+    //printf("%d , q state : %d ,d state : %d \n",numkey,kbstate[SDL_SCANCODE_Q],kbstate[SDL_SCANCODE_D]);
     //int state = REST;
-    if (kbstate[SDL_SCANCODE_Q] || kbstate[SDL_SCANCODE_D]) {
-        if (kbstate[SDL_SCANCODE_Q] && kbstate[SDL_SCANCODE_D]) {
+    char key_pressed = 0;
+    if (kbstate[SDL_SCANCODE_A] || kbstate[SDL_SCANCODE_D]) {
+        if (kbstate[SDL_SCANCODE_A] && kbstate[SDL_SCANCODE_D]) {
             player->vx = 0;
         }
         else
         {
-            player->backward = kbstate[SDL_SCANCODE_Q] ? 1 : 0;
-            player->vx = kbstate[SDL_SCANCODE_Q] ? -150 : 150; 
+            player->backward = kbstate[SDL_SCANCODE_A] ? 1 : 0;
+            player->vx = kbstate[SDL_SCANCODE_A] ? -150 : 150; 
         }
         if(player->state == REST){
             player->state = WALK;
         }
+        key_pressed++;
     }
-    else if (kbstate[SDL_SCANCODE_Z]) {
+    if (kbstate[SDL_SCANCODE_W]) {
         if (player->state == WALK || player->state == REST )
         {
             player->vy = -200;
             player->state = TAKEOFF;
         }
+        key_pressed++;
     }
-    else {
-        if (player->state == WALK)
+    if(key_pressed == 0) {
+        player->vx = 0;
+        if (player->state == WALK || player->state == LANDING )
         {
-            player->vx = 0;
             player->state = REST;
         }
     }
-    
 }
 
+/*
 void handle_key_down(player_t* player, SDL_Keycode code){
     int state = REST;
     unsigned char back = 0;
@@ -124,8 +168,7 @@ void handle_key_down(player_t* player, SDL_Keycode code){
     }
     //set_state(player,state,back);
 }
-
-//void handle_key_up(player_t* player, SDL_Keycode code){player;code;}
+*/
 
 void deplacement(player_t* player,world_t* world, SDL_Keycode code){
     //printf("x : %d , y : %d \n",player->x,player->y);

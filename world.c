@@ -98,9 +98,9 @@ char get(world_t* world,const int i,const int j){ // x,y
     return -1;
 }
 
-char is_empty(world_t* world,const int i, const int j) {
-    printf("x : %d , y : %d \n",i,j);
-    printf("x max : %d, y max : %d \n",world->levels[world->cur_level]->nb_col_level_tab,world->levels[world->cur_level]->nb_ligne_level_tab);
+char is_empty(world_t* world,const int i, const int j) { //x,y
+    //printf("x : %d , y : %d \n",i,j);
+    //printf("x max : %d, y max : %d \n",world->levels[world->cur_level]->nb_col_level_tab,world->levels[world->cur_level]->nb_ligne_level_tab);
     if(i < 0 || j < 0 || i >= world->levels[world->cur_level]->nb_col_level_tab || j >= world->levels[world->cur_level]->nb_ligne_level_tab)
         return -1; // invalid
     if (world->levels[world->cur_level]->level_tab[j][i] == ' ')

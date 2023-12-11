@@ -8,7 +8,7 @@
 #define PLAYER_SPRITE_SIZE 64
 #define SPEED 10
 
-enum States { REST=0, WALK=1, TAKEOFF =2, FLIGHT=3, FALL=4, LANDING=5 };
+enum States { REST=0, WALK=1, TAKEOFF =2, FLIGHT=3, FALL=4, LANDING=5 }; // will be use for animation (hopefully)
 
 typedef struct player_s{
     double x,y;
@@ -20,10 +20,10 @@ typedef struct player_s{
 }player_t;
 
 player_t* init_player(SDL_Renderer *renderer);
-//void set_state(player_t* player,unsigned char state,unsigned char back);
 void move_player(player_t* player,world_t* world,double dt);
+void print_state(player_t* player);
 void handle_key_down2(player_t* player);
-void handle_key_down(player_t* player, SDL_Keycode code);
+//void handle_key_down(player_t* player, SDL_Keycode code);
 void render_player(SDL_Renderer* renderer, const player_t* player);
 void deplacement(player_t* player,world_t* world, SDL_Keycode code);
 void free_player(player_t* player);
