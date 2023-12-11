@@ -1,4 +1,3 @@
-#define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <stdio.h>
@@ -49,7 +48,8 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
                             break;
                         }
                         */
-                        deplacement(player, world,event->key.keysym.sym);
+                        //deplacement(player, world,event->key.keysym.sym);
+                        //handle_key_down(player,event->key.keysym.sym);
                     }
                 }
             }
@@ -77,15 +77,14 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, p
 
 
 int main(int argc, char* argv[]) {    
-    SDL_SetMainReady();
-    if(SDL_Init(SDL_INIT_VIDEO) < 0){
-        printf("%s",SDL_GetError());
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS ) < 0){
+        printf("SDL_Init error : %s \n",SDL_GetError());
     }
     if(TTF_Init() < 0){
-        printf("%s",TTF_GetError());
+        printf("TTF_Init error : %s \n",TTF_GetError());
     }
     if(IMG_Init(IMG_INIT_PNG) == 0){
-        printf("%s",SDL_GetError());
+        printf("IMG_Init error : %s \n",SDL_GetError());
     }
 
     SDL_Window* window = create_window();
@@ -96,15 +95,17 @@ int main(int argc, char* argv[]) {
     ressources_t* ressources = init_ressources(renderer);
     player_t* player = init_player(renderer);
 
-    set_full_screen(window,FakeFS);
-    SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "0");
+    //set_full_screen(window,FakeFS);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
     Uint64 last_time = SDL_GetTicks64(),current_time;
     double dt;
     while(!fin(world)){
         // Events
         handle_events(event,world,ressources,player);
+        handle_key_down2(player);
 
+        // Time / Physics
         current_time = SDL_GetTicks64();
         dt = (current_time - last_time) / 1000.0;
         /*
@@ -124,6 +125,10 @@ int main(int argc, char* argv[]) {
         */
 
         last_time = current_time;
+        if(world->game_state == Alive){
+            printf("x : %f , y : %f , vx: %f, vy : %f \n",player->x,player->y,player->vx,player->vy);
+            move_player(player,world,dt);
+        }
 
         // Rendering
         if(SDL_RenderClear(renderer) < 0){
@@ -138,7 +143,7 @@ int main(int argc, char* argv[]) {
                 break;
             case Alive:
                 render_player(renderer,player);
-                printf("%f \n",dt);
+                //printf("%f \n",dt);
                 /*unsigned int time_limit; // a deplacer dans alive plus tard
                 unsigned int timer = SDL_GetTicks();    
                 unsigned int countdown = (time_limit - timer)/1000; 
