@@ -26,13 +26,12 @@ typedef struct level_s
 }level;
 
 
-struct world_s{
+typedef struct world_s{
     int cur_level;
     int last_level; /* Level before pause */
     char game_state; /*!< -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
     level** levels; /* 0 = Menu , 1 = niveau 1 , etc... */
-};
-typedef struct world_s world_t;
+}world_t;
 
 void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t* ressources);
 world_t* init_world();
