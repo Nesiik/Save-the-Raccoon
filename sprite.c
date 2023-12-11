@@ -18,21 +18,21 @@ sprite* charger_image (const char* nomfichier, SDL_Renderer* renderer){
 
 sprite* charger_image_png(const char* nomfichier, SDL_Renderer* renderer){
     sprite* sprite = malloc(sizeof(*sprite));
-    SDL_Surface* surf = IMG_Load(nomfichier);
-    if(surf == NULL){
-        printf("%s",SDL_GetError());
+    SDL_Surface* surface = IMG_Load(nomfichier);
+    if(surface == NULL){
+        printf("Loading %s error : %s",nomfichier,SDL_GetError());
     }
-    sprite->text = SDL_CreateTextureFromSurface(renderer,surf);
+    sprite->text = SDL_CreateTextureFromSurface(renderer,surface);
     if (sprite->text == NULL){
-        printf("%s \n",SDL_GetError());
+        printf("Error creating texture from img '%s' : %s \n",nomfichier,SDL_GetError());
     }
-    sprite->sprite_w = surf->w;
-    sprite->sprite_h = surf->h;
-    SDL_FreeSurface(surf);
+    sprite->sprite_w = surface->w;
+    sprite->sprite_h = surface->h;
+    SDL_FreeSurface(surface);
     return sprite;
 }
 
-sprite* charger_image_transparante(const char* nomfichier, SDL_Renderer* renderer,Uint8 r, Uint8 g, Uint8 b){
+sprite* charger_image_transparante(const char* nomfichier, SDL_Renderer* renderer, Uint8 r, Uint8 g, Uint8 b){
     sprite* sprite = malloc(sizeof(sprite));
     SDL_Surface* bmp = SDL_LoadBMP(nomfichier);
     if(bmp == NULL){
