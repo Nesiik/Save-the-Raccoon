@@ -27,7 +27,7 @@ SDL_Surface* texte_surface(TTF_Font* police,const char text[],char type,SDL_Colo
     }
     if (!surf)
     {
-        printf("%s \n",TTF_GetError());
+        printf("Error creating text surface : %s \n",TTF_GetError());
     }
     return surf;
 }
@@ -37,7 +37,7 @@ SDL_Texture* creer_texte_texture(SDL_Renderer* renderer, TTF_Font* police,char t
     SDL_Surface* surf = texte_surface(police,text,type,color);
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
     if(text == NULL){
-        printf("%s \n",SDL_GetError());
+        printf("Error creating texture from text surface : %s \n",SDL_GetError());
         return NULL;
     }
     if(info != NULL){
@@ -60,7 +60,7 @@ SDL_Window* create_window(){
     SDL_WINDOW_SHOWN);
     if(window == NULL)
     {
-        SDL_Log("Erreur lors de la creation de l'image : %s", SDL_GetError());
+        SDL_Log("Error creating windows : %s", SDL_GetError());
     }
     return window;
 }
@@ -69,7 +69,7 @@ SDL_Renderer* create_renderer(SDL_Window* window){
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     if(renderer == NULL)
     {
-        SDL_Log("Erreur lors de la creation du renderer : %s", SDL_GetError());
+        SDL_Log("Error creating renderer : %s", SDL_GetError());
     }
     if(SDL_RenderSetLogicalSize(renderer,WINDOW_WIDTH,WINDOW_HEIGHT) < 0){
         SDL_Log("%s",SDL_GetError());
