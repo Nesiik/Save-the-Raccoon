@@ -3,6 +3,7 @@ project(projet)
 
 file(GLOB SOURCES
 "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
+"${CMAKE_CURRENT_SOURCE_DIR}/external/list/list.c"
 )
 
 if(MSVC)
@@ -27,4 +28,5 @@ else()
 endif()
 
 add_executable(projet ${SOURCES})
+include_directories(projet PRIVATE "external/list")
 target_link_libraries(projet m SDL2main SDL2 SDL2_ttf SDL2_image)

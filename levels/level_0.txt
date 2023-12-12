@@ -16,7 +16,7 @@
  
                 c
           GLt  GL                      f
-t         MNKHKNR                 tt  GL
+t         MNKHKNR                  t  GL
 GL        MNOPQOR  G              GHKHOR
 MNL       MNOPQNR  MHKL           MOPQOR
 MNRt      MOQPNQR  MNOQHL        GNQPONR
