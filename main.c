@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <stdio.h>
+/*
 #ifdef WIN32
 #include <windows.h>
 #elif _POSIX_C_SOURCE >= 199309L
@@ -8,6 +9,7 @@
 #else
 #include <unistd.h> // for usleep
 #endif
+*/
 #include "ressources.h"
 #include "world.h"
 #include "option.h"
