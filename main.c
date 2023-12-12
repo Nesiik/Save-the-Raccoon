@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
     //set_full_screen(window,FakeFS);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
-    Uint64 last_time = SDL_GetTicks64(),current_time;
+    Uint64 last_time = SDL_GetTicks(),current_time;
     double dt;
     while(!fin(world)){
         // Events
@@ -108,7 +108,7 @@ int main(int argc, char* argv[]) {
         handle_key_down2(player);
 
         // Time / Physics
-        current_time = SDL_GetTicks64();
+        current_time = SDL_GetTicks();
         dt = (current_time - last_time) / 1000.0;
         /*
         if( dt < 16){

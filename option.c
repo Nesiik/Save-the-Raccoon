@@ -58,9 +58,11 @@ void get_window_options(){
 }
 
 void set_vsync(SDL_Renderer* renderer, SDL_bool state){
+    /*
     if(SDL_RenderSetVSync(renderer,state) != 0){
         SDL_Log("SDL_RenderSetVSync failed: %s", SDL_GetError());
     }
+    */
 }
 
 void set_full_screen(SDL_Window* window, Uint32 flags){ //FullScreenFlags

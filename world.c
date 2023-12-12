@@ -136,6 +136,16 @@ char get_collision(world_t* world,const int i, const int j) { //x,y
     return 0;
 }
 
+void flag_collision(world_t* world){
+    world->game_state = Win;
+}
+
+/*void next_level(world_t* world){
+    if(world->game_state = Win){
+
+    }
+}*/
+
 int is_game_over(world_t *world){
     if(world->game_state > Alive) // > 0
         return 1;
@@ -145,6 +155,13 @@ int is_game_over(world_t *world){
 
 int fin(world_t* world){
     if(world->game_state  == Quit)
+        return 1;
+    else
+        return 0;
+}
+
+int win(world_t* world){
+    if(world->game_state == Win)
         return 1;
     else
         return 0;

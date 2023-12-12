@@ -112,9 +112,10 @@ void move_player(player_t* player,world_t* world,double dt){
         }
         player->y = y; /* update player y */
     }
+    if( empty_horizon_high == 4){
+        flag_collision();
+    }
 }
-
-
 
 void handle_key_down2(player_t* player){
     //int numkey;
