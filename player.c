@@ -91,6 +91,12 @@ void move_player(player_t* player,world_t* world,double dt){
         player->vx = 0;
         //return;
     }
+    else if(empty_horizon_high == 2 && empty_horizon_low == 2){
+        spike_collision(world);
+    }
+    else if( empty_horizon_high == 4 && empty_horizon_low == 4){
+        flag_collision(world);
+    }
     player->x = x; /* update player x */
 
     if (player->vy != 0) {
@@ -111,12 +117,6 @@ void move_player(player_t* player,world_t* world,double dt){
             //return;
         }
         player->y = y; /* update player y */
-    }
-    if(empty_horizon_high == 2 && empty_horizon_low == 2){
-        spike_collision(world);
-    }
-    if( empty_horizon_high == 4 && empty_horizon_low == 4){
-        flag_collision(world);
     }
 }
 
