@@ -27,9 +27,10 @@ typedef struct level_s
 
 
 typedef struct world_s{
+    Uint32 start_level_time,end_level_time;
     int cur_level;
     int last_level; /* Level before pause */
-    char game_state; /*!< -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
+    char game_state; /* -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
     level** levels; /* 0 = Menu , 1 = niveau 1 , etc... */
 }world_t;
 

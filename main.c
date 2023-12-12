@@ -145,6 +145,7 @@ int main(int argc, char* argv[]) {
                 break;
             case Alive:
                 //print_state(player);
+                world->end_level_time = SDL_GetTicks();
                 render_player(renderer,player);
                 //printf("%f \n",dt);
                 /*unsigned int time_limit; // a deplacer dans alive plus tard

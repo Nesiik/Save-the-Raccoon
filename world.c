@@ -19,6 +19,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
                     }
                     else{
                         world->cur_level = 1;
+                        world->start_level_time = SDL_GetTicks();
                     }
                     //world->depart = SDL_GetTicks();
                     break;
