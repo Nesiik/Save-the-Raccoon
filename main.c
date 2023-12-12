@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
                 render_main_menu_text(renderer,ressources);
                 break;
             case Alive:
-                print_state(player);
+                //print_state(player);
                 render_player(renderer,player);
                 //printf("%f \n",dt);
                 /*unsigned int time_limit; // a deplacer dans alive plus tard

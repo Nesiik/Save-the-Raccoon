@@ -4,7 +4,9 @@
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police, const char text[], int x, int y ) {
     SDL_Rect dest;
     SDL_Texture* tex = creer_texte_texture(renderer,police,0,NULL,text,x,y,&dest);
-   	SDL_RenderCopy(renderer, tex, NULL, &dest);
+   	if(SDL_RenderCopy(renderer, tex, NULL, &dest) < 0){
+        printf("Error rendering text : %s \n",SDL_GetError());
+    }
 	SDL_DestroyTexture(tex);
 }
 

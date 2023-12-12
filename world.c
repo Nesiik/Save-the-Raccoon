@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <list.h>
 #include "world.h"
 #include "fonctions_fichiers.h"
 
@@ -42,9 +43,13 @@ void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
 }
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
+    //level* cur_level = lis world->levels;
     int level = world->cur_level;
     char cur_char;
     int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
+    if(world->levels[level]->nb_ligne_level_tab == 0 || world->levels[level]->nb_col_level_tab == 0) {
+        afficher_texte(renderer,ressources->font,"Map empty,please check the map.",50,50);
+    }
     for (int i = 0; i < world->levels[level]->nb_ligne_level_tab; i++)
     {
         for (int j = 0; j < world->levels[level]->nb_col_level_tab; j++)
@@ -110,6 +115,27 @@ char is_empty(world_t* world,const int i, const int j) { //x,y
     return 0;
 }
 
+char get_collision(world_t* world,const int i, const int j) { //x,y
+    if(i < 0 || j < 0 || i >= world->levels[world->cur_level]->nb_col_level_tab || j >= world->levels[world->cur_level]->nb_ligne_level_tab)
+        return -1; // invalid
+    char tile = get(world,i,j);
+    if ((tile >= 'C' && tile <= 'D') || (tile >= 'G' && tile <= 'X')) { // dirt
+        return 1;
+    }
+    else if (tile >= '<' && tile <= '?') { // spike
+        return 2;
+    }
+    else if (tile == 'c') { // coin
+        return 3;
+    }
+    else if (tile == 'f') { // flags
+        return 4;
+    }
+    
+    
+    return 0;
+}
+
 int is_game_over(world_t *world){
     if(world->game_state > Alive) // > 0
         return 1;
@@ -124,24 +150,45 @@ int fin(world_t* world){
         return 0;
 }
 
+int countDigit(unsigned int n) 
+{ 
+    if (n/10 == 0) 
+        return 1; 
+    return 1 + countDigit(n / 10); 
+} 
+
 world_t* init_world(){
     world_t* world = malloc(sizeof(world_t));
     world->game_state = Menu;
     world->cur_level = 0;
     world->last_level = -1;
-    world->levels = malloc(NB_LEVELS*sizeof(level*));
-    int taille = sizeof("../levels/level_ii.txt")+3;
-    char str[taille];
+    /*
+    list(level*,levels);
+    memset(&levels,0,sizeof(level*)); */
+    world->levels = malloc(NB_LEVELS*sizeof(level*)); 
+    int taille = sizeof("../levels/level_.txt")+countDigit(NB_LEVELS);
+    char str[taille+1]; // +1 for \0 
     for (unsigned int i = 0; i < NB_LEVELS; i++)
     {
         sprintf(str, "%s%d%s", "../levels/level_", i ,".txt");
+        level* new_level = malloc(sizeof(level));
+        new_level->level_tab = lire_fichier(str);
+        if(new_level->level_tab == NULL){
+            SDL_Log("Error reading : %s \n",str);
+        }
+        taille_fichier(str,&new_level->nb_ligne_level_tab,&new_level->nb_col_level_tab);
+        world->levels[i] = new_level;
+        //list_push(levels,new_level);
+        /*
         world->levels[i] = malloc(sizeof(level));
         world->levels[i]->level_tab = lire_fichier(str);
         if(world->levels[i]->level_tab == NULL){
             SDL_Log("Error reading : %s \n",str);
         }
         taille_fichier(str,&world->levels[i]->nb_ligne_level_tab,&world->levels[i]->nb_col_level_tab);
+        */
     }
+    //world->levels = levels;
     return world;
 }
 

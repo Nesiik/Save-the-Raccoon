@@ -55,42 +55,56 @@ void move_player(player_t* player,world_t* world,double dt){
         player->state = FLIGHT;
     double x = player->x,y = player->y;
     //char empty_under = is_empty(world,(int)x/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1);
-    char empty_under = is_empty(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1);
+    //printf("x tile %d, y tile %d, y+1 tile %d, y+h tile %d \n",((int)x + player->sprite->sprite_w)/DIRT_SIZE,(int)y/DIRT_SIZE,(int)y/DIRT_SIZE+1,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
+    char empty_under = get_collision(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1);
     //printf("%d \n",empty_under);
-    if(player->state != FLIGHT && empty_under){
+    /*
+    printf("test %d \n",get(world,(int)x/DIRT_SIZE,(int)y/DIRT_SIZE));
+    printf("test0 %d \n",get(world,(int)x/DIRT_SIZE,(int)y/DIRT_SIZE+1));
+    printf("test1 %d \n",get(world,(int)x/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE)); 
+    printf("test2 %d \n",get(world,(int)x/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1));
+    printf("x :\n");
+    printf("test %d \n",get(world,(int)x/DIRT_SIZE,(int)y/DIRT_SIZE+1));
+    printf("test0 %d \n",get(world,(int)x/DIRT_SIZE+1,(int)y/DIRT_SIZE+1)); 
+    printf("test1 %d \n",get(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE,(int)y/DIRT_SIZE+1));
+    printf("test2 %d \n",get(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE+1,(int)y/DIRT_SIZE+1));
+    printf("\n");
+    */
+    if(player->state != FLIGHT && empty_under == 0){
+        //printf("test %d \n",get(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE));
+        //printf("test2 %d \n",get(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1));
         player->vy = 100;
         player->state = FALL;
     }
-
-    printf("x : %f , y : %f , vx: %f, vy : %f \n",player->x,player->y,player->vx,player->vy);
+    //printf("après \n");
+    //printf("x : %f , y : %f , vx: %f, vy : %f \n",player->x,player->y,player->vx,player->vy);
     x += player->vx * dt;
     //printf("x : %d");
     //char empty = is_empty(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE);
-    char empty_horizon_high = is_empty(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE);
-    char empty_horizon_low = is_empty(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
-    printf("horizontal collision high : %d,horizontal collision low : %d \n",empty_horizon_high,empty_horizon_low);
-    if (!empty_horizon_high || !empty_horizon_low)
+    char empty_horizon_high = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE);
+    char empty_horizon_low = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
+    //printf("horizontal collision high : %d,horizontal collision low : %d \n",empty_horizon_high,empty_horizon_low);
+    if (empty_horizon_high == 1 || empty_horizon_low == 1)
     {
-        int snap = round(player->x/DIRT_SIZE) * DIRT_SIZE;
-        //printf("snap : %d , x : %lf \n",snap,player->x);
-        x = snap + (snap > player->x ? 1 : -1);
+        int snap = round(x/DIRT_SIZE) * DIRT_SIZE;
+        x = snap + (snap > x ? 1 : -1);
         player->vx = 0;
         //return;
     }
     player->x = x; /* update player x */
 
-    if (player->vy != 0)
-    {
+    if (player->vy != 0) {
         y += player->vy * dt;
         player->vy += dt * 300; /* gravity */
-        char empty_left = is_empty(world,(int)x/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
-        char empty_right = is_empty(world,(int)x/DIRT_SIZE+1, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
+        char empty_left = get_collision(world,(int)x/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
+        char empty_right = get_collision(world,(int)x/DIRT_SIZE+1, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
         //printf("%d \n",empty);
-        if (!empty_left || !empty_right)
+        //printf("verti collision gauche  : %d,verti collision droite : %d \n",empty_horizon_high,empty_horizon_low);
+        if (empty_left == 1 || empty_right == 1)
         {
-            printf("pas vide \n");
-            int snap = round(player->y/DIRT_SIZE) * DIRT_SIZE;
-            y = snap + (snap > player->y ? 1 : -1);
+            //printf("pas vide \n");
+            int snap = round(y/DIRT_SIZE) * DIRT_SIZE;
+            y = snap + (snap > y ? 1 : -1);
             player->vy = 0;
             if (player->state == FALL || player->state == FLIGHT)   
                 player->state = LANDING;
@@ -108,6 +122,7 @@ void handle_key_down2(player_t* player){
     //printf("%d , q state : %d ,d state : %d \n",numkey,kbstate[SDL_SCANCODE_Q],kbstate[SDL_SCANCODE_D]);
     //int state = REST;
     char key_pressed = 0;
+    //printf("q : %d, d : %d, z : %d \n",kbstate[SDL_SCANCODE_A],kbstate[SDL_SCANCODE_D],kbstate[SDL_SCANCODE_W]);
     if (kbstate[SDL_SCANCODE_A] || kbstate[SDL_SCANCODE_D]) {
         if (kbstate[SDL_SCANCODE_A] && kbstate[SDL_SCANCODE_D]) {
             player->vx = 0;
@@ -117,7 +132,7 @@ void handle_key_down2(player_t* player){
             player->backward = kbstate[SDL_SCANCODE_A] ? 1 : 0;
             player->vx = kbstate[SDL_SCANCODE_A] ? -150 : 150; 
         }
-        if(player->state == REST){
+        if(player->state == REST || player->state == LANDING){
             player->state = WALK;
         }
         key_pressed++;

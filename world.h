@@ -39,6 +39,7 @@ void render_sky(SDL_Renderer* renderer, ressources_t* ressources);
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world);
 char get(world_t* world,const int i,const int j);
 char is_empty(world_t* world,const int i, const int j);
+char get_collision(world_t* world,const int i, const int j);
 void free_levels(world_t* world);
 int fin(world_t* world);
 int is_game_over(world_t *world);
