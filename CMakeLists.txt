@@ -1,16 +1,28 @@
 cmake_minimum_required(VERSION 3.7.0)
 project(projet)
 
-file(GLOB SOURCES
-"${CMAKE_CURRENT_SOURCE_DIR}/*.c"
-"${CMAKE_CURRENT_SOURCE_DIR}/external/list/list.c"
-)
-
 if(MSVC)
     add_compile_options(/W4)
 else()
     add_compile_options(-Wall -Wextra)
 endif()
+
+find_package(Git QUIET)
+if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+    option(GIT_SUBMODULE "Check submodules during build" ON)
+    if(GIT_SUBMODULE)
+        message(STATUS "Submodule update")
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init external/list/ WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} RESULT_VARIABLE GIT_SUBMOD_RESULT)
+        if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+            message(FATAL_ERROR "git submodule update --init external/list/ failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+        endif()
+    endif()
+endif()
+
+file(GLOB SOURCES
+"${CMAKE_CURRENT_SOURCE_DIR}/*.c"
+"${CMAKE_CURRENT_SOURCE_DIR}/external/list/list.c"
+)
 
 include(FindPkgConfig)
 pkg_check_modules(SDL2 REQUIRED sdl2)
@@ -22,17 +34,10 @@ if(${SDL2_FOUND} AND ${SDL2_TTF_FOUND} AND ${SDL2_image_FOUND})
     include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIRS})
 else()
     message(STATUS "SDL2, SDL2_TTF and SDL2_image not find downloading library")
-    find_package(Git QUIET)
-    if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-        option(GIT_SUBMODULE "Check submodules during build" ON)
-        if(GIT_SUBMODULE)
-            message(STATUS "Submodule update")
-            execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-                            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                            RESULT_VARIABLE GIT_SUBMOD_RESULT)
-            if(NOT GIT_SUBMOD_RESULT EQUAL "0")
-                message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
-            endif()
+    if(GIT_SUBMODULE)
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} RESULT_VARIABLE GIT_SUBMOD_RESULT)
+        if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+            message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
         endif()
     endif()
     add_subdirectory(external)
