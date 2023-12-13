@@ -18,10 +18,10 @@ SDL_Surface* texte_surface(TTF_Font* police,const char text[],char type,SDL_Colo
     }
     switch (type) //https://www.libsdl.org/projects/old/SDL_ttf/docs/SDL_ttf.html#SEC42
     {
-    case 0: //rapide
+    case 0: //fast 
         surf = TTF_RenderText_Solid(police,text,*color);
         break;
-    case 2: //lent +beau 
+    case 2: //slow + better looking
         surf = TTF_RenderText_Blended(police,text,*color);
         break;
     default:
