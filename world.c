@@ -4,6 +4,34 @@
 #include "world.h"
 #include "fonctions_fichiers.h"
 
+void world_event(SDL_Event *event,world_t *world , ressources_t* ressources){
+    switch (event->type){
+        case SDL_QUIT:
+            world->game_state = Quit;
+        break;
+        case SDL_KEYDOWN:
+            if(world->game_state == Menu){
+                if(event->key.keysym.sym == SDLK_ESCAPE){
+                    world->game_state = Quit;
+                }
+            }
+            else if(world->game_state == Alive){
+                if(event->key.keysym.sym == SDLK_ESCAPE){
+                    world->game_state = Menu;
+                    world->last_level = world->cur_level;
+                    world->cur_level = 0;
+                }
+            }
+        break;
+        case SDL_MOUSEBUTTONDOWN:
+            if(world->game_state == Menu && event->button.button == SDL_BUTTON_LEFT)
+                mouse_menu_events(event->button,world,ressources);
+        default:
+            break;
+    }
+}
+
+
 void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t* ressources){
     for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
         Item menuItem = ressources->MenuItems->ItemList[i];
@@ -46,6 +74,9 @@ void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
     //level* cur_level = lis world->levels;
     int level = world->cur_level;
+    if(level == 0){ // Menu
+        render_main_menu_text(renderer,ressources);
+    }
     char cur_char;
     int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
     if(world->levels[level]->nb_ligne_level_tab == 0 || world->levels[level]->nb_col_level_tab == 0) {
@@ -105,8 +136,6 @@ char get(world_t* world,const int i,const int j){ // x,y
 }
 
 char is_empty(world_t* world,const int i, const int j) { //x,y
-    //printf("x : %d , y : %d \n",i,j);
-    //printf("x max : %d, y max : %d \n",world->levels[world->cur_level]->nb_col_level_tab,world->levels[world->cur_level]->nb_ligne_level_tab);
     if(i < 0 || j < 0 || i >= world->levels[world->cur_level]->nb_col_level_tab || j >= world->levels[world->cur_level]->nb_ligne_level_tab)
         return -1; // invalid
     if (world->levels[world->cur_level]->level_tab[j][i] == ' ')
@@ -131,9 +160,7 @@ char get_collision(world_t* world,const int i, const int j) { //x,y
     }
     else if (tile == 'f') { // flags
         return 4;
-    }
-    
-    
+    } 
     return 0;
 }
 
@@ -157,13 +184,6 @@ void flag_collision(world_t* world){
     }
 }*/
 
-int is_game_over(world_t *world){
-    if(world->game_state > Alive) // > 0
-        return 1;
-    else
-        return 0;
-}
-
 int fin(world_t* world){
     if(world->game_state  == Quit)
         return 1;
@@ -183,7 +203,7 @@ int countDigit(unsigned int n)
     if (n/10 == 0) 
         return 1; 
     return 1 + countDigit(n / 10); 
-} 
+}
 
 world_t* init_world(){
     world_t* world = malloc(sizeof(world_t));

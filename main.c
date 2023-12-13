@@ -16,63 +16,10 @@
 #include "player.h"
 
 
-void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources, player_t * player){
+void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
     while( SDL_PollEvent( event ) ) {
-        switch (event->type){
-        case SDL_QUIT:
-            world->game_state = Quit;
-        break;
-        case SDL_KEYDOWN:
-            if(world->game_state == Menu){
-                if(event->key.keysym.sym == SDLK_ESCAPE){
-                    world->game_state = Quit;
-                }
-            }
-            if(world->game_state == Alive){
-                if(event->key.keysym.sym == SDLK_ESCAPE){
-                    world->game_state = Menu;
-                    world->last_level = world->cur_level;
-                    world->cur_level = 0;
-                }else{
-                    if(event->key.keysym.sym == SDLK_q || event->key.keysym.sym == SDLK_d || event->key.keysym.sym == SDLK_s || event->key.keysym.sym == SDLK_z ){
-                        /*
-                        switch (event->key.keysym.sym)
-                        {
-                        case SDLK_q:
-                            set_state(player,WALK,1);
-                            break;
-                        case SDLK_d:
-                            set_state(player,WALK,0);
-                            break;
-                        case SDLK_z:
-                            set_state(player,FALL,0);
-                        default:
-                            break;
-                        }
-                        */
-                        //deplacement(player, world,event->key.keysym.sym);
-                        //handle_key_down(player,event->key.keysym.sym);
-                    }
-                }
-            }
-        break;
-        case SDL_KEYUP:
-        break;
-        case SDL_MOUSEBUTTONDOWN:
-            switch (world->game_state)
-            {
-            case Menu:
-                if (event->button.button == SDL_BUTTON_LEFT)
-                {
-                    mouse_menu_events(event->button,world,ressources);
-                }
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
+        if (event->type == SDL_QUIT || event->type == SDL_KEYDOWN || event->type == SDL_MOUSEBUTTONDOWN) {
+            world_event(event,world,ressources);
         }
     }
 }
@@ -104,8 +51,8 @@ int main(int argc, char* argv[]) {
     double dt;
     while(!fin(world)){
         // Events
-        handle_events(event,world,ressources,player);
-        handle_key_down2(player);
+        handle_events(event,world,ressources);
+        handle_keyboard_player(player);
 
         // Time / Physics
         current_time = SDL_GetTicks();
@@ -128,7 +75,6 @@ int main(int argc, char* argv[]) {
 
         last_time = current_time;
         if(world->game_state == Alive){
-            //printf("x : %f , y : %f , vx: %f, vy : %f \n",player->x,player->y,player->vx,player->vy);
             move_player(player,world,dt);
         }
 
@@ -138,6 +84,11 @@ int main(int argc, char* argv[]) {
         }
         render_sky(renderer,ressources);
         render_worlds(renderer,ressources,world);
+        if(world->game_state == Alive){
+            world->end_level_time = SDL_GetTicks();
+            render_player(renderer,player);
+        }
+        /*
         switch (world->game_state)
         {
             case Menu:
@@ -148,15 +99,16 @@ int main(int argc, char* argv[]) {
                 world->end_level_time = SDL_GetTicks();
                 render_player(renderer,player);
                 //printf("%f \n",dt);
-                /*unsigned int time_limit; // a deplacer dans alive plus tard
+                unsigned int time_limit; // a deplacer dans alive plus tard
                 unsigned int timer = SDL_GetTicks();    
                 unsigned int countdown = (time_limit - timer)/1000; 
                 afficher_texte(renderer,"../assets/arial.ttf",countdown,900,600);   //a deplacer dans alive plus tard
-                */
+                
                 break;
             default:
                 break;
         }
+        */
         SDL_RenderPresent(renderer);
     }
 

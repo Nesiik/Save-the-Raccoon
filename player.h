@@ -22,10 +22,8 @@ typedef struct player_s{
 player_t* init_player(SDL_Renderer *renderer);
 void move_player(player_t* player,world_t* world,double dt);
 void print_state(player_t* player);
-void handle_key_down2(player_t* player);
-//void handle_key_down(player_t* player, SDL_Keycode code);
+void handle_keyboard_player(player_t* player);
 void render_player(SDL_Renderer* renderer, const player_t* player);
-void deplacement(player_t* player,world_t* world, SDL_Keycode code);
 void free_player(player_t* player);
 
 #endif

@@ -34,6 +34,7 @@ typedef struct world_s{
     level** levels; /* 0 = Menu , 1 = niveau 1 , etc... */
 }world_t;
 
+void world_event(SDL_Event *event,world_t *world , ressources_t* ressources);
 void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t* ressources);
 world_t* init_world();
 void render_sky(SDL_Renderer* renderer, ressources_t* ressources);
@@ -41,8 +42,9 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
 char get(world_t* world,const int i,const int j);
 char is_empty(world_t* world,const int i, const int j);
 char get_collision(world_t* world,const int i, const int j);
+void spike_collision(world_t* world);
+void death(world_t * world);
 void free_levels(world_t* world);
 int fin(world_t* world);
-int is_game_over(world_t *world);
 
 #endif
