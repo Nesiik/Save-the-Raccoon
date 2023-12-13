@@ -13,13 +13,13 @@
  
  
  
- 
-                c
-          GLt  GL                      f
-t         MNKHKNR                  t  GL
-GL        MNOPQOR  G              GHKHOR
-MNL       MNOPQNR  MHKL           MOPQOR
-MNRt      MOQPNQR  MNOQHL        GNQPONR
-MNOKL     MQONQPR   SOPQO      GKOQNQOPR
+               c
+          BA   AB                   
+          GLtFEGL                      f
+tE        MNKHKNR  E               tBFGL
+GLF       MNOPQOR  GBAF           GHKHOR
+MNL       MNOPQNR  MHKLAF        AMOPQOR
+MNRtF     MOQPNQR  MNOQHL      EBGNQPONR
+MNOKLB    MQONQPR   SOPQOEB  BAGKOQNQOPR
 STUVWL    SVUTWVX    VUWUKL  GHWTVUWUVTX
 
