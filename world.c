@@ -76,7 +76,7 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
                 }
             }    
             else if(cur_char == 't'){ //tree ascii : 116
-                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE - (TREE_SIZE - DIRT_SIZE) , TREE_SIZE , TREE_SIZE};
+                SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE - DIRT_SIZE /* tree only but removed for better grass compatibility- (TREE_SIZE - DIRT_SIZE)*/ , TREE_SIZE , TREE_SIZE};
                 if(SDL_RenderCopy(renderer, ressources->tree->text, NULL, &dest)<0){
                     SDL_Log("Rendering tree error : %s",SDL_GetError());
                 }

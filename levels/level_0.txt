@@ -14,12 +14,12 @@
  
  
                c
-          BA   AB                   
-          GLtFEGL                      f
-tE        MNKHKNR  E               tBFGL
+          BAt  AB                   
+t         GLEFEGL                  t   f
+EE        MNKHKNR  E               EBFGL
 GLF       MNOPQOR  GBAF           GHKHOR
-MNL       MNOPQNR  MHKLAF        AMOPQOR
-MNRtF     MOQPNQR  MNOQHL      EBGNQPONR
+MNLt      MNOPQNR  MHKLAF        AMOPQOR
+MNREF     MOQPNQR  MNOQHL      EBGNQPONR
 MNOKLB    MQONQPR   SOPQOEB  BAGKOQNQOPR
 STUVWL    SVUTWVX    VUWUKL  GHWTVUWUVTX
 
