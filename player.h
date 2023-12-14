@@ -11,7 +11,6 @@ typedef struct player_s{
     double vx,vy;
     //Uint64 time;
     int state;
-    //sprite* sprite;
     unsigned char backward;
 }player_t;
 

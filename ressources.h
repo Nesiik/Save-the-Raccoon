@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "sprite.h"
-#include "sdl.h"
 
 #define MAIN_MENU_ITEM_COUNT 3
 #define PLAYER_SPRITE_SIZE 64

@@ -8,6 +8,7 @@
 #else
 #include <unistd.h> // for usleep
 #endif
+#include "sdl.h"
 #include "ressources.h"
 #include "world.h"
 #include "option.h"

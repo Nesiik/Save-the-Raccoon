@@ -1,7 +1,6 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "sprite.h"
 #include "ressources.h"
 
 #define NB_LEVELS 2
