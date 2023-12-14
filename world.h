@@ -28,10 +28,10 @@ typedef struct level_s
 
 typedef struct world_s{
     Uint32 start_level_time,end_level_time;
-    int cur_level;
-    int last_level; /* Level before pause */
+    level* cur_level;
+    level* last_level; /* Level before pause */
     char game_state; /* -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
-    level** levels; /* 0 = Menu , 1 = niveau 1 , etc... */
+    level** levels; /* array of pointer */
 }world_t;
 
 void world_event(SDL_Event *event,world_t *world , ressources_t* ressources);

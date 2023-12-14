@@ -19,7 +19,7 @@ void world_event(SDL_Event *event,world_t *world , ressources_t* ressources){
                 if(event->key.keysym.sym == SDLK_ESCAPE){
                     world->game_state = Menu;
                     world->last_level = world->cur_level;
-                    world->cur_level = 0;
+                    world->cur_level = list_front(world->levels);
                 }
             }
         break;
@@ -42,14 +42,14 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
             switch (i) {
                 case 0: // Jouer
                     world->game_state = Alive;
-                    if(world->last_level != -1){
+                    if(world->last_level != NULL){
                         world->cur_level = world->last_level;
+                        world->last_level = NULL;
                     }
                     else{
-                        world->cur_level = 1;
+                        world->cur_level = *list_elem_next(list_elem_front(world->levels));
                         world->start_level_time = SDL_GetTicks();
                     }
-                    //world->depart = SDL_GetTicks();
                     break;
                 case 1: // Option
                     break;
@@ -72,21 +72,20 @@ void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
 }
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
-    //level* cur_level = lis world->levels;
-    int level = world->cur_level;
-    if(level == 0){ // Menu
+    level* cur_level = world->cur_level;
+    if(world->game_state == Menu){
         render_main_menu_text(renderer,ressources);
     }
     char cur_char;
     int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
-    if(world->levels[level]->nb_ligne_level_tab == 0 || world->levels[level]->nb_col_level_tab == 0) {
+    if(cur_level->nb_ligne_level_tab == 0 || cur_level->nb_col_level_tab == 0) {
         afficher_texte(renderer,ressources->font,"Map empty,please check the map.",50,50);
     }
-    for (int i = 0; i < world->levels[level]->nb_ligne_level_tab; i++)
+    for (int i = 0; i < cur_level->nb_ligne_level_tab; i++)
     {
-        for (int j = 0; j < world->levels[level]->nb_col_level_tab; j++)
+        for (int j = 0; j < cur_level->nb_col_level_tab; j++)
         {
-            cur_char = world->levels[level]->level_tab[i][j];
+            cur_char = cur_level->level_tab[i][j];
             if(cur_char >= 'A' && cur_char <= 'X'){ //dirt ascii : 65-88
                 tabij = cur_char - 'A'; // conversion ascii -> int
                 dirt_y = tabij/6;
@@ -129,16 +128,16 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
 }
 
 char get(world_t* world,const int i,const int j){ // x,y
-    if(i>=0 && j>=0 && i<world->levels[world->cur_level]->nb_col_level_tab && j<world->levels[world->cur_level]->nb_ligne_level_tab){
-        return world->levels[world->cur_level]->level_tab[j][i];
+    if(i>=0 && j>=0 && i<world->cur_level->nb_col_level_tab && j<world->cur_level->nb_ligne_level_tab){
+        return world->cur_level->level_tab[j][i];
     }
     return -1;
 }
 
 char is_empty(world_t* world,const int i, const int j) { //x,y
-    if(i < 0 || j < 0 || i >= world->levels[world->cur_level]->nb_col_level_tab || j >= world->levels[world->cur_level]->nb_ligne_level_tab)
+    if(i < 0 || j < 0 || i >= world->cur_level->nb_col_level_tab || j >= world->cur_level->nb_ligne_level_tab)
         return -1; // invalid
-    if (world->levels[world->cur_level]->level_tab[j][i] == ' ')
+    if (world->cur_level->level_tab[j][i] == ' ')
     {
         return 1;
     }
@@ -146,7 +145,7 @@ char is_empty(world_t* world,const int i, const int j) { //x,y
 }
 
 char get_collision(world_t* world,const int i, const int j) { //x,y
-    if(i < 0 || j < 0 || i >= world->levels[world->cur_level]->nb_col_level_tab || j >= world->levels[world->cur_level]->nb_ligne_level_tab)
+    if(i < 0 || j < 0 || i >= world->cur_level->nb_col_level_tab || j >= world->cur_level->nb_ligne_level_tab)
         return -1; // invalid
     char tile = get(world,i,j);
     if ((tile >= 'C' && tile <= 'D') || (tile >= 'G' && tile <= 'X')) { // dirt
@@ -169,7 +168,7 @@ void spike_collision(world_t* world){
 }
 
 void death(world_t * world){
-    if(world->game_state = Dead){
+    if(world->game_state == Dead){
         fin(world);
     }
 }
@@ -208,12 +207,10 @@ int countDigit(unsigned int n)
 world_t* init_world(){
     world_t* world = malloc(sizeof(world_t));
     world->game_state = Menu;
-    world->cur_level = 0;
-    world->last_level = -1;
-    /*
+    world->last_level = NULL;
     list(level*,levels);
-    memset(&levels,0,sizeof(level*)); */
-    world->levels = malloc(NB_LEVELS*sizeof(level*)); 
+    memset(&levels,0,sizeof(levels));
+    //world->levels = malloc(NB_LEVELS*sizeof(level*)); 
     int taille = sizeof("../levels/level_.txt")+countDigit(NB_LEVELS);
     char str[taille+1]; // +1 for \0 
     for (unsigned int i = 0; i < NB_LEVELS; i++)
@@ -225,26 +222,17 @@ world_t* init_world(){
             SDL_Log("Error reading : %s \n",str);
         }
         taille_fichier(str,&new_level->nb_ligne_level_tab,&new_level->nb_col_level_tab);
-        world->levels[i] = new_level;
-        //list_push(levels,new_level);
-        /*
-        world->levels[i] = malloc(sizeof(level));
-        world->levels[i]->level_tab = lire_fichier(str);
-        if(world->levels[i]->level_tab == NULL){
-            SDL_Log("Error reading : %s \n",str);
-        }
-        taille_fichier(str,&world->levels[i]->nb_ligne_level_tab,&world->levels[i]->nb_col_level_tab);
-        */
+        list_push(levels,new_level);
     }
-    //world->levels = levels;
+    world->cur_level = list_front(levels);
+    world->levels = levels;
     return world;
 }
 
 void free_levels(world_t* world){
-    for (size_t i = 0; i < NB_LEVELS; i++)
-    {
-        desallouer_tab_2D(world->levels[i]->level_tab);
-        free(world->levels[i]);
+    list_each_elem(world->levels,elem){
+        desallouer_tab_2D((*elem)->level_tab);
+        free(*elem);
     }
-    free(world->levels);
+    list_clear(world->levels);
 }

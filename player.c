@@ -81,7 +81,7 @@ void move_player(player_t* player,world_t* world,double dt){
         x += player->vx * dt;
         char empty_horizon_high = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
         char empty_horizon_low = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
-        printf("horizontal collision high : %d,horizontal collision low : %d \n",empty_horizon_high,empty_horizon_low);
+        //printf("horizontal collision high : %d,horizontal collision low : %d \n",empty_horizon_high,empty_horizon_low);
         if (empty_horizon_high == 1 || empty_horizon_low == 1)
         {
             int snap = round(x/DIRT_SIZE) * DIRT_SIZE;
