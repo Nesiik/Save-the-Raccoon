@@ -39,6 +39,7 @@ void world_event(SDL_Event *event,world_t *world , ressources_t* ressources);
 void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t* ressources);
 void render_sky(SDL_Renderer* renderer, ressources_t* ressources);
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world);
+void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources);
 char get(world_t* world,const int i,const int j);
 char is_empty(world_t* world,const int i, const int j);
 char get_collision(world_t* world,const int i, const int j);

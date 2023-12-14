@@ -67,7 +67,32 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
 void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
     SDL_Rect rect = {0,0,WINDOW_WIDTH,WINDOW_HEIGHT};
     if(SDL_RenderCopy(renderer, ressources->sky->text, NULL, &rect) < 0){
-        printf("%s",SDL_GetError());
+        printf("Error rendering the sky : %s",SDL_GetError());
+    }
+}
+
+void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
+    for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
+        if(i == ressources->MenuItems->curselectedItem){
+            if (ressources->MenuItems->curselectedItem != ressources->MenuItems->lastselectedItem){
+                SDL_Color color = (SDL_Color){ 180, 180, 180, 255 };
+                //Bouton sélectionné
+                SDL_DestroyTexture(ressources->MenuItems->ItemList[i].texture);
+                ressources->MenuItems->ItemList[i].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems->ItemList[i].text,ressources->MenuItems->ItemList[i].rect.x,ressources->MenuItems->ItemList[i].rect.y,&ressources->MenuItems->ItemList[i].rect);
+                if(ressources->MenuItems->lastselectedItem != -1){ // si il y a eu une sélection avant cette sélection
+                    color = (SDL_Color){ 100, 100, 100, 255 };
+                    signed char lastItem = ressources->MenuItems->lastselectedItem;
+                    SDL_DestroyTexture(ressources->MenuItems->ItemList[lastItem].texture);
+                    ressources->MenuItems->ItemList[lastItem].texture = creer_texte_texture(renderer,ressources->font,2,&color,ressources->MenuItems->ItemList[lastItem].text,ressources->MenuItems->ItemList[lastItem].rect.x,ressources->MenuItems->ItemList[lastItem].rect.y,&ressources->MenuItems->ItemList[lastItem].rect);
+                    ressources->MenuItems->lastselectedItem = ressources->MenuItems->curselectedItem;
+                }
+                ressources->MenuItems->lastselectedItem = ressources->MenuItems->curselectedItem;
+            }
+            
+        }
+        if(SDL_RenderCopy(renderer, ressources->MenuItems->ItemList[i].texture, NULL, &ressources->MenuItems->ItemList[i].rect) < 0){
+            printf("Renderer main menu error : %s",SDL_GetError());
+        }
     }
 }
 
