@@ -1,13 +1,9 @@
 #include "player.h"
-#include "sprite.h"
 #include "world.h"
 #include <math.h>
 
-player_t* init_player(SDL_Renderer* renderer){
+player_t* init_player(){
     player_t* player = malloc(sizeof(player_t));
-    player->sprite = charger_image_png("../assets/raccoon/staticv2.png", renderer);
-    player->sprite->sprite_w = PLAYER_SPRITE_SIZE;
-    player->sprite->sprite_h = PLAYER_SPRITE_SIZE;
     player->state = REST;
     player->backward = 0;
     player->x = 90.;
@@ -17,9 +13,9 @@ player_t* init_player(SDL_Renderer* renderer){
     return player;
 }
 
-void render_player(SDL_Renderer* renderer, const player_t* player){
-    SDL_Rect dest = {player->x,player->y,player->sprite->sprite_w,player->sprite->sprite_h};
-    if(SDL_RenderCopyEx(renderer, player->sprite->text, NULL, &dest, 0, NULL, player->backward ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE )<0){
+void render_player(SDL_Renderer* renderer, const player_t* player ,ressources_t* ressources){
+    SDL_Rect dest = {player->x,player->y,ressources->player->sprite_w,ressources->player->sprite_h};
+    if(SDL_RenderCopyEx(renderer, ressources->player->text, NULL, &dest, 0, NULL, player->backward ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE )<0){
         SDL_Log("Player rendering error : %s",SDL_GetError());
     }
 }
@@ -72,15 +68,15 @@ void move_player(player_t* player,world_t* world,double dt){
     //printf("test1 %d \n",get(world,player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE,(int)y/DIRT_SIZE+1));
     //printf("test2 %d \n",get(world,player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE));
     //printf("\n");
-    char empty_under = get_collision(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1);
+    char empty_under = get_collision(world,((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE+1);
     if(player->state != FLIGHT && empty_under == 0){
         player->vy = 100;
         player->state = FALL;
     }
     if(player->vx != 0){
         x += player->vx * dt;
-        char empty_horizon_high = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
-        char empty_horizon_low = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE), ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
+        char empty_horizon_high = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
+        char empty_horizon_low = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
         //printf("horizontal collision high : %d,horizontal collision low : %d \n",empty_horizon_high,empty_horizon_low);
         if (empty_horizon_high == 1 || empty_horizon_low == 1)
         {
@@ -99,8 +95,8 @@ void move_player(player_t* player,world_t* world,double dt){
     if (player->vy != 0) {
         y += player->vy * dt;
         player->vy += dt * 300; /* gravity */
-        char empty_left = get_collision(world,(int)x/DIRT_SIZE, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
-        char empty_right = get_collision(world,(int)x/DIRT_SIZE+1, ((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE);
+        char empty_left = get_collision(world,(int)x/DIRT_SIZE, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
+        char empty_right = get_collision(world,(int)x/DIRT_SIZE+1, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
         if (empty_left == 1 || empty_right == 1)
         {
             int snap = round(y/DIRT_SIZE) * DIRT_SIZE;
@@ -149,9 +145,4 @@ void handle_keyboard_player(player_t* player){
             player->state = REST;
         }
     }
-}
-
-void free_player(player_t* player){
-    SDL_DestroyTexture(player->sprite->text);
-    free(player->sprite);
 }

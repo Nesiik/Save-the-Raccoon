@@ -1,3 +1,4 @@
+#include <SDL.h>
 #include "sdl.h"
 
 //For text that should be display 1 time

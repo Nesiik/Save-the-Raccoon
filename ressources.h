@@ -3,10 +3,11 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <list.h>
 #include "sprite.h"
 #include "sdl.h"
+
 #define MAIN_MENU_ITEM_COUNT 3
+#define PLAYER_SPRITE_SIZE 64
 
 typedef struct Item_s{
     SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte */
@@ -30,6 +31,7 @@ typedef struct ressources_s{
     sprite* tree;
     sprite* flag;
     sprite* coin;
+    sprite* player;
 }ressources_t;
 
 ressources_t* init_ressources(SDL_Renderer *renderer);

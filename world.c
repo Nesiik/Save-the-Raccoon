@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <list.h>
 #include "world.h"
+#include "sdl.h"
 #include "fonctions_fichiers.h"
 
 void world_event(SDL_Event *event,world_t *world , ressources_t* ressources){
@@ -98,11 +99,11 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
     level* cur_level = world->cur_level;
-    char cur_char;
-    int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
     if(cur_level->nb_ligne_level_tab == 0 || cur_level->nb_col_level_tab == 0) {
         afficher_texte(renderer,ressources->font,FAST_TEXT,"Map empty,please check the map.",50,50);
     }
+    char cur_char;
+    int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
     for (int i = 0; i < cur_level->nb_ligne_level_tab; i++)
     {
         for (int j = 0; j < cur_level->nb_col_level_tab; j++)

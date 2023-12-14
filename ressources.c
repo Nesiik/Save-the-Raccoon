@@ -1,4 +1,5 @@
 #include "ressources.h"
+#include "sdl.h"
 
 ressources_t* init_ressources(SDL_Renderer *renderer){
     ressources_t* ressources = malloc(sizeof(ressources_t));
@@ -40,6 +41,9 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
     ressources->tree = charger_image_png("../assets/treeV2.png", renderer);
     ressources->flag = charger_image_png("../assets/flagV4.png", renderer);
     ressources->coin = charger_image_png("../assets/coinV2.png", renderer);
+    ressources->player = charger_image_png("../assets/raccoon/staticv2.png", renderer);
+    ressources->player->sprite_w = PLAYER_SPRITE_SIZE;
+    ressources->player->sprite_h = PLAYER_SPRITE_SIZE;
 
     return ressources;
 }
@@ -68,7 +72,10 @@ void free_ressources(ressources_t* ressources){
     free(ressources->flag);
 
     SDL_DestroyTexture(ressources->coin->text);
-    free(ressources->coin);   
+    free(ressources->coin);
+
+    SDL_DestroyTexture(ressources->player->text);
+    free(ressources->player);
 
     TTF_CloseFont(ressources->font);
 }

@@ -53,7 +53,7 @@ int main() {
 
     world_t* world = init_world();
     ressources_t* ressources = init_ressources(renderer);
-    player_t* player = init_player(renderer);
+    player_t* player = init_player();
 
     set_full_screen(window,FakeFS);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
@@ -68,18 +68,9 @@ int main() {
         // Time / Physics
         current_time = SDL_GetTicks();
         dt = (current_time - last_time) / 1000.0;
-        /*
+        /* block fps (not needed currently because we're using vsync)
         if( dt < 16){
-            #ifdef WIN32
-                Sleep(1);
-            #elif _POSIX_C_SOURCE >= 199309L
-                struct timespec ts;
-                ts.tv_sec = 1 / 1000;
-                ts.tv_nsec = (1 % 1000) * 1000000;
-                nanosleep(&ts, NULL);
-            #else
-                usleep((1 % 1000) * 1000);
-            #endif
+             compatible_sleep(1);
             continue;
         }
         */
@@ -101,7 +92,7 @@ int main() {
                 break;
             case Alive:
                 world->end_level_time = SDL_GetTicks();
-                render_player(renderer,player);
+                render_player(renderer,player,ressources);
                 break;
             case Dead:
                 death(renderer,world,ressources);
@@ -121,7 +112,6 @@ int main() {
     free(world);
     free_ressources(ressources);
     free(ressources);
-    free_player(player);
     free(player);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
