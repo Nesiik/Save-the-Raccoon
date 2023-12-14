@@ -1,7 +1,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <stdio.h>
-/*
 #ifdef WIN32
 #include <windows.h>
 #elif _POSIX_C_SOURCE >= 199309L
@@ -9,12 +8,24 @@
 #else
 #include <unistd.h> // for usleep
 #endif
-*/
 #include "ressources.h"
 #include "world.h"
 #include "option.h"
 #include "player.h"
 
+
+void compatible_sleep(unsigned long millisecond){
+    #ifdef WIN32
+        Sleep(millisecond); //millisecond
+    #elif _POSIX_C_SOURCE >= 199309L
+        struct timespec ts;
+        ts.tv_sec = (int)(millisecond / 1000);
+        ts.tv_nsec = (millisecond % 1000) * 1000000;
+        nanosleep(&ts, NULL);
+    #else
+        usleep(millisecond * 1000); //microseconds
+    #endif
+}
 
 void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
     while( SDL_PollEvent( event ) ) {
@@ -84,32 +95,22 @@ int main() {
         }
         render_sky(renderer,ressources);
         render_worlds(renderer,ressources,world);
-        if(world->game_state == Alive){
-            world->end_level_time = SDL_GetTicks();
-            render_player(renderer,player);
-        }
-        /*
-        switch (world->game_state)
-        {
-            case Menu:
-                render_main_menu_text(renderer,ressources);
-                break;
+        switch (world->game_state) {
             case Alive:
-                //print_state(player);
                 world->end_level_time = SDL_GetTicks();
                 render_player(renderer,player);
-                //printf("%f \n",dt);
-                unsigned int time_limit; // a deplacer dans alive plus tard
-                unsigned int timer = SDL_GetTicks();    
-                unsigned int countdown = (time_limit - timer)/1000; 
-                afficher_texte(renderer,"../assets/arial.ttf",countdown,900,600);   //a deplacer dans alive plus tard
-                
+                break;
+            case Dead:
+                death(renderer,world,ressources);
                 break;
             default:
                 break;
         }
-        */
         SDL_RenderPresent(renderer);
+        if (world->game_state == Dead) {
+            compatible_sleep(3000);
+            world->game_state = Menu; 
+        }
     }
 
     free(event);

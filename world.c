@@ -47,7 +47,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
                         world->last_level = NULL;
                     }
                     else{
-                        world->cur_level = *list_elem_next(list_elem_front(world->levels));
+                        world->cur_level = *list_elem_next(list_elem_front(world->levels)); //list_elem return pointer to an elem
                         world->start_level_time = SDL_GetTicks();
                     }
                     break;
@@ -79,7 +79,7 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
     char cur_char;
     int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
     if(cur_level->nb_ligne_level_tab == 0 || cur_level->nb_col_level_tab == 0) {
-        afficher_texte(renderer,ressources->font,"Map empty,please check the map.",50,50);
+        afficher_texte(renderer,ressources->font,FAST_TEXT,"Map empty,please check the map.",50,50);
     }
     for (int i = 0; i < cur_level->nb_ligne_level_tab; i++)
     {
@@ -167,10 +167,10 @@ void spike_collision(world_t* world){
     world->game_state = Dead;
 }
 
-void death(world_t * world){
-    if(world->game_state == Dead){
-        fin(world);
-    }
+void death(SDL_Renderer* renderer, world_t* world,ressources_t* ressources){
+    afficher_texte(renderer,ressources->font,SLOW_TEXT,"You died :(",WINDOW_WIDTH/2,WINDOW_HEIGHT/2);
+    world->last_level = NULL;
+    world->cur_level = list_front(world->levels);
 }
 
 void flag_collision(world_t* world){

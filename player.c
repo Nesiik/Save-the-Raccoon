@@ -88,10 +88,10 @@ void move_player(player_t* player,world_t* world,double dt){
             x = snap + (snap > x ? 1 : -1);
             player->vx = 0;
         }
-        else if(empty_horizon_high == 2 && empty_horizon_low == 2){
+        else if(empty_horizon_high == 2 || empty_horizon_low == 2){
             spike_collision(world);
         }
-        else if( empty_horizon_high == 4 && empty_horizon_low == 4){
+        else if( empty_horizon_high == 4 || empty_horizon_low == 4){
             //flag_collision(world);
         }
         player->x = x; /* update player x */
@@ -108,6 +108,9 @@ void move_player(player_t* player,world_t* world,double dt){
             player->vy = 0;
             if (player->state == FALL || player->state == FLIGHT)   
                 player->state = LANDING;
+        }
+        else if(empty_left == 2 || empty_right == 2){
+            spike_collision(world);
         }
         player->y = y; /* update player y */
     }
