@@ -96,6 +96,9 @@ int main() {
         render_sky(renderer,ressources);
         render_worlds(renderer,ressources,world);
         switch (world->game_state) {
+            case Menu:
+                render_main_menu_text(renderer,ressources);
+                break;
             case Alive:
                 world->end_level_time = SDL_GetTicks();
                 render_player(renderer,player);

@@ -73,9 +73,6 @@ void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
     level* cur_level = world->cur_level;
-    if(world->game_state == Menu){
-        render_main_menu_text(renderer,ressources);
-    }
     char cur_char;
     int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
     if(cur_level->nb_ligne_level_tab == 0 || cur_level->nb_col_level_tab == 0) {
