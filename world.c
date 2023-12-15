@@ -20,7 +20,7 @@ void world_event(SDL_Event *event,world_t *world , ressources_t* ressources){
                 if(event->key.keysym.sym == SDLK_ESCAPE){
                     world->game_state = Menu;
                     world->last_level = world->cur_level;
-                    world->cur_level = list_front(world->levels);
+                    world->cur_level = list_elem_front(world->levels);
                 }
             }
         break;
@@ -48,7 +48,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
                         world->last_level = NULL;
                     }
                     else{
-                        world->cur_level = *list_elem_next(list_elem_front(world->levels)); //list_elem return pointer to an elem
+                        world->cur_level = list_elem_next(list_elem_front(world->levels));
                         world->start_level_time = SDL_GetTicks();
                     }
                     break;
@@ -98,7 +98,7 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
 }
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
-    level* cur_level = world->cur_level;
+    level* cur_level = *world->cur_level;
     if(cur_level->nb_ligne_level_tab == 0 || cur_level->nb_col_level_tab == 0) {
         afficher_texte(renderer,ressources->font,FAST_TEXT,"Map empty,please check the map.",50,50);
     }
@@ -151,16 +151,18 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
 }
 
 char get(world_t* world,const int i,const int j){ // x,y
-    if(i>=0 && j>=0 && i<world->cur_level->nb_col_level_tab && j<world->cur_level->nb_ligne_level_tab){
-        return world->cur_level->level_tab[j][i];
+    level* cur_level = *world->cur_level;
+    if(i>=0 && j>=0 && i< cur_level->nb_col_level_tab && j< cur_level->nb_ligne_level_tab){
+        return cur_level->level_tab[j][i];
     }
     return -1;
 }
 
 char is_empty(world_t* world,const int i, const int j) { //x,y
-    if(i < 0 || j < 0 || i >= world->cur_level->nb_col_level_tab || j >= world->cur_level->nb_ligne_level_tab)
+    level* cur_level = *world->cur_level;
+    if(i < 0 || j < 0 || i >= cur_level->nb_col_level_tab || j >= cur_level->nb_ligne_level_tab)
         return -1; // invalid
-    if (world->cur_level->level_tab[j][i] == ' ')
+    if (cur_level->level_tab[j][i] == ' ')
     {
         return 1;
     }
@@ -168,7 +170,8 @@ char is_empty(world_t* world,const int i, const int j) { //x,y
 }
 
 char get_collision(world_t* world,const int i, const int j) { //x,y
-    if(i < 0 || j < 0 || i >= world->cur_level->nb_col_level_tab || j >= world->cur_level->nb_ligne_level_tab)
+    level* cur_level = *world->cur_level;
+    if(i < 0 || j < 0 || i >= cur_level->nb_col_level_tab || j >= cur_level->nb_ligne_level_tab)
         return -1; // invalid
     char tile = get(world,i,j);
     if ((tile >= 'C' && tile <= 'D') || (tile >= 'G' && tile <= 'X')) { // dirt
@@ -193,7 +196,7 @@ void spike_collision(world_t* world){
 void death(SDL_Renderer* renderer, world_t* world,ressources_t* ressources){
     afficher_texte(renderer,ressources->font,SLOW_TEXT,"You died :(",WINDOW_WIDTH/2,WINDOW_HEIGHT/2);
     world->last_level = NULL;
-    world->cur_level = list_front(world->levels);
+    world->cur_level = list_elem_front(world->levels);
 }
 
 void flag_collision(world_t* world){
@@ -235,7 +238,7 @@ world_t* init_world(){
     memset(&levels,0,sizeof(levels));
     //world->levels = malloc(NB_LEVELS*sizeof(level*)); 
     int taille = sizeof("../levels/level_.txt")+countDigit(NB_LEVELS);
-    char str[taille+1]; // +1 for \0 
+    char str[taille];
     for (unsigned int i = 0; i < NB_LEVELS; i++)
     {
         sprintf(str, "%s%d%s", "../levels/level_", i ,".txt");
@@ -247,7 +250,7 @@ world_t* init_world(){
         taille_fichier(str,&new_level->nb_ligne_level_tab,&new_level->nb_col_level_tab);
         list_push(levels,new_level);
     }
-    world->cur_level = list_front(levels);
+    world->cur_level = list_elem_front(levels);
     world->levels = levels;
     return world;
 }

@@ -3,7 +3,7 @@
 
 #include "ressources.h"
 
-#define NB_LEVELS 2
+#define NB_LEVELS 3
 #define DIRT_SIZE 32
 #define TREE_SIZE 96
 #define N_WIDTH_DIRT_SPRITE 6
@@ -27,8 +27,8 @@ typedef struct level_s
 
 typedef struct world_s{
     Uint32 start_level_time,end_level_time;
-    level* cur_level;
-    level* last_level; /* Level before pause */
+    level** cur_level;
+    level** last_level; /* Level before pause */
     char game_state; /* -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
     level** levels; /* array of pointer */
 }world_t;

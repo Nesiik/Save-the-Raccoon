@@ -5,7 +5,7 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
     ressources_t* ressources = malloc(sizeof(ressources_t));
     ressources->font = TTF_OpenFont("../assets/arial.ttf",42*2);
     if(ressources->font == NULL){
-        printf("%s",SDL_GetError());
+        printf("Error opening font : %s",TTF_GetError());
     }
 
     ressources->MenuItems = malloc(sizeof(MenuItem_t));
