@@ -1,2 +1,2 @@
-level 1 : 8s
+level 1 : 7s
 level 2 : 5s

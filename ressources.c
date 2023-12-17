@@ -60,6 +60,7 @@ void free_ressources(ressources_t* ressources){
         free(elem);
     }
     list_clear(ressources->MenuItems->ItemList); //free list
+    free(ressources->MenuItems);
 
     SDL_DestroyTexture(ressources->dirt->text);
     free(ressources->dirt);
