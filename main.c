@@ -57,7 +57,6 @@ int main() {
     player_t* player = init_player();
 
     set_full_screen(window,FakeFS);
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
     Uint64 last_time = SDL_GetTicks(),current_time;
     double dt;
