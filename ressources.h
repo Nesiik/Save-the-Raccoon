@@ -14,13 +14,13 @@ typedef struct Item_s{
     SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte */
     char* text; /*!<Le texte du menu */
     SDL_Texture* texture;
-} Item;
+} Item_t;
 
 
 typedef struct MenuItem_s{
-    Item ItemList[MAIN_MENU_ITEM_COUNT];
-    signed char curselectedItem;
-    signed char lastselectedItem;
+    Item_t** ItemList; /* linked list of item pointer */
+    Item_t** curselectedItem; /* pointer to the selected item pointer (part of the itemList array) */
+    Item_t** lastselectedItem; /* pointer to the last item pointer (part of the itemList array) */
 } MenuItem_t;
 
 typedef struct ressources_s{

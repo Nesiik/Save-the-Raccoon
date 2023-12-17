@@ -1,2 +1,2 @@
-level 0 : 43s
-level 1 : 5s
+level 1 : 8s
+level 2 : 5s
