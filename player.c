@@ -1,13 +1,16 @@
 #include "player.h"
 #include "world.h"
+#include "sdl.h"
 #include <math.h>
 
 player_t* init_player(){
     player_t* player = malloc(sizeof(player_t));
     player->state = REST;
     player->backward = 0;
-    player->x = 90.;
-    player->y = 550.;
+    //player->x = 90.;
+    //player->y = 550.;
+    player->x = 0.;
+    player->y = 0.;
     player->vx = 0;
     player->vy = 0;
     return player;
@@ -16,7 +19,7 @@ player_t* init_player(){
 void render_player(SDL_Renderer* renderer, const player_t* player ,ressources_t* ressources){
     SDL_Rect dest = {player->x,player->y,ressources->player->sprite_w,ressources->player->sprite_h};
     if(SDL_RenderCopyEx(renderer, ressources->player->text, NULL, &dest, 0, NULL, player->backward ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE )<0){
-        SDL_Log("Player rendering error : %s",SDL_GetError());
+        SDL_Log("Player rendering error : %s \n",SDL_GetError());
     }
 }
 
@@ -46,7 +49,42 @@ void print_state(player_t* player){ // use for debugging
     }
 }
 
-void move_player(player_t* player,world_t* world,double dt){
+void get_player_spawn(world_t* world){
+    level* level = *world->cur_level;
+    for (int i = 0; i < level->nb_ligne_level_tab; i++)
+    {
+        for (int j = 0; j < level->nb_col_level_tab; j++)
+        {
+            char tabij = get(world,j,i);
+            if (tabij == 'x')
+            {
+                world->player_spawn_x = j*DIRT_SIZE;
+                world->player_spawn_y = i*DIRT_SIZE;
+                return;
+            }
+            
+        }
+        
+    }
+    
+}
+
+void set_spawn(world_t* world,player_t* player){
+    get_player_spawn(world);
+    player->x = world->player_spawn_x;
+    player->y = world->player_spawn_y;
+    world->player_spawn_x = 0;
+    world->player_spawn_y = 0;
+    world->need_player_pos_update = 0;
+}
+
+void reset_state(player_t* player){
+    player->vx=0;
+    player->vy=0;
+    player->state = REST;
+}
+
+void move_player(player_t* player,world_t* world,ressources_t* ressources,double dt){
     if(player->state == TAKEOFF)
         player->state = FLIGHT;
     double x = player->x,y = player->y;
@@ -75,6 +113,15 @@ void move_player(player_t* player,world_t* world,double dt){
     }
     if(player->vx != 0){
         x += player->vx * dt;
+        if ((int)x <= 0) {
+            x = 0;
+            player->vx = 0;
+        }
+        else if (((int)x + PLAYER_SPRITE_SIZE) >= WINDOW_WIDTH) {
+            x = WINDOW_WIDTH - ressources->player->sprite_w;
+            player->vx=0;
+        }
+
         char empty_horizon_high = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
         char empty_horizon_low = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
         //printf("horizontal collision high : %d,horizontal collision low : %d \n",empty_horizon_high,empty_horizon_low);
@@ -86,13 +133,23 @@ void move_player(player_t* player,world_t* world,double dt){
         }
         else if(empty_horizon_high == 2 || empty_horizon_low == 2){
             spike_collision(world);
+            reset_state(player);
         }
         else if( empty_horizon_high == 4 || empty_horizon_low == 4){
-            //flag_collision(world);
+            flag_collision(world);
+            reset_state(player);
         }
         player->x = x; /* update player x */
     }
     if (player->vy != 0) {
+        if ((int)y <= 0) {
+            y = 0;
+            player->vy = 0;
+        }
+        else if ((int)y > WINDOW_HEIGHT){
+            spike_collision(world);
+            reset_state(player);
+        }
         y += player->vy * dt;
         player->vy += dt * 300; /* gravity */
         char empty_left = get_collision(world,(int)x/DIRT_SIZE, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
@@ -107,6 +164,11 @@ void move_player(player_t* player,world_t* world,double dt){
         }
         else if(empty_left == 2 || empty_right == 2){
             spike_collision(world);
+            reset_state(player);
+        }
+        else if( empty_left == 4 || empty_right == 4){
+            flag_collision(world);
+            reset_state(player);
         }
         player->y = y; /* update player y */
     }

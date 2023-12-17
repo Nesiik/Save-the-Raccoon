@@ -68,7 +68,7 @@ int main() {
 
         // Time / Physics
         current_time = SDL_GetTicks();
-        dt = (current_time - last_time) / 1000.0;
+        dt = (current_time - last_time) / 1000.f;
         /* block fps (not needed currently because we're using vsync)
         if( dt < 16){
              compatible_sleep(1);
@@ -77,13 +77,17 @@ int main() {
         */
 
         last_time = current_time;
+        if(world->need_player_pos_update == 1){
+            set_spawn(world,player);
+            dt = 0;
+        }
         if(world->game_state == Alive){
-            move_player(player,world,dt);
+            move_player(player,world,ressources,dt);
         }
 
         // Rendering
         if(SDL_RenderClear(renderer) < 0){
-            printf("%s",SDL_GetError());
+            printf("Error clearing screen : %s \n",SDL_GetError());
         }
         render_sky(renderer,ressources);
         render_worlds(renderer,ressources,world);
@@ -98,14 +102,22 @@ int main() {
             case Dead:
                 death(renderer,world,ressources);
                 break;
+            case Win:
+                won(renderer,world,ressources);
+                break;
             default:
                 break;
         }
         SDL_RenderPresent(renderer);
         if (world->game_state == Dead) {
-            compatible_sleep(3000);
+            compatible_sleep(2000);
             world->game_state = Menu; 
         }
+        else if (world->game_state == Win) {
+            compatible_sleep(2000);
+            world->game_state = Alive;
+        }
+        
     }
 
     free(event);

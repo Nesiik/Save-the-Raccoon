@@ -26,6 +26,8 @@ typedef struct level_s
 
 
 typedef struct world_s{
+    int player_spawn_x,player_spawn_y;
+    char need_player_pos_update;
     Uint32 start_level_time,end_level_time;
     level** cur_level;
     level** last_level; /* Level before pause */
@@ -43,7 +45,9 @@ char get(world_t* world,const int i,const int j);
 char is_empty(world_t* world,const int i, const int j);
 char get_collision(world_t* world,const int i, const int j);
 void spike_collision(world_t* world);
+void flag_collision(world_t* world);
 void death(SDL_Renderer* renderer, world_t* world,ressources_t* ressources);
+void won(SDL_Renderer* renderer,world_t* world,ressources_t* ressources);
 void free_levels(world_t* world);
 int fin(world_t* world);
 

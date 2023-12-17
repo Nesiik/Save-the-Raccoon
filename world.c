@@ -46,10 +46,12 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
                     if(world->last_level != NULL){
                         world->cur_level = world->last_level;
                         world->last_level = NULL;
+                        //world->need_player_pos_update = 1;
                     }
                     else{
                         world->cur_level = list_elem_next(list_elem_front(world->levels));
                         world->start_level_time = SDL_GetTicks();
+                        world->need_player_pos_update = 1;
                     }
                     break;
                 case 1: // Option
@@ -68,7 +70,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
 void render_sky(SDL_Renderer* renderer, ressources_t* ressources){
     SDL_Rect rect = {0,0,WINDOW_WIDTH,WINDOW_HEIGHT};
     if(SDL_RenderCopy(renderer, ressources->sky->text, NULL, &rect) < 0){
-        printf("Error rendering the sky : %s",SDL_GetError());
+        printf("Error rendering the sky : %s \n",SDL_GetError());
     }
 }
 
@@ -92,7 +94,7 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
             
         }
         if(SDL_RenderCopy(renderer, ressources->MenuItems->ItemList[i].texture, NULL, &ressources->MenuItems->ItemList[i].rect) < 0){
-            printf("Renderer main menu error : %s",SDL_GetError());
+            printf("Renderer main menu error : %s \n",SDL_GetError());
         }
     }
 }
@@ -118,34 +120,34 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
                 SDL_Rect src = {dirt_x*one_sprite_w + (dirt_x+1),dirt_y*one_sprite_w + (dirt_y+1),one_sprite_w,one_sprite_h};
                 SDL_Rect dest = {j*one_sprite_w,i*one_sprite_h , one_sprite_w , one_sprite_h};
                 if(SDL_RenderCopy(renderer,ressources->dirt->text,&src,&dest)<0){
-                    SDL_Log("Rendering dirt error : %s",SDL_GetError());
+                    SDL_Log("Rendering dirt error : %s \n",SDL_GetError());
                 }
             }
             else if(cur_char >= '<' && cur_char <= '?'){ //spike ascii : 60-63
                 tabij = cur_char - '<'; // conversion ascii -> int
                 SDL_Rect dest = {j*ressources->spike->sprite_w,i*ressources->spike->sprite_h , ressources->spike->sprite_w , ressources->spike->sprite_h};
                 if(SDL_RenderCopyEx(renderer, ressources->spike->text, NULL, &dest, tabij*90, NULL, SDL_FLIP_NONE )<0){
-                    SDL_Log("Rendering spike error : %s",SDL_GetError());
+                    SDL_Log("Rendering spike error : %s \n",SDL_GetError());
                 }
             }    
             else if(cur_char == 't'){ //tree ascii : 116
                 SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE - DIRT_SIZE /* tree only but removed for better grass compatibility- (TREE_SIZE - DIRT_SIZE)*/ , TREE_SIZE , TREE_SIZE};
                 if(SDL_RenderCopy(renderer, ressources->tree->text, NULL, &dest)<0){
-                    SDL_Log("Rendering tree error : %s",SDL_GetError());
+                    SDL_Log("Rendering tree error : %s \n",SDL_GetError());
                 }
             }
             else if(cur_char == 'f'){ //flag ascii : 102
                 SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE , ressources->flag->sprite_w , ressources->flag->sprite_h};
                 if(SDL_RenderCopy(renderer, ressources->flag->text, NULL, &dest)<0){
-                    SDL_Log("Rendering flag error : %s",SDL_GetError());
+                    SDL_Log("Rendering flag error : %s \n",SDL_GetError());
                 }
             }
             else if(cur_char == 'c'){ //coin ascii : 99
                 SDL_Rect dest = {j*DIRT_SIZE,i*DIRT_SIZE, DIRT_SIZE , DIRT_SIZE};
                 if(SDL_RenderCopy(renderer, ressources->coin->text, NULL, &dest)<0){
-                    SDL_Log("Rendering coin error : %s",SDL_GetError());
+                    SDL_Log("Rendering coin error : %s \n",SDL_GetError());
                 }
-            }           
+            }    
         }
     }
 }
@@ -197,27 +199,28 @@ void death(SDL_Renderer* renderer, world_t* world,ressources_t* ressources){
     afficher_texte(renderer,ressources->font,SLOW_TEXT,"You died :(",WINDOW_WIDTH/2,WINDOW_HEIGHT/2);
     world->last_level = NULL;
     world->cur_level = list_elem_front(world->levels);
+    world->need_player_pos_update = 1;
 }
 
 void flag_collision(world_t* world){
     world->game_state = Win;
 }
 
-/*void next_level(world_t* world){
-    if(world->game_state = Win){
-
+void won(SDL_Renderer* renderer,world_t* world,ressources_t* ressources){
+    world->end_level_time = SDL_GetTicks();
+    int end_time = (int)round((world->end_level_time - world->start_level_time )/ 1000.f);
+    int taille = snprintf(NULL,0,"You won in %ds.",end_time);
+    char str[taille];
+    if(sprintf(str,"You won in %ds.",end_time) < 0){
+        printf("Error creating string of the win time.");
     }
-}*/
+    afficher_texte(renderer,ressources->font,SLOW_TEXT,str,WINDOW_WIDTH/2,WINDOW_HEIGHT/2);
+    world->cur_level = list_elem_next(world->cur_level);
+    world->need_player_pos_update = 1;
+}
 
 int fin(world_t* world){
     if(world->game_state  == Quit)
-        return 1;
-    else
-        return 0;
-}
-
-int win(world_t* world){
-    if(world->game_state == Win)
         return 1;
     else
         return 0;
@@ -234,6 +237,9 @@ world_t* init_world(){
     world_t* world = malloc(sizeof(world_t));
     world->game_state = Menu;
     world->last_level = NULL;
+    world->need_player_pos_update = 0;
+    world->player_spawn_x = 0;
+    world->player_spawn_y = 0; 
     list(level*,levels);
     memset(&levels,0,sizeof(levels));
     //world->levels = malloc(NB_LEVELS*sizeof(level*)); 

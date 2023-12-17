@@ -15,7 +15,8 @@ typedef struct player_s{
 }player_t;
 
 player_t* init_player();
-void move_player(player_t* player,world_t* world,double dt);
+void set_spawn(world_t* world,player_t* player);
+void move_player(player_t* player,world_t* world,ressources_t* ressources,double dt);
 void print_state(player_t* player);
 void handle_keyboard_player(player_t* player);
 void render_player(SDL_Renderer* renderer, const player_t* player ,ressources_t* ressources);
