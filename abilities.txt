@@ -1,3 +1,4 @@
+(Idée jamais venus au jour)
 Stats :                     Initial:
 - int HP                            3
 - float Speed                       1.0
