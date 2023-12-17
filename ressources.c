@@ -3,7 +3,7 @@
 
 ressources_t* init_ressources(SDL_Renderer *renderer){
     ressources_t* ressources = malloc(sizeof(ressources_t));
-    ressources->font = TTF_OpenFont("../assets/arial.ttf",42*2);
+    ressources->font = TTF_OpenFont("../assets/arial.ttf",FONT_SIZE * FONT_MULT); //open the font with bigger font size so the font look better in fullscreen
     if(ressources->font == NULL){
         printf("Error opening font : %s",TTF_GetError());
     }

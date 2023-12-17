@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include "sdl.h"
+#include "ressources.h"
 
 //For text that should be display 1 time
 void afficher_texte(SDL_Renderer* renderer, TTF_Font* police,char type ,const char text[], int x, int y ) {
@@ -50,8 +51,8 @@ SDL_Texture* creer_texte_texture(SDL_Renderer* renderer, TTF_Font* police,char t
     if(info != NULL){
         info->x = x;
         info->y = y;
-        info->w = surf->w/2;
-        info->h = surf->h/2;
+        info->w = surf->w/FONT_MULT;
+        info->h = surf->h/FONT_MULT;
     }
     SDL_FreeSurface(surf);
     return tex;

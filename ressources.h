@@ -7,6 +7,8 @@
 
 #define MAIN_MENU_ITEM_COUNT 3
 #define PLAYER_SPRITE_SIZE 63
+#define FONT_SIZE 35
+#define FONT_MULT 5
 
 typedef struct Item_s{
     SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte */
