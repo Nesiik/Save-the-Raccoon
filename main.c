@@ -78,6 +78,7 @@ int main() {
         if(world->need_player_pos_update == 1){
             set_spawn(world,player);
             dt = 0.;
+            world->start_level_time = SDL_GetTicks();
         }
         if(world->game_state == Alive){
             move_player(player,world,ressources,dt);
@@ -112,9 +113,12 @@ int main() {
             compatible_sleep(2000);
             world->game_state = Menu; 
         }
-        else if (world->game_state == Win) {
+        else if (world->game_state == Win || world->game_state == Finished) {
             compatible_sleep(2000);
-            world->game_state = Alive;
+            if(world->game_state == Win)
+                world->game_state = Alive;
+            else
+                world->game_state = Menu;
         }
         
     }

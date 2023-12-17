@@ -199,10 +199,26 @@ void death(SDL_Renderer* renderer, world_t* world,ressources_t* ressources){
     world->last_level = NULL;
     world->cur_level = list_elem_front(world->levels);
     world->need_player_pos_update = 1;
+    list_each_elem(world->levels_times, time_ptr) {
+       list_elem_remove (time_ptr);
+   }
 }
 
 void flag_collision(world_t* world){
     world->game_state = Win;
+}
+
+void save_time(world_t* world){
+    FILE *fp = fopen(RESULT_FILE, "w");
+    if (fp) {
+        int i = 1;
+        list_each_elem(world->levels_times,time_ptr){
+            fprintf(fp, "level %d : %ds\n", i, *time_ptr);
+            list_elem_remove (time_ptr);
+            i++;
+        }
+        fclose(fp);
+    }
 }
 
 void won(SDL_Renderer* renderer,world_t* world,ressources_t* ressources){
@@ -214,12 +230,21 @@ void won(SDL_Renderer* renderer,world_t* world,ressources_t* ressources){
         printf("Error creating string of the win time.");
     }
     afficher_texte(renderer,ressources->font,SLOW_TEXT,str,WINDOW_WIDTH/2,WINDOW_HEIGHT/2);
-    world->cur_level = list_elem_next(world->cur_level);
+    list_push(world->levels_times,end_time);
+    if(list_back(world->levels) == *world->cur_level){ //last level
+        world->cur_level = list_elem_front(world->levels);
+        world->game_state = Finished;
+        save_time(world);
+    }
+    else{
+        world->cur_level = list_elem_next(world->cur_level);
+    }
     world->need_player_pos_update = 1;
+    world->last_level = NULL;
 }
 
 int fin(world_t* world){
-    if(world->game_state  == Quit)
+    if(world->game_state == Quit)
         return 1;
     else
         return 0;
@@ -256,13 +281,17 @@ world_t* init_world(){
     }
     world->cur_level = list_elem_front(levels);
     world->levels = levels;
+    list(int,levels_times);
+    memset(&levels_times,0,sizeof(levels_times));
+    world->levels_times = levels_times;
     return world;
 }
 
 void free_levels(world_t* world){
-    list_each_elem(world->levels,elem){
-        desallouer_tab_2D((*elem)->level_tab);
-        free(*elem);
+    list_each(world->levels,elem){
+        desallouer_tab_2D(elem->level_tab);
+        free(elem);
     }
     list_clear(world->levels);
+    list_clear(world->levels_times);
 }

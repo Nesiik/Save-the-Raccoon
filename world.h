@@ -3,6 +3,7 @@
 
 #include "ressources.h"
 
+#define RESULT_FILE "../result/result.txt"
 #define NB_LEVELS 3
 #define DIRT_SIZE 32
 #define TREE_SIZE 96
@@ -10,11 +11,12 @@
 #define N_HEIGHT_DIRT_SPRITE 5
 
 enum GameState {
-    Menu = -1, 
-    Alive = 0, 
-    Dead = 1,   
-    Win = 2,    
-    Quit = 3
+    Menu = -1,
+    Alive = 0,
+    Dead = 1,
+    Win = 2,
+    Finished = 3, 
+    Quit = 4
 };
 
 typedef struct level_s
@@ -29,10 +31,11 @@ typedef struct world_s{
     int player_spawn_x,player_spawn_y;
     char need_player_pos_update;
     Uint32 start_level_time,end_level_time;
-    level_t** cur_level;
+    int* levels_times; /* linked list of all the time for completing each level */
+    level_t** cur_level; /* pointer to the actual level pointer (part of the levels array) */
     level_t** last_level; /* Level before pause */
     char game_state; /* -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
-    level_t** levels; /* array of pointer */
+    level_t** levels; /* linked list of level pointer */
 }world_t;
 
 world_t* init_world();
