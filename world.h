@@ -22,17 +22,17 @@ typedef struct level_s
     char** level_tab;
     int nb_ligne_level_tab;
     int nb_col_level_tab;
-}level;
+}level_t;
 
 
 typedef struct world_s{
     int player_spawn_x,player_spawn_y;
     char need_player_pos_update;
     Uint32 start_level_time,end_level_time;
-    level** cur_level;
-    level** last_level; /* Level before pause */
+    level_t** cur_level;
+    level_t** last_level; /* Level before pause */
     char game_state; /* -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
-    level** levels; /* array of pointer */
+    level_t** levels; /* array of pointer */
 }world_t;
 
 world_t* init_world();

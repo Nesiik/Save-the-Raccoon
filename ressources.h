@@ -6,7 +6,7 @@
 #include "sprite.h"
 
 #define MAIN_MENU_ITEM_COUNT 3
-#define PLAYER_SPRITE_SIZE 64
+#define PLAYER_SPRITE_SIZE 63
 
 typedef struct Item_s{
     SDL_Rect rect; /*!<Les données utiles pour l'affichage du texte */

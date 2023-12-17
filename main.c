@@ -15,13 +15,13 @@
 #include "player.h"
 
 
-void compatible_sleep(unsigned long millisecond){
+void compatible_sleep(unsigned long millisecond){ //be able to sleep on linux/windows
     #ifdef WIN32
         Sleep(millisecond); //millisecond
     #elif _POSIX_C_SOURCE >= 199309L
         struct timespec ts;
-        ts.tv_sec = (int)(millisecond / 1000);
-        ts.tv_nsec = (millisecond % 1000) * 1000000;
+        ts.tv_sec = (int)(millisecond / 1000); // put everything above 1s
+        ts.tv_nsec = (millisecond % 1000) * 1000000; //put the rest in nanosec
         nanosleep(&ts, NULL);
     #else
         usleep(millisecond * 1000); //microseconds
@@ -68,18 +68,17 @@ int main() {
 
         // Time / Physics
         current_time = SDL_GetTicks();
-        dt = (current_time - last_time) / 1000.f;
+        dt = (current_time - last_time) / 1000.;
         /* block fps (not needed currently because we're using vsync)
         if( dt < 16){
              compatible_sleep(1);
             continue;
         }
         */
-
         last_time = current_time;
         if(world->need_player_pos_update == 1){
             set_spawn(world,player);
-            dt = 0;
+            dt = 0.;
         }
         if(world->game_state == Alive){
             move_player(player,world,ressources,dt);
@@ -96,6 +95,7 @@ int main() {
                 render_main_menu_text(renderer,ressources);
                 break;
             case Alive:
+                //print_state(player); //debug
                 world->end_level_time = SDL_GetTicks();
                 render_player(renderer,player,ressources);
                 break;

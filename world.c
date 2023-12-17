@@ -46,7 +46,6 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
                     if(world->last_level != NULL){
                         world->cur_level = world->last_level;
                         world->last_level = NULL;
-                        //world->need_player_pos_update = 1;
                     }
                     else{
                         world->cur_level = list_elem_next(list_elem_front(world->levels));
@@ -100,7 +99,7 @@ void render_main_menu_text(SDL_Renderer *renderer,ressources_t *ressources){
 }
 
 void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* world){
-    level* cur_level = *world->cur_level;
+    level_t* cur_level = *world->cur_level;
     if(cur_level->nb_ligne_level_tab == 0 || cur_level->nb_col_level_tab == 0) {
         afficher_texte(renderer,ressources->font,FAST_TEXT,"Map empty,please check the map.",50,50);
     }
@@ -111,7 +110,7 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
         for (int j = 0; j < cur_level->nb_col_level_tab; j++)
         {
             cur_char = cur_level->level_tab[i][j];
-            if(cur_char >= 'A' && cur_char <= 'X'){ //dirt ascii : 65-88
+            if(cur_char >= 'A' && cur_char <= 'X'){ //dirt/grass ascii : 65-88
                 tabij = cur_char - 'A'; // conversion ascii -> int
                 dirt_y = tabij/6;
                 dirt_x = tabij - dirt_y*6;
@@ -153,7 +152,7 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
 }
 
 char get(world_t* world,const int i,const int j){ // x,y
-    level* cur_level = *world->cur_level;
+    level_t* cur_level = *world->cur_level;
     if(i>=0 && j>=0 && i< cur_level->nb_col_level_tab && j< cur_level->nb_ligne_level_tab){
         return cur_level->level_tab[j][i];
     }
@@ -161,7 +160,7 @@ char get(world_t* world,const int i,const int j){ // x,y
 }
 
 char is_empty(world_t* world,const int i, const int j) { //x,y
-    level* cur_level = *world->cur_level;
+    level_t* cur_level = *world->cur_level;
     if(i < 0 || j < 0 || i >= cur_level->nb_col_level_tab || j >= cur_level->nb_ligne_level_tab)
         return -1; // invalid
     if (cur_level->level_tab[j][i] == ' ')
@@ -172,11 +171,11 @@ char is_empty(world_t* world,const int i, const int j) { //x,y
 }
 
 char get_collision(world_t* world,const int i, const int j) { //x,y
-    level* cur_level = *world->cur_level;
+    level_t* cur_level = *world->cur_level;
     if(i < 0 || j < 0 || i >= cur_level->nb_col_level_tab || j >= cur_level->nb_ligne_level_tab)
         return -1; // invalid
     char tile = get(world,i,j);
-    if ((tile >= 'C' && tile <= 'D') || (tile >= 'G' && tile <= 'X')) { // dirt
+    if ((tile >= 'C' && tile <= 'D') || (tile >= 'G' && tile <= 'X')) { // dirt (ignore grass)
         return 1;
     }
     else if (tile >= '<' && tile <= '?') { // spike
@@ -240,15 +239,14 @@ world_t* init_world(){
     world->need_player_pos_update = 0;
     world->player_spawn_x = 0;
     world->player_spawn_y = 0; 
-    list(level*,levels);
+    list(level_t*,levels);
     memset(&levels,0,sizeof(levels));
-    //world->levels = malloc(NB_LEVELS*sizeof(level*)); 
     int taille = sizeof("../levels/level_.txt")+countDigit(NB_LEVELS);
     char str[taille];
     for (unsigned int i = 0; i < NB_LEVELS; i++)
     {
         sprintf(str, "%s%d%s", "../levels/level_", i ,".txt");
-        level* new_level = malloc(sizeof(level));
+        level_t* new_level = malloc(sizeof(level_t));
         new_level->level_tab = lire_fichier(str);
         if(new_level->level_tab == NULL){
             SDL_Log("Error reading : %s \n",str);

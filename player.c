@@ -7,8 +7,6 @@ player_t* init_player(){
     player_t* player = malloc(sizeof(player_t));
     player->state = REST;
     player->backward = 0;
-    //player->x = 90.;
-    //player->y = 550.;
     player->x = 0.;
     player->y = 0.;
     player->vx = 0;
@@ -50,7 +48,7 @@ void print_state(player_t* player){ // use for debugging
 }
 
 void get_player_spawn(world_t* world){
-    level* level = *world->cur_level;
+    level_t* level = *world->cur_level;
     for (int i = 0; i < level->nb_ligne_level_tab; i++)
     {
         for (int j = 0; j < level->nb_col_level_tab; j++)
@@ -88,60 +86,43 @@ void move_player(player_t* player,world_t* world,ressources_t* ressources,double
     if(player->state == TAKEOFF)
         player->state = FLIGHT;
     double x = player->x,y = player->y;
-    /*
-    printf("y : \n");
-    printf("test %d \n",get(world,(int)x/DIRT_SIZE,(int)y/DIRT_SIZE));
-    printf("test0 %d \n",get(world,(int)x/DIRT_SIZE,(int)y/DIRT_SIZE+1));
-    printf("test1 %d \n",get(world,(int)x/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE)); 
-    printf("test2 %d \n",get(world,(int)x/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1));
-    
-    printf("x :\n");
-    printf("test %d \n",get(world,(int)x/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1));
-    printf("test0 %d \n",get(world,(int)x/DIRT_SIZE+1,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1)); 
-    printf("test1 %d \n",get(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1));
-    printf("test2 %d \n",get(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE+1,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE+1));
-    //printf("test3 %d \n",get(world,((int)x + player->sprite->sprite_w)/DIRT_SIZE+1,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE));
-    printf("\n");
-    */
-    //printf("test1 %d \n",get(world,player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE,(int)y/DIRT_SIZE+1));
-    //printf("test2 %d \n",get(world,player->backward? (int)x/DIRT_SIZE : ((int)x + player->sprite->sprite_w)/DIRT_SIZE,((int)y+(int)player->sprite->sprite_h)/DIRT_SIZE));
-    //printf("\n");
     char empty_under = get_collision(world,((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE+1);
     if(player->state != FLIGHT && empty_under == 0){
         player->vy = 100;
         player->state = FALL;
     }
-    if(player->vx != 0){
-        x += player->vx * dt;
-        if ((int)x <= 0) {
-            x = 0;
-            player->vx = 0;
-        }
-        else if (((int)x + PLAYER_SPRITE_SIZE) >= WINDOW_WIDTH) {
-            x = WINDOW_WIDTH - ressources->player->sprite_w;
-            player->vx=0;
-        }
-
-        char empty_horizon_high = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
-        char empty_horizon_low = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
-        //printf("horizontal collision high : %d,horizontal collision low : %d \n",empty_horizon_high,empty_horizon_low);
-        if (empty_horizon_high == 1 || empty_horizon_low == 1)
-        {
-            int snap = round(x/DIRT_SIZE) * DIRT_SIZE;
-            x = snap + (snap > x ? 1 : -1);
-            player->vx = 0;
-        }
-        else if(empty_horizon_high == 2 || empty_horizon_low == 2){
-            spike_collision(world);
-            reset_state(player);
-        }
-        else if( empty_horizon_high == 4 || empty_horizon_low == 4){
-            flag_collision(world);
-            reset_state(player);
-        }
-        player->x = x; /* update player x */
+    if(player->state == REST){
+        return; // we don't need to do physics if we're not moving
     }
-    if (player->vy != 0) {
+
+    x += player->vx * dt;
+    if ((int)x <= 0) {
+        x = 0;
+        player->vx = 0;
+    }
+    else if (((int)x + PLAYER_SPRITE_SIZE) >= WINDOW_WIDTH) {
+        x = WINDOW_WIDTH - ressources->player->sprite_w;
+        player->vx=0;
+    }
+
+    char empty_horizon_high = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
+    char empty_horizon_low = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
+    if (empty_horizon_high == 1 || empty_horizon_low == 1)
+    {
+        x = player->x;
+        player->vx=0;
+    }
+    else if(empty_horizon_high == 2 || empty_horizon_low == 2){
+        spike_collision(world);
+        reset_state(player);
+    }
+    else if( empty_horizon_high == 4 || empty_horizon_low == 4){
+        flag_collision(world);
+        reset_state(player);
+    }
+    player->x = x; /* update player x */
+
+    if(player->state > TAKEOFF){ // do gravity/vertical physics only when in the air (FLIGHT=3, FALL=4, LANDING=5)
         if ((int)y <= 0) {
             y = 0;
             player->vy = 0;
@@ -152,12 +133,12 @@ void move_player(player_t* player,world_t* world,ressources_t* ressources,double
         }
         y += player->vy * dt;
         player->vy += dt * 300; /* gravity */
-        char empty_left = get_collision(world,(int)x/DIRT_SIZE, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
-        char empty_right = get_collision(world,(int)x/DIRT_SIZE+1, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
+        char empty_left,empty_right;
+        empty_left = get_collision(world,(int)x/DIRT_SIZE+1, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
+        empty_right = get_collision(world,((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
         if (empty_left == 1 || empty_right == 1)
         {
-            int snap = round(y/DIRT_SIZE) * DIRT_SIZE;
-            y = snap + (snap > y ? 1 : -1);
+            y = player->y;
             player->vy = 0;
             if (player->state == FALL || player->state == FLIGHT)   
                 player->state = LANDING;
