@@ -1,4 +1,5 @@
 #include "sprite.h"
+#include <stdio.h>
 
 sprite* charger_image (const char* nomfichier, SDL_Renderer* renderer){
     sprite* sprite = malloc(sizeof(sprite));

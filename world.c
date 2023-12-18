@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <math.h>
 #include <list.h>
 #include "world.h"
 #include "sdl.h"

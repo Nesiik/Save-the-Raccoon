@@ -2,6 +2,7 @@
 #include "world.h"
 #include "sdl.h"
 #include <math.h>
+#include <stdio.h>
 
 player_t* init_player(){
     player_t* player = malloc(sizeof(player_t));

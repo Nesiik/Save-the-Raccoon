@@ -1,6 +1,7 @@
 #include "ressources.h"
 #include "sdl.h"
 #include <list.h>
+#include <stdio.h>
 
 ressources_t* init_ressources(SDL_Renderer *renderer){
     ressources_t* ressources = malloc(sizeof(ressources_t));
