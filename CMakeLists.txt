@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7.0)
-project(projet)
-
+project(projet LANGUAGES C)
+set(C_STANDARD 11)
 
 #if(MSVC)
 #    add_compile_options(/W4)
