@@ -271,11 +271,10 @@ world_t* init_world(){
     {
         sprintf(str, "%s%d%s", "../levels/level_", i ,".txt");
         level_t* new_level = malloc(sizeof(level_t));
-        new_level->level_tab = lire_fichier(str);
+        new_level->level_tab = lire_fichier(str,&new_level->nb_ligne_level_tab,&new_level->nb_col_level_tab);
         if(new_level->level_tab == NULL){
             SDL_Log("Error reading : %s \n",str);
         }
-        taille_fichier(str,&new_level->nb_ligne_level_tab,&new_level->nb_col_level_tab);
         list_push(levels,new_level);
     }
     world->cur_level = list_elem_front(levels);
