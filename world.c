@@ -49,7 +49,7 @@ void mouse_menu_events(SDL_MouseButtonEvent button,world_t* world, ressources_t*
                     }
                     else{
                         world->cur_level = list_elem_next(list_elem_front(world->levels));
-                        world->start_level_time = SDL_GetTicks();
+                        world->start_level_time = SDL_GetPerformanceCounter();
                         world->need_player_pos_update = 1;
                     }
                     break;
@@ -212,7 +212,7 @@ void save_time(world_t* world){
     if (fp) {
         int i = 1;
         list_each_elem(world->levels_times,time_ptr){
-            fprintf(fp, "level %d : %ds\n", i, *time_ptr);
+            fprintf(fp, "level %d : %0.6fs\n", i, *time_ptr);
             list_elem_remove (time_ptr);
             i++;
         }
@@ -221,11 +221,12 @@ void save_time(world_t* world){
 }
 
 void won(SDL_Renderer* renderer,world_t* world,ressources_t* ressources){
-    world->end_level_time = SDL_GetTicks();
-    int end_time = (int)round((world->end_level_time - world->start_level_time )/ 1000.f);
-    int taille = snprintf(NULL,0,"You won in %ds.",end_time);
+    world->end_level_time = SDL_GetPerformanceCounter();
+    //printf("end : %"PRIu64" , start : %"PRIu64" , freq : %lf \n",world->end_level_time,world->start_level_time,(double)SDL_GetPerformanceFrequency());
+    double end_time = (world->end_level_time - world->start_level_time )/ (double)SDL_GetPerformanceFrequency();
+    int taille = snprintf(NULL,0,"You won in %.4fs.",end_time);
     char str[taille];
-    if(sprintf(str,"You won in %ds.",end_time) < 0){
+    if(sprintf(str,"You won in %.4fs.",end_time) < 0){
         printf("Error creating string of the win time.");
     }
     afficher_texte(renderer,ressources->font,SLOW_TEXT,str,WINDOW_WIDTH/2,WINDOW_HEIGHT/2);
@@ -279,7 +280,7 @@ world_t* init_world(){
     }
     world->cur_level = list_elem_front(levels);
     world->levels = levels;
-    list(int,levels_times);
+    list(double,levels_times);
     memset(&levels_times,0,sizeof(levels_times));
     world->levels_times = levels_times;
     return world;

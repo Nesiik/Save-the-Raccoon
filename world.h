@@ -30,8 +30,8 @@ typedef struct level_s
 typedef struct world_s{
     int player_spawn_x,player_spawn_y;
     char need_player_pos_update;
-    Uint32 start_level_time,end_level_time;
-    int* levels_times; /* linked list of all the time for completing each level */
+    Uint64 start_level_time,end_level_time;
+    double* levels_times; /* linked list of all the time for completing each level */
     level_t** cur_level; /* pointer to the level pointer (part of the levels array) */
     level_t** last_level; /* Level before pause */
     char game_state; /* -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
