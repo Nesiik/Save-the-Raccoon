@@ -74,7 +74,7 @@ char** lire_fichier(const char* nomFichier, int* nbLig, int* nbCol){
         return NULL;
     }
     char** tab;
-    if (nbLig == NULL || *nbLig == 0 || nbCol == NULL || *nbCol == 0) {
+    if (nbLig == NULL || nbCol == NULL) {
         int nbLigne,nbCcol;
         taille_fichier(nomFichier,&nbLigne,&nbCcol);
         tab = allouer_tab_2D(nbLigne,nbCcol);
