@@ -104,10 +104,8 @@ void render_worlds(SDL_Renderer* renderer,ressources_t* ressources,world_t* worl
     }
     char cur_char;
     int tabij,dirt_y,dirt_x,one_sprite_w,one_sprite_h;
-    for (int i = 0; i < cur_level->nb_ligne_level_tab; i++)
-    {
-        for (int j = 0; j < cur_level->nb_col_level_tab; j++)
-        {
+    for (int i = 0; i < cur_level->nb_ligne_level_tab; i++) {
+        for (int j = 0; j < cur_level->nb_col_level_tab; j++) {
             cur_char = cur_level->level_tab[i][j];
             if(cur_char >= 'A' && cur_char <= 'X'){ //dirt/grass ascii : 65-88
                 tabij = cur_char - 'A'; // conversion ascii -> int
@@ -162,8 +160,7 @@ char is_empty(world_t* world,const int i, const int j) { //x,y
     level_t* cur_level = *world->cur_level;
     if(i < 0 || j < 0 || i >= cur_level->nb_col_level_tab || j >= cur_level->nb_ligne_level_tab)
         return -1; // invalid
-    if (cur_level->level_tab[j][i] == ' ')
-    {
+    if (cur_level->level_tab[j][i] == ' ') {
         return 1;
     }
     return 0;
@@ -250,8 +247,7 @@ int fin(world_t* world){
         return 0;
 }
 
-int countDigit(unsigned int n) 
-{ 
+int countDigit(unsigned int n) { 
     if (n/10 == 0) 
         return 1; 
     return 1 + countDigit(n / 10); 
@@ -268,8 +264,7 @@ world_t* init_world(){
     memset(&levels,0,sizeof(levels));
     int taille = sizeof("../levels/level_.txt")+countDigit(NB_LEVELS);
     char str[taille];
-    for (unsigned int i = 0; i < NB_LEVELS; i++)
-    {
+    for (unsigned int i = 0; i < NB_LEVELS; i++) {
         sprintf(str, "%s%d%s", "../levels/level_", i ,".txt");
         level_t* new_level = malloc(sizeof(level_t));
         new_level->level_tab = lire_fichier(str,&new_level->nb_ligne_level_tab,&new_level->nb_col_level_tab);

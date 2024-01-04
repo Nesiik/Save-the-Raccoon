@@ -14,10 +14,8 @@ char** allouer_tab_2D(int n,int m){
         tab[i] = (ptr + m * i);
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
             tab[i][j] = ' ';
         }   
     }
@@ -29,8 +27,7 @@ void desallouer_tab_2D(char** tab /*, int n*/ ){
 }
 
 void afficher_tab_2D(char** tab, int n , int m){
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++)
         {
             printf("%c ",tab[i][j]);  
@@ -105,14 +102,11 @@ char** lire_fichier(const char* nomFichier, int* nbLig, int* nbCol){
 }
 
 char** modifier_caractere(char** tab, int n, int m, char ancien, char nouveau){
-    for (int i = 0; i < n; i++)
-    {
-        for(int j = 0; j < m; j++){
-            if (tab[i][j] == ancien)
-            {
+    for (int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if (tab[i][j] == ancien) {
                 tab[i][j] = nouveau;
-            }
-            
+            } 
         }
     }
     return tab;
@@ -121,13 +115,10 @@ char** modifier_caractere(char** tab, int n, int m, char ancien, char nouveau){
 void ecrire_fichier(const char* nomFichier, char** tab, int n, int m){
     FILE* fichier = fopen(nomFichier,"w");
     if(fichier != NULL){
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
                 fputc(tab[i][j],fichier);
             }
-            
             fputc('\n',fichier);
         }
         fclose(fichier);

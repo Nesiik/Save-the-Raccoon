@@ -16,11 +16,9 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
 
     int x=550,y=280;
     const char* str = "Jouer";
-    for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
-    {
+    for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
         Item_t* item = malloc(sizeof(Item_t));
-        switch (i)
-        {
+        switch (i) {
             case 1:
                 str = "Options";
                 break;

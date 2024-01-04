@@ -1,8 +1,7 @@
 #include "fonctions_fichiers.h"
 #include <stdio.h>
 
-int test_modif_fichiers(void)
-{
+int test_modif_fichiers(void) {
     int nbLigne = 0;
     int nbCol = 0;
     taille_fichier("tabChiffres.txt",&nbLigne,&nbCol);

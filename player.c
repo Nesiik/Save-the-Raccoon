@@ -17,55 +17,48 @@ player_t* init_player(){
 
 void render_player(SDL_Renderer* renderer, const player_t* player ,ressources_t* ressources){
     SDL_Rect dest = {player->x,player->y,ressources->player->sprite_w,ressources->player->sprite_h};
-    if(SDL_RenderCopyEx(renderer, ressources->player->text, NULL, &dest, 0, NULL, player->backward ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE )<0){
+    if(SDL_RenderCopyEx(renderer, ressources->player->text, NULL, &dest, 0, NULL, player->backward ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE )<0) {
         SDL_Log("Player rendering error : %s \n",SDL_GetError());
     }
 }
 
 void print_state(player_t* player){ // use for debugging
-    switch (player->state)
-    {
-    case REST:
-        printf("REST \n");
-        break;
-    case WALK:
-        printf("WALK \n");
-        break;
-    case TAKEOFF:
-        printf("TAKEOFF \n");
-        break;
-    case FLIGHT:
-        printf("FLIGHT \n");
-        break;
-    case FALL:
-        printf("FALL \n");
-        break;
-    case LANDING:
-        printf("LANDING \n");
-        break;
-    default:
-        break;
+    switch (player->state){
+        case REST:
+            printf("REST \n");
+            break;
+        case WALK:
+            printf("WALK \n");
+            break;
+        case TAKEOFF:
+            printf("TAKEOFF \n");
+            break;
+        case FLIGHT:
+            printf("FLIGHT \n");
+            break;
+        case FALL:
+            printf("FALL \n");
+            break;
+        case LANDING:
+            printf("LANDING \n");
+            break;
+        default:
+            break;
     }
 }
 
 void get_player_spawn(world_t* world){
     level_t* level = *world->cur_level;
-    for (int i = 0; i < level->nb_ligne_level_tab; i++)
-    {
-        for (int j = 0; j < level->nb_col_level_tab; j++)
-        {
+    for (int i = 0; i < level->nb_ligne_level_tab; i++) {
+        for (int j = 0; j < level->nb_col_level_tab; j++) {
             char tabij = get(world,j,i);
-            if (tabij == 'x')
-            {
+            if (tabij == 'x') {
                 world->player_spawn_x = j*DIRT_SIZE;
                 world->player_spawn_y = i*DIRT_SIZE;
                 return;
             }
-            
-        }
-        
+        } 
     }
-    
 }
 
 void set_spawn(world_t* world,player_t* player){
@@ -92,6 +85,7 @@ void move_player(player_t* player,world_t* world,ressources_t* ressources,double
         player->vy = 100;
         player->state = FALL;
     }
+
     if(player->state == REST){
         return; // we don't need to do physics if we're not moving
     }
@@ -108,8 +102,7 @@ void move_player(player_t* player,world_t* world,ressources_t* ressources,double
 
     char empty_horizon_high = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), (int)y/DIRT_SIZE+1);
     char empty_horizon_low = get_collision(world,(player->backward? (int)x/DIRT_SIZE : ((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE), ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
-    if (empty_horizon_high == 1 || empty_horizon_low == 1)
-    {
+    if (empty_horizon_high == 1 || empty_horizon_low == 1) {
         x = player->x;
         player->vx=0;
     }
@@ -137,18 +130,17 @@ void move_player(player_t* player,world_t* world,ressources_t* ressources,double
         char empty_left,empty_right;
         empty_left = get_collision(world,(int)x/DIRT_SIZE+1, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
         empty_right = get_collision(world,((int)x + PLAYER_SPRITE_SIZE)/DIRT_SIZE, ((int)y+PLAYER_SPRITE_SIZE)/DIRT_SIZE);
-        if (empty_left == 1 || empty_right == 1)
-        {
+        if (empty_left == 1 || empty_right == 1) {
             y = player->y;
             player->vy = 0;
             if (player->state == FALL || player->state == FLIGHT)   
                 player->state = LANDING;
         }
-        else if(empty_left == 2 || empty_right == 2){
+        else if(empty_left == 2 || empty_right == 2) {
             spike_collision(world);
             reset_state(player);
         }
-        else if( empty_left == 4 || empty_right == 4){
+        else if( empty_left == 4 || empty_right == 4) {
             flag_collision(world);
             reset_state(player);
         }
@@ -164,19 +156,17 @@ void handle_keyboard_player(player_t* player){
         if (kbstate[SDL_SCANCODE_A] && kbstate[SDL_SCANCODE_D]) {
             player->vx = 0;
         }
-        else
-        {
+        else {
             player->backward = kbstate[SDL_SCANCODE_A] ? 1 : 0;
             player->vx = kbstate[SDL_SCANCODE_A] ? -150 : 150; 
         }
-        if(player->state == REST || player->state == LANDING){
+        if(player->state == REST || player->state == LANDING) {
             player->state = WALK;
         }
         key_pressed++;
     }
     if (kbstate[SDL_SCANCODE_W]) {
-        if (player->state == WALK || player->state == REST )
-        {
+        if (player->state == WALK || player->state == REST ) {
             player->vy = -200;
             player->state = TAKEOFF;
         }
@@ -184,8 +174,7 @@ void handle_keyboard_player(player_t* player){
     }
     if(key_pressed == 0) {
         player->vx = 0;
-        if (player->state == WALK || player->state == LANDING )
-        {
+        if (player->state == WALK || player->state == LANDING ) {
             player->state = REST;
         }
     }
