@@ -37,7 +37,7 @@ void handle_events(SDL_Event *event,world_t *world , ressources_t* ressources){
 }
 
 
-int main(int argc, char **argv) {    
+int main() {    
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS ) < 0){
         printf("SDL_Init error : %s \n",SDL_GetError());
     }

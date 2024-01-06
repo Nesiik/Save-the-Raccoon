@@ -48,7 +48,7 @@ void print_state(player_t* player){ // use for debugging
 }
 
 void get_player_spawn(world_t* world){
-    level_t* level = *world->cur_level;
+    level_t* level = world->levels[world->cur_level];
     for (int i = 0; i < level->nb_ligne_level_tab; i++) {
         for (int j = 0; j < level->nb_col_level_tab; j++) {
             char tabij = get(world,j,i);

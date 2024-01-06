@@ -53,5 +53,4 @@ dkms.conf
 
 .vscode/*
 build/*
-result/*
-result/result.txt
+result/*.txt

@@ -19,23 +19,21 @@ enum GameState {
     Quit = 4
 };
 
-typedef struct level_s
-{
+typedef struct level_s {
     char** level_tab;
     int nb_ligne_level_tab;
     int nb_col_level_tab;
 }level_t;
 
-
-typedef struct world_s{
+typedef struct world_s {
     int player_spawn_x,player_spawn_y;
     char need_player_pos_update;
     Uint64 start_level_time,end_level_time;
-    double* levels_times; /* linked list of all the time for completing each level */
-    level_t** cur_level; /* pointer to the level pointer (part of the levels array) */
-    level_t** last_level; /* Level before pause */
+    double* levels_times; /* list of all the time for completing each level */
+    int cur_level;
+    int last_level; /* Level before pause */
     char game_state; /* -1 = Menu; 0 = alive; 1 = Dead; 2 = Win; 3 = Quit */
-    level_t** levels; /* linked list of level pointer */
+    level_t** levels; /* list of level pointer */
 }world_t;
 
 world_t* init_world();
