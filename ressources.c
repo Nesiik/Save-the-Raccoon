@@ -1,25 +1,21 @@
 #include "ressources.h"
 #include "sdl.h"
-#include <list.h>
+#include <stdio.h>
 
 ressources_t* init_ressources(SDL_Renderer *renderer){
     ressources_t* ressources = malloc(sizeof(ressources_t));
     ressources->font = TTF_OpenFont("../assets/arial.ttf",FONT_SIZE * FONT_MULT); //open the font with bigger font size so the font look better in fullscreen
     if(ressources->font == NULL){
-        printf("Error opening font : %s",TTF_GetError());
+        printf("Error opening font : %s \n",TTF_GetError());
     }
-
     ressources->MenuItems = malloc(sizeof(MenuItem_t));
-    list(Item_t*,ItemList);
-    memset(&ItemList,0,sizeof(ItemList));
+    ressources->MenuItems->ItemList = malloc(MAIN_MENU_ITEM_COUNT * sizeof(Item_t*));
 
     int x=550,y=280;
     const char* str = "Jouer";
-    for (unsigned char i = 0; i < MAIN_MENU_ITEM_COUNT; i++)
-    {
+    for (unsigned int i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
         Item_t* item = malloc(sizeof(Item_t));
-        switch (i)
-        {
+        switch (i) {
             case 1:
                 str = "Options";
                 break;
@@ -32,13 +28,11 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
         item->rect = (SDL_Rect){x,y,0,0};
         item->text = SDL_strdup(str);
         item->texture = creer_texte_texture(renderer,ressources->font,2,NULL,str, item->rect.x, item->rect.y,&item->rect);
-        list_push(ItemList,item);
+        ressources->MenuItems->ItemList[i] = item;
         y+=50;
     }
-    ressources->MenuItems->ItemList = ItemList;
-
-    ressources->MenuItems->curselectedItem = NULL;
-    ressources->MenuItems->lastselectedItem = NULL;
+    ressources->MenuItems->curselectedItem = -1;
+    ressources->MenuItems->lastselectedItem = -1;
 
     ressources->dirt = charger_image_png("../assets/dirt_sprite.png",renderer);
     ressources->sky = charger_image_png("../assets/clouds2.1Large(1).png",renderer);
@@ -54,12 +48,12 @@ ressources_t* init_ressources(SDL_Renderer *renderer){
 }
 
 void free_ressources(ressources_t* ressources){
-    list_each(ressources->MenuItems->ItemList,elem){
-        SDL_DestroyTexture(elem->texture);
-        free(elem->text);
-        free(elem);
+    for ( unsigned int i = 0; i < MAIN_MENU_ITEM_COUNT; i++) {
+        SDL_DestroyTexture(ressources->MenuItems->ItemList[i]->texture);
+        free(ressources->MenuItems->ItemList[i]->text);
+        free(ressources->MenuItems->ItemList[i]);
     }
-    list_clear(ressources->MenuItems->ItemList); //free list
+    free(ressources->MenuItems->ItemList);
     free(ressources->MenuItems);
 
     SDL_DestroyTexture(ressources->dirt->text);

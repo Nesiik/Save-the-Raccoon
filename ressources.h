@@ -18,9 +18,9 @@ typedef struct Item_s{
 
 
 typedef struct MenuItem_s{
-    Item_t** ItemList; /* linked list of item pointer */
-    Item_t** curselectedItem; /* pointer to the selected item pointer (part of the itemList array) */
-    Item_t** lastselectedItem; /* pointer to the last item pointer (part of the itemList array) */
+    Item_t** ItemList; /* list of item pointer */
+    int curselectedItem; /* pointer to the selected item pointer (part of the itemList array) */
+    int lastselectedItem; /* pointer to the last item pointer (part of the itemList array) */
 } MenuItem_t;
 
 typedef struct ressources_s{

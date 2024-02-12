@@ -1,2 +1,2 @@
-level 1 : 7s
-level 2 : 8s
+level 1 : 7.193533s
+level 2 : 7.558417s

@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <stdio.h>
 #include "sdl.h"
 #include "ressources.h"
 

@@ -58,7 +58,7 @@ int main() {
 
     set_full_screen(window,FakeFS);
 
-    Uint64 last_time = SDL_GetTicks(),current_time;
+    Uint64 last_time = SDL_GetPerformanceCounter(),current_time;
     double dt;
     while(!fin(world)){
         // Events
@@ -66,8 +66,9 @@ int main() {
         handle_keyboard_player(player);
 
         // Time / Physics
-        current_time = SDL_GetTicks();
-        dt = (current_time - last_time) / 1000.;
+        current_time = SDL_GetPerformanceCounter();
+        dt = (current_time - last_time) / (double)SDL_GetPerformanceFrequency();
+        //printf("dt : %0.4f \n",dt);
         /* block fps (not needed currently because we're using vsync)
         if( dt < 16){
              compatible_sleep(1);
@@ -78,7 +79,7 @@ int main() {
         if(world->need_player_pos_update == 1){
             set_spawn(world,player);
             dt = 0.;
-            world->start_level_time = SDL_GetTicks();
+            world->start_level_time = SDL_GetPerformanceCounter();
         }
         if(world->game_state == Alive){
             move_player(player,world,ressources,dt);

@@ -12,6 +12,3 @@
 	path = external/SDL_image
 	url = https://github.com/libsdl-org/SDL_image/
 	branch = SDL2
-[submodule "external/list"]
-	path = external/list
-	url = https://github.com/udp/list
