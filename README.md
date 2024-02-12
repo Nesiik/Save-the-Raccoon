@@ -1,5 +1,5 @@
 # Save The Raccon
-"Simple" 2D platformer using c, [SDL2](https://github.com/libsdl-org/SDL/tree/SDL2), [SDL_image](https://github.com/libsdl-org/SDL_image/tree/SDL2), [SDL_ttf](https://github.com/libsdl-org/SDL_ttf/tree/SDL2) and [list](https://github.com/jamesamcl/list/tree/master) (see [external](external/) )
+"Simple" 2D platformer using c, [SDL2](https://github.com/libsdl-org/SDL/tree/SDL2), [SDL_image](https://github.com/libsdl-org/SDL_image/tree/SDL2) and [SDL_ttf](https://github.com/libsdl-org/SDL_ttf/tree/SDL2) (see [external](external/) )
 ## Game
 Z(azerty)/W(qwerty) : Jump  
 Q/A : Left  
